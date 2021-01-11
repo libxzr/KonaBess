@@ -9,6 +9,8 @@ public class KonaBessStr {
             return convert_bins_kona_old(which);
         else if(ChipInfo.which== ChipInfo.type.msmnile)
             return convert_bins_msmnile(which);
+        else if(ChipInfo.which== ChipInfo.type.msmnile_old)
+            return convert_bins_msmnile_old(which);
         else if(ChipInfo.which== ChipInfo.type.lahaina)
             return convert_bins_lahaina(which);
 
@@ -41,6 +43,14 @@ public class KonaBessStr {
                 return "骁龙855";
             case 1:
                 return "骁龙855+";
+        }
+        return "未知频率表"+which;
+    }
+
+    public static String convert_bins_msmnile_old(int which){
+        switch(which){
+            case 0:
+                return "骁龙855（安卓9）";
         }
         return "未知频率表"+which;
     }

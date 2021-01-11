@@ -63,10 +63,17 @@ public class GpuTableEditor {
         while (++i < lines_in_dts.size()) {
             this_line = lines_in_dts.get(i).trim();
 
-            if((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina)
+            if((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old
+                    ||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_old
+                    ||ChipInfo.which== ChipInfo.type.lahaina)
                     &&this_line.equals("qcom,gpu-pwrlevels {")){
+
                 if(ChipInfo.which== ChipInfo.type.kona)
                     ChipInfo.which= ChipInfo.type.kona_old;
+
+                if(ChipInfo.which== ChipInfo.type.msmnile)
+                    ChipInfo.which= ChipInfo.type.msmnile_old;
+
                 start=i;
                 if(bin_position<0)
                     bin_position=i;
@@ -101,7 +108,9 @@ public class GpuTableEditor {
                 continue;
             }
 
-            if (bracket == 0 && start>=0 && (ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina)) {
+            if (bracket == 0 && start>=0 && (ChipInfo.which== ChipInfo.type.kona_old
+                    ||ChipInfo.which== ChipInfo.type.msmnile_old
+                    ||ChipInfo.which== ChipInfo.type.lahaina)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -182,7 +191,9 @@ public class GpuTableEditor {
                 }
                 lines.add("};");
             }
-        } else if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
+        } else if(ChipInfo.which== ChipInfo.type.kona_old
+                ||ChipInfo.which== ChipInfo.type.msmnile_old
+                ||ChipInfo.which== ChipInfo.type.lahaina){
             lines.add("qcom,gpu-pwrlevels {");
             lines.addAll(bins.get(0).header);
             for (int pwr_level_id = 0; pwr_level_id < bins.get(0).levels.size(); pwr_level_id++) {
@@ -347,7 +358,9 @@ public class GpuTableEditor {
     }
 
     private static void offset_initial_level(int bin_id,int offset) throws Exception{
-        if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
+        if(ChipInfo.which== ChipInfo.type.kona_old
+                ||ChipInfo.which== ChipInfo.type.msmnile_old
+                ||ChipInfo.which== ChipInfo.type.lahaina){
             offset_initial_level_old(offset);
             return;
         }
@@ -400,7 +413,9 @@ public class GpuTableEditor {
     }
 
     private static void patch_throttle_level() throws Exception{
-        if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
+        if(ChipInfo.which== ChipInfo.type.kona_old
+                ||ChipInfo.which== ChipInfo.type.msmnile_old
+                ||ChipInfo.which== ChipInfo.type.lahaina){
             patch_throttle_level_old();
             return;
         }
@@ -427,7 +442,7 @@ public class GpuTableEditor {
     public static int min_level_chip_offset() throws Exception{
         if(ChipInfo.which== ChipInfo.type.lahaina)
             return 1;
-        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.msmnile)
+        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_old)
             return 2;
         throw new Exception();
     }

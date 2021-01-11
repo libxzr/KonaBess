@@ -6,6 +6,7 @@ public class ChipInfo {
         kona,
         kona_old,
         msmnile,
+        msmnile_old,
         lahaina,
         unknown
     }
@@ -16,7 +17,7 @@ public class ChipInfo {
         public static int[] levels(){
             if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_old)
                 return rpmh_levels_kona.levels;
-            else if(ChipInfo.which==type.msmnile)
+            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_old)
                 return rpmh_levels_msmnile.levels;
             else if(ChipInfo.which==type.lahaina)
                 return rpmh_levels_lahaina.levels;
@@ -26,7 +27,7 @@ public class ChipInfo {
         public static String[] level_str(){
             if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_old)
                 return rpmh_levels_kona.level_str;
-            else if(ChipInfo.which==type.msmnile)
+            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_old)
                 return rpmh_levels_msmnile.level_str;
             else if(ChipInfo.which==type.lahaina)
                 return rpmh_levels_lahaina.level_str;

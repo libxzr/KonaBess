@@ -89,7 +89,7 @@ public class GpuVoltEditor {
                     bracket++;
                     continue;
                 }
-            } else if(ChipInfo.which== ChipInfo.type.msmnile){
+            } else if(ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_old){
                 if (line.contains("gpu_opp_table_v2") && line.contains("{")) {
                     isInGpuTable = true;
                     bracket++;
