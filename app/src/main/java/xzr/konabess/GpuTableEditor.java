@@ -8,11 +8,13 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -61,7 +63,7 @@ public class GpuTableEditor {
         while (++i < lines_in_dts.size()) {
             this_line = lines_in_dts.get(i).trim();
 
-            if((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old)
+            if((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina)
                     &&this_line.equals("qcom,gpu-pwrlevels {")){
                 if(ChipInfo.which== ChipInfo.type.kona)
                     ChipInfo.which= ChipInfo.type.kona_old;
@@ -99,7 +101,7 @@ public class GpuTableEditor {
                 continue;
             }
 
-            if (bracket == 0 && start>=0 && ChipInfo.which== ChipInfo.type.kona_old) {
+            if (bracket == 0 && start>=0 && (ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -180,7 +182,7 @@ public class GpuTableEditor {
                 }
                 lines.add("};");
             }
-        } else if(ChipInfo.which== ChipInfo.type.kona_old){
+        } else if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
             lines.add("qcom,gpu-pwrlevels {");
             lines.addAll(bins.get(0).header);
             for (int pwr_level_id = 0; pwr_level_id < bins.get(0).levels.size(); pwr_level_id++) {
@@ -206,6 +208,13 @@ public class GpuTableEditor {
         bufferedWriter.close();
     }
 
+    private static String generateSubtitle(String line) throws Exception{
+        if(DtsHelper.decode_hex_line(line).name.equals("qcom,level")){
+            return GpuVoltEditor.levelint2str(DtsHelper.decode_int_line(line).value);
+        }
+        return DtsHelper.shouldUseHex(line)?DtsHelper.decode_hex_line(line).value:DtsHelper.decode_int_line(line).value+"";
+    }
+
     private static void generateALevel(Activity activity,int last,int levelid,LinearLayout page) throws Exception{
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
@@ -218,7 +227,7 @@ public class GpuTableEditor {
         for(String line:bins.get(last).levels.get(levelid).lines){
             items.add(new ParamAdapter.item(){{
                 title=KonaBessStr.convert_level_params(DtsHelper.decode_hex_line(line).name);
-                subtitle=DtsHelper.shouldUseHex(line)?DtsHelper.decode_hex_line(line).value:DtsHelper.decode_int_line(line).value+"";
+                subtitle=generateSubtitle(line);
             }});
         }
 
@@ -228,30 +237,65 @@ public class GpuTableEditor {
                     generateLevels(activity,last,page);
                 return;
             }
-            EditText editText=new EditText(activity);
-            editText.setInputType(DtsHelper.shouldUseHex(DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position-1)).name)?InputType.TYPE_CLASS_TEXT:InputType.TYPE_CLASS_NUMBER);
-            editText.setText(items.get(position).subtitle);
-            new AlertDialog.Builder(activity)
-                    .setTitle("编辑"+items.get(position).title+"")
-                    .setView(editText)
-                    .setMessage(KonaBessStr.help(DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position-1)).name))
-                    .setPositiveButton("保存", (dialog, which) -> {
-                        try {
-                            bins.get(last).levels.get(levelid).lines.set(
-                                    position-1,
-                                    DtsHelper.encodeIntOrHexLine(DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position-1)).name,editText.getText().toString()));
-                            generateALevel(activity, last, levelid, page);
-                            Toast.makeText(activity,"保存成功",Toast.LENGTH_SHORT).show();
-                        }catch (Exception e){
-                            DialogUtil.showError(activity,"保存错误");
-                        }
-                    })
-                    .setNegativeButton("取消",null)
-                    .create().show();
+            String raw_name=DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position-1)).name;
+            String raw_value=DtsHelper.shouldUseHex(bins.get(last).levels.get(levelid).lines.get(position-1))
+                    ?DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position-1)).value
+                    :DtsHelper.decode_int_line(bins.get(last).levels.get(levelid).lines.get(position-1)).value+"";
+
+            if(raw_name.equals("qcom,level")){
+                try {
+                    Spinner spinner = new Spinner(activity);
+                    spinner.setAdapter(new ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, ChipInfo.rpmh_levels.level_str()));
+                    spinner.setSelection(GpuVoltEditor.levelint2int(Integer.parseInt(raw_value)));
+
+                    new AlertDialog.Builder(activity)
+                            .setTitle(KonaBessStr.editVolt.title)
+                            .setView(spinner)
+                            .setMessage(KonaBessStr.editVolt.msg)
+                            .setPositiveButton("保存", (dialog, which) -> {
+                                try {
+                                    bins.get(last).levels.get(levelid).lines.set(
+                                            position - 1,
+                                            DtsHelper.encodeIntOrHexLine(raw_name, ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()]+""));
+                                    generateALevel(activity, last, levelid, page);
+                                    Toast.makeText(activity, "保存成功", Toast.LENGTH_SHORT).show();
+                                }catch (Exception exception){
+                                    DialogUtil.showError(activity,"保存失败");
+                                    exception.printStackTrace();
+                                }
+                            })
+                            .setNegativeButton("取消",null)
+                            .create().show();
+
+                }catch (Exception e){
+                    DialogUtil.showError(activity,"获取电压失败");
+                }
+            }
+            else {
+                EditText editText = new EditText(activity);
+                editText.setInputType(DtsHelper.shouldUseHex(raw_name) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER);
+                editText.setText(raw_value);
+                new AlertDialog.Builder(activity)
+                        .setTitle("编辑" + items.get(position).title + "")
+                        .setView(editText)
+                        .setMessage(KonaBessStr.help(raw_name))
+                        .setPositiveButton("保存", (dialog, which) -> {
+                            try {
+                                bins.get(last).levels.get(levelid).lines.set(
+                                        position - 1,
+                                        DtsHelper.encodeIntOrHexLine(raw_name, editText.getText().toString()));
+                                generateALevel(activity, last, levelid, page);
+                                Toast.makeText(activity, "保存成功", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                DialogUtil.showError(activity, "保存错误");
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .create().show();
+            }
             } catch (Exception e) {
                 DialogUtil.showError(activity,"编辑失败");
             }
-
         });
 
         listView.setAdapter(new ParamAdapter(items,activity));
@@ -303,7 +347,7 @@ public class GpuTableEditor {
     }
 
     private static void offset_initial_level(int bin_id,int offset) throws Exception{
-        if(ChipInfo.which== ChipInfo.type.kona_old){
+        if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
             offset_initial_level_old(offset);
             return;
         }
@@ -356,7 +400,7 @@ public class GpuTableEditor {
     }
 
     private static void patch_throttle_level() throws Exception{
-        if(ChipInfo.which== ChipInfo.type.kona_old){
+        if(ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.lahaina){
             patch_throttle_level_old();
             return;
         }
@@ -378,6 +422,14 @@ public class GpuTableEditor {
             return true;
         Toast.makeText(context,"不能再增加更多频率了",Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    public static int min_level_chip_offset() throws Exception{
+        if(ChipInfo.which== ChipInfo.type.lahaina)
+            return 1;
+        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old||ChipInfo.which== ChipInfo.type.msmnile)
+            return 2;
+        throw new Exception();
     }
 
     private static void generateLevels(Activity activity,int id, LinearLayout page) throws Exception{
@@ -410,11 +462,12 @@ public class GpuTableEditor {
         }});
 
         listView.setOnItemClickListener((parent, view, position, id1) -> {
-            if(position==bins.get(id).levels.size()+1){
+            if(position==items.size()-1){
                 if(!canAddNewLevel(id,activity))
                     return;
-                bins.get(id).levels.add(bins.get(id).levels.size()-2,level_clone(bins.get(id).levels.get(bins.get(id).levels.size()-2)));
                 try {
+                bins.get(id).levels.add(bins.get(id).levels.size()-min_level_chip_offset(),
+                        level_clone(bins.get(id).levels.get(bins.get(id).levels.size()-min_level_chip_offset())));
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
                 } catch (Exception e) {
@@ -449,7 +502,7 @@ public class GpuTableEditor {
         });
 
         listView.setOnItemLongClickListener((parent, view, position, idd) -> {
-            if(position==bins.get(id).levels.size()+1)
+            if(position==items.size()-1)
                 return true;
             try {
                 new AlertDialog.Builder(activity)

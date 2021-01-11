@@ -15,6 +15,18 @@ import java.util.ArrayList;
 import xzr.konabess.utils.AssetsUtil;
 
 public class KonaBessCore {
+    public static String dts_path;
+    private static int dtb_num;
+    public static String boot_name;
+
+    private enum dtb_types{
+        dtb,
+        kernel_dtb,
+        both
+    }
+
+    private static dtb_types dtb_type;
+
     public static void cleanEnv(Context context) throws IOException{
         Process process=new ProcessBuilder("sh").start();
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -63,6 +75,15 @@ public class KonaBessCore {
     }
 
     public static void getBootImage(Context context) throws IOException{
+        try{
+            getVendorBootImage(context);
+        }
+        catch (Exception e){
+            getRealBootImage(context);
+        }
+    }
+
+    public static void getRealBootImage(Context context) throws IOException{
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -75,16 +96,38 @@ public class KonaBessCore {
         bufferedReader.close();
         process.destroy();
 
-        if(!new File(context.getFilesDir().getAbsolutePath()+"/boot.img").exists()
-                ||!new File(context.getFilesDir().getAbsolutePath()+"/boot.img").canRead())
+        File target=new File(context.getFilesDir().getAbsolutePath()+"/boot.img");
+        if(!target.exists() || !target.canRead()) {
+            target.delete();
             throw new IOException();
+        }
+    }
+
+    public static void getVendorBootImage(Context context) throws IOException{
+        Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
+        outputStreamWriter.write("dd if=/dev/block/bootdevice/by-name/vendor_boot"+getCurrentSlot()+" of="+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
+        outputStreamWriter.write("chmod 644 "+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
+        outputStreamWriter.write("exit\n");
+        outputStreamWriter.flush();
+        while(bufferedReader.readLine()!=null){}
+        outputStreamWriter.close();
+        bufferedReader.close();
+        process.destroy();
+
+        File target=new File(context.getFilesDir().getAbsolutePath()+"/boot.img");
+        if(!target.exists() || !target.canRead()) {
+            target.delete();
+            throw new IOException();
+        }
     }
 
     public static void writeBootImage(Context context) throws IOException{
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("dd if="+context.getFilesDir().getAbsolutePath()+"/boot_new.img of=/dev/block/bootdevice/by-name/boot"+getCurrentSlot()+"\n");
+        outputStreamWriter.write("dd if="+context.getFilesDir().getAbsolutePath()+"/boot_new.img of=/dev/block/bootdevice/by-name/"+boot_name+getCurrentSlot()+"\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
         while(bufferedReader.readLine()!=null){}
@@ -97,7 +140,7 @@ public class KonaBessCore {
         Process process=new ProcessBuilder("sh").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("cp -f "+context.getFilesDir().getAbsolutePath()+"/boot.img /sdcard\n");
+        outputStreamWriter.write("cp -f "+context.getFilesDir().getAbsolutePath()+"/boot.img /sdcard/"+boot_name+".img\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
         while(bufferedReader.readLine()!=null){}
@@ -106,16 +149,20 @@ public class KonaBessCore {
         process.destroy();
     }
 
-    public static String dts_path;
-
     public static boolean checkDevice(Context context) throws IOException{
         for(int i=0;i<dtb_num;i++) {
             boolean okay=false;
             if (checkKona(context,i)) {
                 ChipInfo.which = ChipInfo.type.kona;
+                boot_name="boot";
                 okay=true;
             } else if (checkMsmnile(context,i)) {
                 ChipInfo.which = ChipInfo.type.msmnile;
+                boot_name="boot";
+                okay=true;
+            } else if(checkLahaina(context,i)){
+                ChipInfo.which = ChipInfo.type.lahaina;
+                boot_name="vendor_boot";
                 okay=true;
             }
             if(okay) {
@@ -160,13 +207,29 @@ public class KonaBessCore {
         return is;
     }
 
+    public static boolean checkLahaina(Context context,int index) throws IOException{
+        Process process=new ProcessBuilder("sh").start();
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
+        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep model | grep 'Lahaina V2.1'\n");
+        outputStreamWriter.write("exit\n");
+        outputStreamWriter.flush();
+        boolean is=false;
+        String s=bufferedReader.readLine();
+        if(s!=null)
+            is=true;
+        outputStreamWriter.close();
+        bufferedReader.close();
+        process.destroy();
+        return is;
+    }
+
     private static void unpackBootImage(Context context) throws IOException{
         Process process=new ProcessBuilder("sh").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter(process.getOutputStream());
         BufferedReader bufferedReader=new BufferedReader((new InputStreamReader(process.getInputStream())));
         outputStreamWriter.write("cd "+context.getFilesDir().getAbsolutePath()+"\n");
         outputStreamWriter.write("./magiskboot unpack boot.img\n");
-        outputStreamWriter.write("mv kernel_dtb dtb\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
         StringBuilder log= new StringBuilder();
@@ -177,8 +240,26 @@ public class KonaBessCore {
         bufferedReader.close();
         outputStreamWriter.close();
         process.destroy();
-        if(!new File(context.getFilesDir().getAbsolutePath()+"/dtb").exists())
-            throw new IOException(log.toString());
+
+        File kdtb_file=new File(context.getFilesDir().getAbsolutePath()+"/kernel_dtb");
+        File dtb_file=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+
+        if(kdtb_file.exists()&&dtb_file.exists()) {
+            dtb_type = dtb_types.both;
+            return;
+        }
+
+        if(kdtb_file.exists()){
+            dtb_type=dtb_types.kernel_dtb;
+            return;
+        }
+
+        if(dtb_file.exists()){
+            dtb_type=dtb_types.dtb;
+            return;
+        }
+
+        throw new IOException();
     }
 
     private static void dtb2dts(Context context,int index)throws IOException{
@@ -202,8 +283,6 @@ public class KonaBessCore {
             throw new IOException(log.toString());
     }
 
-    private static int dtb_num;
-
     public static void bootImage2dts(Context context) throws IOException{
         unpackBootImage(context);
         dtb_num=dtb_split(context);
@@ -213,7 +292,19 @@ public class KonaBessCore {
     }
 
     public static int dtb_split(Context context) throws IOException{
-        File dtb=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+        File dtb = null;
+        if(dtb_type==dtb_types.dtb)
+            dtb=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+        else if(dtb_type==dtb_types.kernel_dtb)
+            dtb=new File(context.getFilesDir().getAbsolutePath()+"/kernel_dtb");
+        else if(dtb_type==dtb_types.both){
+            dtb=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+            if(!new File(context.getFilesDir().getAbsolutePath()+"/kernel_dtb").delete())
+                throw new IOException();
+        } else {
+            throw new IOException();
+        }
+
         byte[] dtb_bytes=new byte[(int) dtb.length()];
         FileInputStream fileInputStream=new FileInputStream(dtb);
         if(fileInputStream.read(dtb_bytes)!=dtb.length())
@@ -274,7 +365,8 @@ public class KonaBessCore {
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter(process.getOutputStream());
         BufferedReader bufferedReader=new BufferedReader((new InputStreamReader(process.getInputStream())));
         outputStreamWriter.write("cd "+context.getFilesDir().getAbsolutePath()+"\n");
-        outputStreamWriter.write("cp dtb kernel_dtb\n");
+        if(dtb_type==dtb_types.both)
+            outputStreamWriter.write("cp dtb kernel_dtb\n");
         outputStreamWriter.write("./magiskboot repack boot.img boot_new.img\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
@@ -286,12 +378,23 @@ public class KonaBessCore {
         bufferedReader.close();
         outputStreamWriter.close();
         process.destroy();
-        if(!new File(context.getFilesDir().getAbsolutePath()+"/boot.img").exists())
+        if(!new File(context.getFilesDir().getAbsolutePath()+"/boot_new.img").exists())
             throw new IOException(log.toString());
     }
 
     public static void linkDtbs(Context context) throws IOException{
-        File out=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+        File out;
+
+        if(dtb_type==dtb_types.dtb)
+            out=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+        else if(dtb_type==dtb_types.kernel_dtb)
+            out=new File(context.getFilesDir().getAbsolutePath()+"/kernel_dtb");
+        else if(dtb_type==dtb_types.both){
+            out=new File(context.getFilesDir().getAbsolutePath()+"/dtb");
+        } else {
+            throw new IOException();
+        }
+
         FileOutputStream fileOutputStream=new FileOutputStream(out);
         for(int i=0;i<dtb_num;i++){
             File input=new File(context.getFilesDir().getAbsolutePath()+"/"+i+".dtb");

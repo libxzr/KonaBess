@@ -29,7 +29,7 @@ import xzr.konabess.utils.DialogUtil;
 import xzr.konabess.utils.DtsHelper;
 
 public class GpuVoltEditor {
-    public static class opp{
+    private static class opp{
         public long frequency;
         public long volt;
     }
@@ -218,10 +218,9 @@ public class GpuVoltEditor {
                     spinner.setSelection(levelint2int(opps.get(voltn).volt));
 
                     new AlertDialog.Builder(activity)
-                            .setTitle("修改电压")
+                            .setTitle(KonaBessStr.editVolt.title)
                             .setView(spinner)
-                            .setMessage("这是指这个频率对应电压，您可以为这个频率指定要使用的电压等级。\n" +
-                                    "电压等级从上往下，电压依次提高。")
+                            .setMessage(KonaBessStr.editVolt.msg)
                             .setPositiveButton("保存", (dialog, which) -> {
                                 opps.get(voltn).volt= ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()];
                                 try {

@@ -90,16 +90,13 @@ public class MainActivity extends Activity {
             toolbar.addView(button);
             button.setOnClickListener(v -> new AlertDialog.Builder(this)
                     .setTitle("备份旧镜像")
-                    .setMessage("将把旧镜像备份到/sdcard/boot.img")
-                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
-                            }
-                            else {
-                                new backupBoot(MainActivity.this).start();
-                            }
+                    .setMessage("将把旧镜像备份到/sdcard/"+KonaBessCore.boot_name+".img")
+                    .setPositiveButton("确认", (dialog, which) -> {
+                        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+                        }
+                        else {
+                            new backupBoot(MainActivity.this).start();
                         }
                     })
                     .setNegativeButton("取消",null)
@@ -111,7 +108,7 @@ public class MainActivity extends Activity {
             toolbar.addView(button);
             button.setOnClickListener(v -> new AlertDialog.Builder(MainActivity.this)
                     .setTitle("帮助")
-                    .setMessage(KonaBessStr.generic_help)
+                    .setMessage(KonaBessStr.generic_help())
                     .setPositiveButton("好的",null)
                     .setNeutralButton("关于", (dialog, which) -> new AlertDialog.Builder(MainActivity.this)
                             .setTitle("关于")
@@ -131,7 +128,7 @@ public class MainActivity extends Activity {
             editor.addView(button);
             button.setOnClickListener(v -> new GpuTableEditor.gpuTableLogic(this,showdView).start());
         }
-        {
+        if(ChipInfo.which!= ChipInfo.type.lahaina){
             Button button=new Button(this);
             button.setText("编辑GPU电压表");
             editor.addView(button);
