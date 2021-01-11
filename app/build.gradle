@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "xzr.konabess"
-        minSdkVersion 29
+        minSdkVersion 28
         targetSdkVersion 28
         versionCode 8
         versionName "0.7 alpha"
