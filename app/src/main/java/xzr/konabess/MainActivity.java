@@ -138,7 +138,7 @@ public class MainActivity extends Activity {
             editor.addView(button);
             button.setOnClickListener(v -> new GpuTableEditor.gpuTableLogic(this,showdView).start());
         }
-        if(ChipInfo.which!= ChipInfo.type.lahaina){
+        if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
             Button button=new Button(this);
             button.setText("编辑GPU电压表");
             editor.addView(button);

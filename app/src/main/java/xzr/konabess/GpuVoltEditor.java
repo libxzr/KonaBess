@@ -83,13 +83,13 @@ public class GpuVoltEditor {
             if(line.equals(""))
                 continue;
 
-            if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_old) {
+            if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin) {
                 if (line.contains("gpu-opp-table_v2") && line.contains("{")) {
                     isInGpuTable = true;
                     bracket++;
                     continue;
                 }
-            } else if(ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_old){
+            } else if(ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin){
                 if (line.contains("gpu_opp_table_v2") && line.contains("{")) {
                     isInGpuTable = true;
                     bracket++;

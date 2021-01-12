@@ -161,7 +161,7 @@ public class KonaBessCore {
                 boot_name="boot";
                 okay=true;
             } else if(checkLahaina(context,i)){
-                ChipInfo.which = ChipInfo.type.lahaina;
+                ChipInfo.which = ChipInfo.type.lahaina_singleBin;
                 boot_name="vendor_boot";
                 okay=true;
             }

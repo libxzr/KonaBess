@@ -4,10 +4,10 @@ package xzr.konabess;
 public class ChipInfo {
     public static enum type{
         kona,
-        kona_old,
+        kona_singleBin,
         msmnile,
-        msmnile_old,
-        lahaina,
+        msmnile_singleBin,
+        lahaina_singleBin,
         unknown
     }
 
@@ -15,22 +15,22 @@ public class ChipInfo {
 
     public static class rpmh_levels{
         public static int[] levels(){
-            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_old)
+            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_singleBin)
                 return rpmh_levels_kona.levels;
-            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_old)
+            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.levels;
-            else if(ChipInfo.which==type.lahaina)
-                return rpmh_levels_lahaina.levels;
+            else if(ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina_singleBin.levels;
 
             return new int[]{};
         }
         public static String[] level_str(){
-            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_old)
+            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_singleBin)
                 return rpmh_levels_kona.level_str;
-            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_old)
+            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.level_str;
-            else if(ChipInfo.which==type.lahaina)
-                return rpmh_levels_lahaina.level_str;
+            else if(ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina_singleBin.level_str;
 
             return new String[]{};
         }
@@ -85,7 +85,7 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lahaina{
+    private static class rpmh_levels_lahaina_singleBin{
         public static final int[] levels={48,64,80,96,128,144,192,224,256,320,336,384,416};
         public static final String[] level_str={
                 "MIN_SVS",

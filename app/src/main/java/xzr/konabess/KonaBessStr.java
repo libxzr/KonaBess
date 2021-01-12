@@ -5,14 +5,14 @@ public class KonaBessStr {
     public static String convert_bins(int which) throws Exception{
         if(ChipInfo.which== ChipInfo.type.kona)
             return convert_bins_kona(which);
-        else if(ChipInfo.which== ChipInfo.type.kona_old)
-            return convert_bins_kona_old(which);
+        else if(ChipInfo.which== ChipInfo.type.kona_singleBin)
+            return convert_bins_kona_singleBin(which);
         else if(ChipInfo.which== ChipInfo.type.msmnile)
             return convert_bins_msmnile(which);
-        else if(ChipInfo.which== ChipInfo.type.msmnile_old)
-            return convert_bins_msmnile_old(which);
-        else if(ChipInfo.which== ChipInfo.type.lahaina)
-            return convert_bins_lahaina(which);
+        else if(ChipInfo.which== ChipInfo.type.msmnile_singleBin)
+            return convert_bins_msmnile_singleBin(which);
+        else if(ChipInfo.which== ChipInfo.type.lahaina_singleBin)
+            return convert_bins_lahaina_singleBin(which);
 
         throw new Exception();
     }
@@ -29,7 +29,7 @@ public class KonaBessStr {
         return "未知频率表"+which;
     }
 
-    public static String convert_bins_kona_old(int which){
+    public static String convert_bins_kona_singleBin(int which){
         switch(which){
             case 0:
                 return "骁龙865（安卓10）";
@@ -47,7 +47,7 @@ public class KonaBessStr {
         return "未知频率表"+which;
     }
 
-    public static String convert_bins_msmnile_old(int which){
+    public static String convert_bins_msmnile_singleBin(int which){
         switch(which){
             case 0:
                 return "骁龙855（安卓9）";
@@ -55,7 +55,7 @@ public class KonaBessStr {
         return "未知频率表"+which;
     }
 
-    public static String convert_bins_lahaina(int which){
+    public static String convert_bins_lahaina_singleBin(int which){
         switch(which){
             case 0:
                 return "骁龙888";
@@ -81,7 +81,7 @@ public class KonaBessStr {
 
     public static String help(String what){
         if(what.equals("qcom,gpu-freq"))
-            return ChipInfo.which== ChipInfo.type.lahaina?
+            return ChipInfo.which== ChipInfo.type.lahaina_singleBin?
                     "这是GPU的工作频率，您可以通过改变该数值来改变频率表中的可用频率。\n" +
                     "此处频率的单位是Hz，也就是说在MHz频率后面加上6个零，您可以在上一级菜单中以MHz查看频率。\n" +
                     "如果您搞不清楚要加几个零，那么建议只修改数字的前几位。"
@@ -99,7 +99,7 @@ public class KonaBessStr {
     }
 
     public static String generic_help(){
-        return ChipInfo.which== ChipInfo.type.lahaina?generic_help_1_table:generic_help_2_table;
+        return ChipInfo.which== ChipInfo.type.lahaina_singleBin?generic_help_1_table:generic_help_2_table;
     }
     private static String generic_help_2_table="欢迎使用本工具！\n" +
             "通过使用本工具，您可以自由的对骁龙855、865、888系列处理器的GPU进行超频、降压等操作。\n" +
