@@ -2,7 +2,12 @@ package xzr.konabess;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.SystemProperties;
+import android.util.Base64;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +22,7 @@ import xzr.konabess.utils.AssetsUtil;
 
 public class KonaBessCore {
     public static String dts_path;
-    private static int dtb_num;
+    static int dtb_num;
     public static String boot_name;
 
     private enum dtb_types{
@@ -62,17 +67,31 @@ public class KonaBessCore {
         process.destroy();
     }
 
-    private static String getCurrentSlot() throws IOException{
-        Process process=new ProcessBuilder("sh").start();
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        OutputStreamWriter outputStreamWriter=new OutputStreamWriter(process.getOutputStream());
-        outputStreamWriter.write("getprop ro.boot.slot_suffix\nexit\n");
-        outputStreamWriter.flush();
-        String ret=bufferedReader.readLine();
-        bufferedReader.close();
-        outputStreamWriter.close();
-        process.destroy();
-        return ret==null?"":ret;
+    static String getCurrent(String name) {
+        switch (name.toLowerCase()) {
+            case "brand":
+                return SystemProperties.get("ro.product.brand", null);
+            case "name":
+                return SystemProperties.get("ro.product.name", null);
+            case "model":
+                return SystemProperties.get("ro.product.model", null);
+            case "board":
+                return SystemProperties.get("ro.product.board", null);
+            case "id":
+                return SystemProperties.get("ro.product.build.id", null);
+            case "version":
+                return SystemProperties.get("ro.product.build.version.release", null);
+            case "fingerprint":
+                return SystemProperties.get("ro.product.build.fingerprint", null);
+            case "manufacturer":
+                return SystemProperties.get("ro.product.manufacturer", null);
+            case "device":
+                return SystemProperties.get("ro.product.device", null);
+            case "slot":
+                return SystemProperties.get("ro.boot.slot_suffix", null);
+            default:
+                return null;
+        }
     }
 
     public static void getBootImage(Context context) throws IOException{
@@ -88,7 +107,7 @@ public class KonaBessCore {
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("dd if=/dev/block/bootdevice/by-name/boot"+getCurrentSlot()+" of="+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
+        outputStreamWriter.write("dd if=/dev/block/bootdevice/by-name/boot"+getCurrent("slot")+" of="+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
         outputStreamWriter.write("chmod 644 "+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
@@ -108,7 +127,7 @@ public class KonaBessCore {
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("dd if=/dev/block/bootdevice/by-name/vendor_boot"+getCurrentSlot()+" of="+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
+        outputStreamWriter.write("dd if=/dev/block/bootdevice/by-name/vendor_boot"+getCurrent("slot")+" of="+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
         outputStreamWriter.write("chmod 644 "+context.getFilesDir().getAbsolutePath()+"/boot.img\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
@@ -128,7 +147,7 @@ public class KonaBessCore {
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("dd if="+context.getFilesDir().getAbsolutePath()+"/boot_new.img of=/dev/block/bootdevice/by-name/"+boot_name+getCurrentSlot()+"\n");
+        outputStreamWriter.write("dd if="+context.getFilesDir().getAbsolutePath()+"/boot_new.img of=/dev/block/bootdevice/by-name/"+boot_name+getCurrent("slot")+"\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
         while(bufferedReader.readLine()!=null){}
@@ -153,15 +172,15 @@ public class KonaBessCore {
     public static boolean checkDevice(Context context) throws IOException{
         for(int i=0;i<dtb_num;i++) {
             boolean okay=false;
-            if (checkKona(context,i)) {
+            if (checkChip(context,i,"kona")) {
                 ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
                 boot_name="boot";
                 okay=true;
-            } else if (checkMsmnile(context,i)) {
+            } else if (checkChip(context,i,"msmnile")) {
                 ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
                 boot_name="boot";
                 okay=true;
-            } else if(checkLahaina(context,i)){
+            } else if(checkChip(context,i,"lahaina")){
                 ChipInfo.which = ChipInfo.type.lahaina_singleBin;
                 boot_name="vendor_boot";
                 okay=true;
@@ -191,55 +210,34 @@ public class KonaBessCore {
         return is;
     }
 
-    public static boolean checkKona(Context context,int index) throws IOException{
+    public static boolean checkChip(Context context, int index, String chip) throws IOException {
+        boolean result = false;
+        switch (chip.toLowerCase()) {
+            case "kona":
+                chip = "kona v2.1";
+                break;
+            case "msmnile":
+                chip = "SM8150 v2";
+                break;
+            case "lahaina":
+                chip = "Lahaina V2.1";
+                break;
+            default:
+                return result;
+        }
         Process process=new ProcessBuilder("sh").start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep model | grep 'kona v2.1'\n");
+        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep model | grep '" + chip + "'\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
-        boolean is_kona=false;
         String s=bufferedReader.readLine();
         if(s!=null)
-            is_kona=true;
+            result=true;
         outputStreamWriter.close();
         bufferedReader.close();
         process.destroy();
-        return is_kona;
-    }
-
-    public static boolean checkMsmnile(Context context,int index) throws IOException{
-        Process process=new ProcessBuilder("sh").start();
-        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep model | grep 'SM8150 v2'\n");
-        outputStreamWriter.write("exit\n");
-        outputStreamWriter.flush();
-        boolean is=false;
-        String s=bufferedReader.readLine();
-        if(s!=null)
-            is=true;
-        outputStreamWriter.close();
-        bufferedReader.close();
-        process.destroy();
-        return is;
-    }
-
-    public static boolean checkLahaina(Context context,int index) throws IOException{
-        Process process=new ProcessBuilder("sh").start();
-        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep model | grep 'Lahaina V2.1'\n");
-        outputStreamWriter.write("exit\n");
-        outputStreamWriter.flush();
-        boolean is=false;
-        String s=bufferedReader.readLine();
-        if(s!=null)
-            is=true;
-        outputStreamWriter.close();
-        bufferedReader.close();
-        process.destroy();
-        return is;
+        return result;
     }
 
     private static void unpackBootImage(Context context) throws IOException{
