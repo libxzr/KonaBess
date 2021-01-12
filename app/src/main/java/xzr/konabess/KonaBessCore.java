@@ -153,11 +153,11 @@ public class KonaBessCore {
         for(int i=0;i<dtb_num;i++) {
             boolean okay=false;
             if (checkKona(context,i)) {
-                ChipInfo.which = ChipInfo.type.kona;
+                ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
                 boot_name="boot";
                 okay=true;
             } else if (checkMsmnile(context,i)) {
-                ChipInfo.which = ChipInfo.type.msmnile;
+                ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
                 boot_name="boot";
                 okay=true;
             } else if(checkLahaina(context,i)){
@@ -171,6 +171,23 @@ public class KonaBessCore {
             }
         }
         return false;
+    }
+
+    public static boolean checkSingleBin(Context context,int index) throws IOException{
+        Process process=new ProcessBuilder("sh").start();
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
+        outputStreamWriter.write("cat "+context.getFilesDir().getAbsolutePath()+"/"+index+".dts | grep 'qcom,gpu-pwrlevels {'\n");
+        outputStreamWriter.write("exit\n");
+        outputStreamWriter.flush();
+        boolean is=false;
+        String s=bufferedReader.readLine();
+        if(s!=null)
+            is=true;
+        outputStreamWriter.close();
+        bufferedReader.close();
+        process.destroy();
+        return is;
     }
 
     public static boolean checkKona(Context context,int index) throws IOException{

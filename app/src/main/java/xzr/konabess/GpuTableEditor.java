@@ -63,17 +63,10 @@ public class GpuTableEditor {
         while (++i < lines_in_dts.size()) {
             this_line = lines_in_dts.get(i).trim();
 
-            if((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin
-                    ||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin
+            if((ChipInfo.which== ChipInfo.type.kona_singleBin
+                    ||ChipInfo.which== ChipInfo.type.msmnile_singleBin
                     ||ChipInfo.which== ChipInfo.type.lahaina_singleBin)
                     &&this_line.equals("qcom,gpu-pwrlevels {")){
-
-                if(ChipInfo.which== ChipInfo.type.kona)
-                    ChipInfo.which= ChipInfo.type.kona_singleBin;
-
-                if(ChipInfo.which== ChipInfo.type.msmnile)
-                    ChipInfo.which= ChipInfo.type.msmnile_singleBin;
-
                 start=i;
                 if(bin_position<0)
                     bin_position=i;
