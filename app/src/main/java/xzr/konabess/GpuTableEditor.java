@@ -43,7 +43,7 @@ public class GpuTableEditor {
 
     private static ArrayList<String> lines_in_dts;
 
-    private static void init(Context context) throws IOException {
+    public static void init() throws IOException {
         lines_in_dts=new ArrayList<>();
         bins=new ArrayList<>();
         bin_position=-1;
@@ -54,7 +54,7 @@ public class GpuTableEditor {
         }
     }
 
-    private static void decode() throws Exception{
+    public static void decode() throws Exception{
         int i=-1;
         String this_line;
         int start=-1;
@@ -169,9 +169,8 @@ public class GpuTableEditor {
         return level;
     }
 
-    private static List<String> genBack(){
+    public static List<String> genTable(){
         ArrayList<String> lines=new ArrayList<>();
-        ArrayList<String> new_dts=new ArrayList<>(lines_in_dts);
         if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.msmnile) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
                 lines.add("qcom,gpu-pwrlevels-" + bin_id + " {");
@@ -197,11 +196,16 @@ public class GpuTableEditor {
             }
             lines.add("};");
         }
-        new_dts.addAll(bin_position,lines);
+        return lines;
+    }
+
+    public static List<String> genBack(List<String> table){
+        ArrayList<String> new_dts=new ArrayList<>(lines_in_dts);
+        new_dts.addAll(bin_position,table);
         return new_dts;
     }
 
-    private static void writeOut(Context context,List<String> new_dts) throws IOException{
+    public static void writeOut(List<String> new_dts) throws IOException{
         File file=new File(KonaBessCore.dts_path);
         file.createNewFile();
         BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(file));
@@ -607,7 +611,7 @@ public class GpuTableEditor {
             toolbar.addView(button);
             button.setOnClickListener(v -> {
                 try {
-                    writeOut(activity,genBack());
+                    writeOut(genBack(genTable()));
                     Toast.makeText(activity,"保存成功",Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
@@ -634,7 +638,7 @@ public class GpuTableEditor {
             });
 
             try{
-                init(activity);
+                init();
                 decode();
                 patch_throttle_level();
             }catch (Exception e){

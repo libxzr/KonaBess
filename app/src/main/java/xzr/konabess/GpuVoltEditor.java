@@ -50,7 +50,7 @@ public class GpuVoltEditor {
     private static ArrayList<String> lines_in_dts;
     private static int opp_position;
 
-    private static void init(Context context) throws IOException {
+    public static void init() throws IOException {
         lines_in_dts=new ArrayList<>();
         opps=new ArrayList<>();
         opp_position=-1;
@@ -72,7 +72,7 @@ public class GpuVoltEditor {
         return opp;
     }
 
-    private static void decode() throws Exception{
+    public static void decode() throws Exception{
         int i=-1;
         boolean isInGpuTable=false;
         int bracket=0;
@@ -122,8 +122,7 @@ public class GpuVoltEditor {
         }
     }
 
-    private static List<String> genBack(){
-        ArrayList<String> ret=new ArrayList<>(lines_in_dts);
+    public static List<String> genTable(){
         ArrayList<String> table=new ArrayList<>();
         for(opp opp:opps){
             table.add("opp-"+opp.frequency+" {");
@@ -131,11 +130,16 @@ public class GpuVoltEditor {
             table.add("opp-microvolt = <"+opp.volt+">;");
             table.add("};");
         }
+        return table;
+    }
+
+    public static List<String> genBack(List<String> table){
+        ArrayList<String> ret=new ArrayList<>(lines_in_dts);
         ret.addAll(opp_position,table);
         return ret;
     }
 
-    private static void writeOut(Context context,List<String> new_dts) throws IOException{
+    public static void writeOut(List<String> new_dts) throws IOException{
         File file=new File(KonaBessCore.dts_path);
         file.createNewFile();
         BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(file));
@@ -157,7 +161,7 @@ public class GpuVoltEditor {
             toolbar.addView(button);
             button.setOnClickListener(v -> {
                 try {
-                    writeOut(activity,genBack());
+                    writeOut(genBack(genTable()));
                     Toast.makeText(activity,"保存成功",Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
@@ -342,7 +346,7 @@ public class GpuVoltEditor {
             });
 
             try{
-                init(activity);
+                init();
                 decode();
             }catch (Exception e){
                 activity.runOnUiThread(() -> DialogUtil.showError(activity,"获取GPU电压表失败"));

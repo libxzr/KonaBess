@@ -3,12 +3,10 @@ package xzr.konabess;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -53,15 +51,53 @@ public class MainActivity extends Activity {
             super.onBackPressed();
     }
 
+    private static Thread permission_worker;
+    public static void runWithStoragePermission(Activity activity,Thread what){
+        MainActivity.permission_worker=what;
+        if(activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+        }
+        else {
+            what.start();
+            permission_worker=null;
+        }
+    }
+
+    static class fileWorker extends Thread{
+        public Uri uri;
+    }
+
+    private static fileWorker file_worker;
+    public static void runWithFilePath(Activity activity,fileWorker what){
+        MainActivity.file_worker=what;
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        activity.startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            file_worker.uri = data.getData();
+            if(file_worker!=null) {
+                file_worker.start();
+                file_worker=null;
+            }
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0) {//如果申请权限回调的参数
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                new backupBoot(this).start();
-            } else {
-                Toast.makeText(this, "存储权限申请未成功", Toast.LENGTH_SHORT).show();
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if(permission_worker!=null) {
+                permission_worker.start();
+                permission_worker=null;
             }
+        } else {
+            Toast.makeText(this, "存储权限申请未成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -102,12 +138,7 @@ public class MainActivity extends Activity {
                     .setTitle("备份旧镜像")
                     .setMessage("将把旧镜像备份到/sdcard/"+KonaBessCore.boot_name+".img")
                     .setPositiveButton("确认", (dialog, which) -> {
-                        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
-                        }
-                        else {
-                            new backupBoot(MainActivity.this).start();
-                        }
+                        runWithStoragePermission(this, new backupBoot(this));
                     })
                     .setNegativeButton("取消",null)
                     .create().show());
@@ -143,6 +174,12 @@ public class MainActivity extends Activity {
             button.setText("编辑GPU电压表");
             editor.addView(button);
             button.setOnClickListener(v -> new GpuVoltEditor.gpuVoltLogic(this,showdView).start());
+        }
+        {
+            Button button=new Button(this);
+            button.setText("导入导出");
+            editor.addView(button);
+            button.setOnClickListener(v -> new TableIO.TableIOLogic(this,showdView).start());
         }
     }
 

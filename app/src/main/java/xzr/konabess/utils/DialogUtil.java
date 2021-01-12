@@ -34,6 +34,20 @@ public class DialogUtil {
                 .create().show();
     }
 
+    public static void showDetailedInfo(Activity activity,String title, String what,String detail){
+        what+="\n（长按可复制内容）";
+        ScrollView scrollView=new ScrollView(activity);
+        TextView textView=new TextView(activity);
+        textView.setTextIsSelectable(true);
+        scrollView.addView(textView);
+        textView.setText(detail);
+        new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(what)
+                .setView(scrollView)
+                .create().show();
+    }
+
     public static AlertDialog getWaitDialog(Context context,String text){
         LinearLayout linearLayout=new LinearLayout(context);
         ProgressBar progressBar=new ProgressBar(context);
