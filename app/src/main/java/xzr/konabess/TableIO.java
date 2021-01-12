@@ -2,6 +2,7 @@ package xzr.konabess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -140,7 +141,7 @@ public class TableIO {
         }
         public void run(){
             error=false;
-            File out=new File("/sdcard/konabess-"+new SimpleDateFormat("MMddHHmmss").format(new Date())+".txt");
+            File out=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/konabess-"+new SimpleDateFormat("MMddHHmmss").format(new Date())+".txt");
             try {
                 BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(out));
                 bufferedWriter.write(getAndEncodeData());

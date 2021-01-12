@@ -1,6 +1,7 @@
 package xzr.konabess;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -140,7 +141,7 @@ public class KonaBessCore {
         Process process=new ProcessBuilder("sh").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
-        outputStreamWriter.write("cp -f "+context.getFilesDir().getAbsolutePath()+"/boot.img /sdcard/"+boot_name+".img\n");
+        outputStreamWriter.write("cp -f "+context.getFilesDir().getAbsolutePath()+"/boot.img "+ Environment.getExternalStorageDirectory().getAbsolutePath() +"/"+boot_name+".img\n");
         outputStreamWriter.write("exit\n");
         outputStreamWriter.flush();
         while(bufferedReader.readLine()!=null){}
