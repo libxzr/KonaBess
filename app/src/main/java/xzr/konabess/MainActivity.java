@@ -21,6 +21,7 @@ import xzr.konabess.utils.DialogUtil;
 public class MainActivity extends Activity {
     AlertDialog waiting;
     boolean cross_device_debug=false;
+    onBackPressedListener onBackPressedListener=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,14 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        if(onBackPressedListener!=null)
+            onBackPressedListener.onBackPressed();
+        else
+            super.onBackPressed();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0) {//如果申请权限回调的参数
@@ -59,6 +68,7 @@ public class MainActivity extends Activity {
     LinearLayout mainView;
     LinearLayout showdView;
     void showMainView(){
+        onBackPressedListener=null;
         mainView=new LinearLayout(this);
         mainView.setOrientation(LinearLayout.VERTICAL);
         setContentView(mainView);
@@ -287,6 +297,10 @@ public class MainActivity extends Activity {
                 showMainView();
             });
         }
+    }
+
+    public static abstract class onBackPressedListener{
+        public abstract void onBackPressed();
     }
 
 }

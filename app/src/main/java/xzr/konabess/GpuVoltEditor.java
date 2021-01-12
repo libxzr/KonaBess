@@ -168,6 +168,13 @@ public class GpuVoltEditor {
         return horizontalScrollView;
     }
     private static void generateAVolt(Activity activity,LinearLayout page,int voltn) throws Exception{
+        ((MainActivity)activity).onBackPressedListener=new MainActivity.onBackPressedListener(){
+            @Override
+            public void onBackPressed() {
+                generateVolts(activity,page);
+            }
+        };
+
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
@@ -242,6 +249,13 @@ public class GpuVoltEditor {
         page.addView(listView);
     }
     private static void generateVolts(Activity activity,LinearLayout page){
+        ((MainActivity)activity).onBackPressedListener=new MainActivity.onBackPressedListener(){
+            @Override
+            public void onBackPressed() {
+                ((MainActivity)activity).showMainView();
+            }
+        };
+
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 

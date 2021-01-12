@@ -227,6 +227,15 @@ public class GpuTableEditor {
     }
 
     private static void generateALevel(Activity activity,int last,int levelid,LinearLayout page) throws Exception{
+        ((MainActivity)activity).onBackPressedListener=new MainActivity.onBackPressedListener(){
+            @Override
+            public void onBackPressed() {
+                try {
+                    generateLevels(activity, last, page);
+                }catch (Exception ignored){}
+            }
+        };
+
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
@@ -448,6 +457,15 @@ public class GpuTableEditor {
     }
 
     private static void generateLevels(Activity activity,int id, LinearLayout page) throws Exception{
+        ((MainActivity)activity).onBackPressedListener=new MainActivity.onBackPressedListener(){
+            @Override
+            public void onBackPressed() {
+                try {
+                    generateBins(activity, page);
+                }catch (Exception ignored){}
+            }
+        };
+
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
@@ -554,6 +572,13 @@ public class GpuTableEditor {
     }
 
     private static void generateBins(Activity activity,LinearLayout page) throws Exception{
+        ((MainActivity)activity).onBackPressedListener=new MainActivity.onBackPressedListener(){
+            @Override
+            public void onBackPressed() {
+                ((MainActivity)activity).showMainView();
+            }
+        };
+
         ListView listView=new ListView(activity);
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
