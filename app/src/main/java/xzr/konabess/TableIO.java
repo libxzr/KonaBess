@@ -44,13 +44,10 @@ public class TableIO {
         public static final String DATA="data";
     }
 
-    private static boolean decodeAndWriteData(String data) throws Exception{
-        if(!data.startsWith("konabess://"))
-            return true;
-        data=data.replace("konabess://","");
-        String decoded_data=new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
-        JSONObject jsonObject = new JSONObject(decoded_data);
-        decoded_data = jsonObject.getString(json_keys.DATA);
+    private static AlertDialog waiting_import;
+
+    private static boolean decodeAndWriteData(JSONObject jsonObject) throws Exception{
+        String decoded_data = jsonObject.getString(json_keys.DATA);
 
         String[] lines=decoded_data.split("\n");
         if(!ChipInfo.which.toString().equals(jsonObject.getString(json_keys.CHIP)))
@@ -135,7 +132,6 @@ public class TableIO {
         return Base64.getEncoder().encodeToString(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private static boolean error;
     private static void import_edittext(Activity activity){
         EditText editText=new EditText(activity);
         editText.setHint("在这里粘贴频率和电压信息");
@@ -143,27 +139,7 @@ public class TableIO {
         new AlertDialog.Builder(activity)
                 .setTitle("导入")
                 .setView(editText)
-                .setPositiveButton("确认", (dialog, which) -> {
-                    AlertDialog waiting=DialogUtil.getWaitDialog(activity,"正在导入数据，请稍后");
-                    waiting.show();
-
-                    new Thread(() -> {
-                        error=false;
-                        try {
-                            error=decodeAndWriteData(editText.getText().toString());
-                        } catch (Exception e) {
-                            error=true;
-                        }
-                        activity.runOnUiThread(() -> {
-                            waiting.dismiss();
-                            if(!error)
-                                Toast.makeText(activity,"导入成功",Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(activity,"导入失败，数据可能无效或与设备不兼容",Toast.LENGTH_SHORT).show();
-                        });
-                    }).start();
-
-                })
+                .setPositiveButton("确认", (dialog, which) -> new showDecodeDialog(activity,editText.getText().toString()).start())
                 .setNegativeButton("取消",null)
                 .create().show();
     }
@@ -175,6 +151,7 @@ public class TableIO {
 
     private static class exportToFile extends Thread{
         Activity activity;
+        boolean error;
         public exportToFile(Activity activity){
             this.activity=activity;
         }
@@ -197,9 +174,66 @@ public class TableIO {
         }
     }
 
+    private static class showDecodeDialog extends Thread{
+        Activity activity;
+        String data;
+        boolean error;
+        JSONObject jsonObject;
+        public showDecodeDialog(Activity activity,String data){
+            this.activity=activity;
+            this.data=data;
+        }
+        public void run(){
+            error= !data.startsWith("konabess://");
+            if(!error) {
+                try {
+                    data = data.replace("konabess://", "");
+                    String decoded_data = new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
+                    jsonObject = new JSONObject(decoded_data);
+                    activity.runOnUiThread(() -> {
+                        waiting_import.dismiss();
+                        try {
+                            new AlertDialog.Builder(activity)
+                                    .setTitle("将要导入数据")
+                                    .setMessage("芯片：" + jsonObject.getString(json_keys.CHIP))
+                                    .setPositiveButton("确认", (dialog, which) -> {
+                                        waiting_import.show();
+                                        new Thread(() -> {
+                                            try {
+                                                error=decodeAndWriteData(jsonObject);
+                                            }catch (Exception e){
+                                                error=true;
+                                            }
+                                            activity.runOnUiThread(() -> {
+                                                waiting_import.dismiss();
+                                                if(!error)
+                                                    Toast.makeText(activity,"导入成功",Toast.LENGTH_SHORT).show();
+                                                else
+                                                    Toast.makeText(activity,"导入失败，数据与当前设备不兼容",Toast.LENGTH_LONG).show();
+                                            });
+                                        }).start();
+                                    })
+                                    .setNegativeButton("取消", null)
+                                    .create().show();
+                        }catch (Exception e){
+                            error=true;
+                        }
+                    });
+                } catch (Exception e) {
+                    error=true;
+                }
+            }
+            if(error)
+                activity.runOnUiThread(() -> {
+                    waiting_import.dismiss();
+                    Toast.makeText(activity,"导入失败，解析数据时发生了错误",Toast.LENGTH_LONG).show();
+                });
+        }
+    }
+
     private static class importFromFile extends MainActivity.fileWorker{
         Activity activity;
-        AlertDialog waiting;
+        boolean error;
         public importFromFile(Activity activity){
             this.activity=activity;
         }
@@ -208,24 +242,15 @@ public class TableIO {
                 return;
             error=false;
             activity.runOnUiThread(() -> {
-                waiting=DialogUtil.getWaitDialog(activity,"正在导入数据，请稍后");
-                waiting.show();
+                waiting_import.show();
             });
             try {
                 BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(activity.getContentResolver().openInputStream(uri)));
-                error=decodeAndWriteData(bufferedReader.readLine());
+                new showDecodeDialog(activity,bufferedReader.readLine()).start();
                 bufferedReader.close();
-            }  catch (Exception e) {
-                error=true;
+            } catch (Exception e) {
+                activity.runOnUiThread(() -> Toast.makeText(activity,"获取目标文件失败",Toast.LENGTH_SHORT).show());
             }
-            activity.runOnUiThread(() -> {
-                waiting.dismiss();
-                if(!error)
-                    Toast.makeText(activity,"导入成功",Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(activity,"导入失败，数据可能无效或与设备不兼容",Toast.LENGTH_SHORT).show();
-            });
-
         }
     }
 
@@ -292,6 +317,7 @@ public class TableIO {
         }
         public void run(){
             activity.runOnUiThread(() -> {
+                waiting_import=DialogUtil.getWaitDialog(activity,"正在导入数据，请稍后");
                 waiting=DialogUtil.getWaitDialog(activity,"正在准备进行备份还原");
                 waiting.show();
             });
