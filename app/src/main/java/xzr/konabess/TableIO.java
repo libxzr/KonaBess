@@ -57,7 +57,7 @@ public class TableIO {
         data=data.replace("konabess://","");
         String decoded_data=new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
         JSONObject jsonObject = new JSONObject(decoded_data);
-        decoded_data = jsonObject.getString("d");
+        decoded_data = jsonObject.getString(json_keys.DATA);
 
         String[] lines=decoded_data.split("\n");
         if(!ChipInfo.which.toString().equals(lines[0]))
