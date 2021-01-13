@@ -11,6 +11,23 @@ public class ChipInfo {
         unknown
     }
 
+    public static String name2chipdesc(String name){
+        type t=type.valueOf(name);
+        switch (t){
+            case kona:
+                return "骁龙865系列";
+            case kona_singleBin:
+                return "骁龙865（安卓10）";
+            case msmnile:
+                return "骁龙855系列";
+            case msmnile_singleBin:
+                return "骁龙855（安卓9）";
+            case lahaina_singleBin:
+                return "骁龙888";
+        }
+        return "未知";
+    }
+
     public static type which;
 
     public static class rpmh_levels{

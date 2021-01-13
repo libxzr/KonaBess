@@ -113,7 +113,6 @@ public class TableIO {
     private static String getConfig(String desc) {
         JSONObject jsonObject = new JSONObject();
         try {
-            // TODO: Import confirmation
             jsonObject.put(json_keys.MODEL, getCurrent("model"));
             jsonObject.put(json_keys.BRAND, getCurrent("brand"));
             jsonObject.put(json_keys.ID, getCurrent("id"));
@@ -214,7 +213,7 @@ public class TableIO {
                         try {
                             new AlertDialog.Builder(activity)
                                     .setTitle("将要导入数据")
-                                    .setMessage("芯片：" + jsonObject.getString(json_keys.CHIP))
+                                    .setMessage(jsonObject.getString(json_keys.DESCRIPTION)+"\n适用的芯片：" + ChipInfo.name2chipdesc(jsonObject.getString(json_keys.CHIP)))
                                     .setPositiveButton("确认", (dialog, which) -> {
                                         waiting_import.show();
                                         new Thread(() -> {
