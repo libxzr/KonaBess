@@ -60,7 +60,7 @@ public class TableIO {
         decoded_data = jsonObject.getString(json_keys.DATA);
 
         String[] lines=decoded_data.split("\n");
-        if(!ChipInfo.which.toString().equals(lines[0]))
+        if(!ChipInfo.which.toString().equals(jsonObject.getString(json_keys.CHIP)))
             return true;
         boolean freq_started=false;
         boolean volt_started=false;
@@ -105,7 +105,6 @@ public class TableIO {
 
     private static String getAndEncodeData(){
         StringBuilder data= new StringBuilder();
-        data.append(ChipInfo.which).append("\n");
         data.append("#Freq start\n");
         for(String line:GpuTableEditor.genTable()){
             data.append(line).append("\n");
