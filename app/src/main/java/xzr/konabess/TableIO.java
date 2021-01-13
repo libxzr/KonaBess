@@ -113,7 +113,7 @@ public class TableIO {
     private static String getConfig(String desc) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(json_keys.MODEL, getCurrent("model"));
+            /*jsonObject.put(json_keys.MODEL, getCurrent("model"));
             jsonObject.put(json_keys.BRAND, getCurrent("brand"));
             jsonObject.put(json_keys.ID, getCurrent("id"));
             jsonObject.put(json_keys.VERSION, getCurrent("version"));
@@ -121,7 +121,7 @@ public class TableIO {
             jsonObject.put(json_keys.MANUFACTURER, getCurrent("manufacturer"));
             jsonObject.put(json_keys.DEVICE, getCurrent("device"));
             jsonObject.put(json_keys.NAME, getCurrent("name"));
-            jsonObject.put(json_keys.BOARD, getCurrent("board"));
+            jsonObject.put(json_keys.BOARD, getCurrent("board"));*/
             jsonObject.put(json_keys.CHIP, ChipInfo.which);
             jsonObject.put(json_keys.DESCRIPTION, desc);
             jsonObject.put(json_keys.DATA, getAndEncodeData());
