@@ -118,7 +118,7 @@ public class TableIO {
             }
             data.append("#Volt end\n");
         }
-        return Base64.getEncoder().encodeToString(data.toString().getBytes(StandardCharsets.UTF_8));
+        return data.toString();
     }
 
     private static String getConfig(String desc) {
