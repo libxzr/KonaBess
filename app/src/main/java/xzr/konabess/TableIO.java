@@ -2,9 +2,7 @@ package xzr.konabess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,13 +14,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +26,6 @@ import java.util.Date;
 import xzr.konabess.adapters.ParamAdapter;
 import xzr.konabess.utils.DialogUtil;
 
-import static xzr.konabess.KonaBessCore.dtb_num;
 import static xzr.konabess.KonaBessCore.getCurrent;
 
 public class TableIO {
@@ -51,7 +44,7 @@ public class TableIO {
         public static final String DATA="data";
     }
 
-    private static boolean decodeAndWriteData(Activity activity, String data) throws Exception{
+    private static boolean decodeAndWriteData(String data) throws Exception{
         if(!data.startsWith("konabess://"))
             return true;
         data=data.replace("konabess://","");
@@ -157,7 +150,7 @@ public class TableIO {
                     new Thread(() -> {
                         error=false;
                         try {
-                            error=decodeAndWriteData(activity,editText.getText().toString());
+                            error=decodeAndWriteData(editText.getText().toString());
                         } catch (Exception e) {
                             error=true;
                         }
@@ -220,7 +213,7 @@ public class TableIO {
             });
             try {
                 BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(activity.getContentResolver().openInputStream(uri)));
-                error=decodeAndWriteData(activity,bufferedReader.readLine());
+                error=decodeAndWriteData(bufferedReader.readLine());
                 bufferedReader.close();
             }  catch (Exception e) {
                 error=true;

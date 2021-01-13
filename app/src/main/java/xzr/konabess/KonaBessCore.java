@@ -3,11 +3,6 @@ package xzr.konabess;
 import android.content.Context;
 import android.os.Environment;
 import android.os.SystemProperties;
-import android.util.Base64;
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +17,7 @@ import xzr.konabess.utils.AssetsUtil;
 
 public class KonaBessCore {
     public static String dts_path;
-    static int dtb_num;
+    private static int dtb_num;
     public static String boot_name;
 
     private enum dtb_types{
@@ -103,7 +98,7 @@ public class KonaBessCore {
         }
     }
 
-    public static void getRealBootImage(Context context) throws IOException{
+    private static void getRealBootImage(Context context) throws IOException{
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -123,7 +118,7 @@ public class KonaBessCore {
         }
     }
 
-    public static void getVendorBootImage(Context context) throws IOException{
+    private static void getVendorBootImage(Context context) throws IOException{
         Process process=new ProcessBuilder("su").redirectErrorStream(true).start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -193,7 +188,7 @@ public class KonaBessCore {
         return false;
     }
 
-    public static boolean checkSingleBin(Context context,int index) throws IOException{
+    private static boolean checkSingleBin(Context context,int index) throws IOException{
         Process process=new ProcessBuilder("sh").start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -210,7 +205,7 @@ public class KonaBessCore {
         return is;
     }
 
-    public static boolean checkChip(Context context, int index, String chip) throws IOException {
+    private static boolean checkChip(Context context, int index, String chip) throws IOException {
         boolean result = false;
         Process process=new ProcessBuilder("sh").start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));

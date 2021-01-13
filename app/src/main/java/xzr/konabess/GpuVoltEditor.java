@@ -2,9 +2,7 @@ package xzr.konabess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
