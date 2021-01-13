@@ -36,6 +36,21 @@ import static xzr.konabess.KonaBessCore.dtb_num;
 import static xzr.konabess.KonaBessCore.getCurrent;
 
 public class TableIO {
+    private static class json_keys{
+        public static final String MODEL="model";
+        public static final String BRAND="brand";
+        public static final String ID="id";
+        public static final String VERSION="version";
+        public static final String FINGERPRINT="fingerprint";
+        public static final String MANUFACTURER="manufacturer";
+        public static final String DEVICE="device";
+        public static final String NAME="name";
+        public static final String BOARD="board";
+        public static final String CHIP="chip";
+        public static final String DESCRIPTION="desc";
+        public static final String DATA="data";
+    }
+
     private static boolean decodeAndWriteData(Activity activity, String data) throws Exception{
         if(!data.startsWith("konabess://"))
             return true;
@@ -111,18 +126,18 @@ public class TableIO {
         JSONObject jsonObject = new JSONObject();
         try {
             // TODO: Import confirmation
-            jsonObject.put("m", getCurrent("model"));
-            jsonObject.put("b", getCurrent("brand"));
-            jsonObject.put("i", getCurrent("id"));
-            jsonObject.put("v", getCurrent("version"));
-            jsonObject.put("p", getCurrent("fingerprint"));
-            jsonObject.put("f", getCurrent("manufacturer"));
-            jsonObject.put("d", getCurrent("device"));
-            jsonObject.put("n", getCurrent("name"));
-            jsonObject.put("o", getCurrent("board"));
-            jsonObject.put("c", ChipInfo.which);
-            jsonObject.put("e", desc);
-            jsonObject.put("d", getAndEncodeData());
+            jsonObject.put(json_keys.MODEL, getCurrent("model"));
+            jsonObject.put(json_keys.BRAND, getCurrent("brand"));
+            jsonObject.put(json_keys.ID, getCurrent("id"));
+            jsonObject.put(json_keys.VERSION, getCurrent("version"));
+            jsonObject.put(json_keys.FINGERPRINT, getCurrent("fingerprint"));
+            jsonObject.put(json_keys.MANUFACTURER, getCurrent("manufacturer"));
+            jsonObject.put(json_keys.DEVICE, getCurrent("device"));
+            jsonObject.put(json_keys.NAME, getCurrent("name"));
+            jsonObject.put(json_keys.BOARD, getCurrent("board"));
+            jsonObject.put(json_keys.CHIP, ChipInfo.which);
+            jsonObject.put(json_keys.DESCRIPTION, desc);
+            jsonObject.put(json_keys.DATA, getAndEncodeData());
         } catch (JSONException e) {
             e.printStackTrace();
         }
