@@ -55,7 +55,6 @@ public class TableIO {
         if(!data.startsWith("konabess://"))
             return true;
         data=data.replace("konabess://","");
-        data = hexStr(data);
         String decoded_data=new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
         JSONObject jsonObject = new JSONObject(decoded_data);
         decoded_data = jsonObject.getString("d");
@@ -179,27 +178,7 @@ public class TableIO {
 
     private static void export_cpy(Activity activity){
         // TODO: clipboard
-        DialogUtil.showDetailedInfo(activity,"导出完毕","以下是导出的频率和电压内容", "konabess://"+strHex(getConfig("")).toUpperCase());
-    }
-
-    public static String strHex(String s) {
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            int ch = s.charAt(i);
-            String s4 = Integer.toHexString(ch);
-            str.append(s4);
-        }
-        return str.toString();
-    }
-
-    public static String hexStr(String s) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < s.length() - 1; i += 2) {
-            String tempInHex = s.substring(i, (i + 2));
-            int decimal = Integer.parseInt(tempInHex, 16);
-            result.append((char) decimal);
-        }
-        return result.toString();
+        DialogUtil.showDetailedInfo(activity,"导出完毕","以下是导出的频率和电压内容", "konabess://"+getConfig(""));
     }
 
     private static class exportToFile extends Thread{
@@ -212,7 +191,7 @@ public class TableIO {
             File out=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/konabess-"+new SimpleDateFormat("MMddHHmmss").format(new Date())+".txt");
             try {
                 BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(out));
-                bufferedWriter.write("konabess://"+strHex(getConfig("")).toUpperCase());
+                bufferedWriter.write("konabess://"+getConfig(""));
                 bufferedWriter.close();
             } catch (IOException e) {
                 error=true;
