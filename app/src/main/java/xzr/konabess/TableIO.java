@@ -144,23 +144,42 @@ public class TableIO {
                 .create().show();
     }
 
-    private static void export_cpy(Activity activity){
+    private static abstract class ConfirmExportCallback{
+        public abstract void onConfirm(String desc);
+    }
+
+    private static void showExportDialog(Activity activity,ConfirmExportCallback confirmExportCallback){
+        EditText editText=new EditText(activity);
+        editText.setHint("在这里输入简介");
+
+        new AlertDialog.Builder(activity)
+                .setTitle("导出数据")
+                .setMessage("您可以自定义数据的简介，在导入数据时，这些文字将被呈现")
+                .setView(editText)
+                .setPositiveButton("确认", (dialog, which) -> confirmExportCallback.onConfirm(editText.getText().toString()))
+                .setNegativeButton("取消",null)
+                .create().show();
+    }
+
+    private static void export_cpy(Activity activity,String desc){
         // TODO: clipboard
-        DialogUtil.showDetailedInfo(activity,"导出完毕","以下是导出的频率和电压内容", "konabess://"+getConfig(""));
+        DialogUtil.showDetailedInfo(activity,"导出完毕","以下是导出的频率和电压内容", "konabess://"+getConfig(desc));
     }
 
     private static class exportToFile extends Thread{
         Activity activity;
         boolean error;
-        public exportToFile(Activity activity){
+        String desc;
+        public exportToFile(Activity activity,String desc){
             this.activity=activity;
+            this.desc=desc;
         }
         public void run(){
             error=false;
             File out=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/konabess-"+new SimpleDateFormat("MMddHHmmss").format(new Date())+".txt");
             try {
                 BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(out));
-                bufferedWriter.write("konabess://"+getConfig(""));
+                bufferedWriter.write("konabess://"+getConfig(desc));
                 bufferedWriter.close();
             } catch (IOException e) {
                 error=true;
@@ -291,12 +310,22 @@ public class TableIO {
                 MainActivity.runWithFilePath(activity,new importFromFile(activity));
             }
             else if(position==1){
-                MainActivity.runWithStoragePermission(activity,new exportToFile(activity));
+                showExportDialog(activity, new ConfirmExportCallback() {
+                    @Override
+                    public void onConfirm(String desc) {
+                        MainActivity.runWithStoragePermission(activity,new exportToFile(activity,desc));
+                    }
+                });
             }else if(position==2){
                 import_edittext(activity);
             }
             else if(position==3){
-                export_cpy(activity);
+                showExportDialog(activity, new ConfirmExportCallback() {
+                    @Override
+                    public void onConfirm(String desc) {
+                        export_cpy(activity,desc);
+                    }
+                });
             }
         });
 
