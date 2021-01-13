@@ -172,15 +172,15 @@ public class KonaBessCore {
     public static boolean checkDevice(Context context) throws IOException{
         for(int i=0;i<dtb_num;i++) {
             boolean okay=false;
-            if (checkChip(context,i,"kona")) {
+            if (checkChip(context,i,"kona v2.1")) {
                 ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
                 boot_name="boot";
                 okay=true;
-            } else if (checkChip(context,i,"msmnile")) {
+            } else if (checkChip(context,i,"SM8150 v2")) {
                 ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
                 boot_name="boot";
                 okay=true;
-            } else if(checkChip(context,i,"lahaina")){
+            } else if(checkChip(context,i,"Lahaina V2.1")){
                 ChipInfo.which = ChipInfo.type.lahaina_singleBin;
                 boot_name="vendor_boot";
                 okay=true;
@@ -212,19 +212,6 @@ public class KonaBessCore {
 
     public static boolean checkChip(Context context, int index, String chip) throws IOException {
         boolean result = false;
-        switch (chip.toLowerCase()) {
-            case "kona":
-                chip = "kona v2.1";
-                break;
-            case "msmnile":
-                chip = "SM8150 v2";
-                break;
-            case "lahaina":
-                chip = "Lahaina V2.1";
-                break;
-            default:
-                return result;
-        }
         Process process=new ProcessBuilder("sh").start();
         OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
