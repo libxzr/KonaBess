@@ -1,8 +1,10 @@
 package xzr.konabess;
 
 
+import android.app.Activity;
+
 public class ChipInfo {
-    public static enum type{
+    public enum type{
         kona,
         kona_singleBin,
         msmnile,
@@ -11,21 +13,21 @@ public class ChipInfo {
         unknown
     }
 
-    public static String name2chipdesc(String name){
+    public static String name2chipdesc(String name, Activity activity){
         type t=type.valueOf(name);
         switch (t){
             case kona:
-                return "骁龙865系列";
+                return activity.getResources().getString(R.string.sdm865_series);
             case kona_singleBin:
-                return "骁龙865（安卓10）";
+                return activity.getResources().getString(R.string.sdm865_singlebin);
             case msmnile:
-                return "骁龙855系列";
+                return activity.getResources().getString(R.string.sdm855_series);
             case msmnile_singleBin:
-                return "骁龙855（安卓9）";
+                return activity.getResources().getString(R.string.sdm855_singlebin);
             case lahaina_singleBin:
-                return "骁龙888";
+                return activity.getResources().getString(R.string.sdm888_singlebin);
         }
-        return "未知";
+        return activity.getResources().getString(R.string.unknown);
     }
 
     public static type which;

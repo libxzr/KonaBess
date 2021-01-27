@@ -133,13 +133,13 @@ public class TableIO {
 
     private static void import_edittext(Activity activity){
         EditText editText=new EditText(activity);
-        editText.setHint("在这里粘贴频率和电压信息");
+        editText.setHint(activity.getResources().getString(R.string.paste_here));
 
         new AlertDialog.Builder(activity)
-                .setTitle("导入")
+                .setTitle(R.string.import_data)
                 .setView(editText)
-                .setPositiveButton("确认", (dialog, which) -> new showDecodeDialog(activity,editText.getText().toString()).start())
-                .setNegativeButton("取消",null)
+                .setPositiveButton(R.string.confirm, (dialog, which) -> new showDecodeDialog(activity,editText.getText().toString()).start())
+                .setNegativeButton(R.string.cancel,null)
                 .create().show();
     }
 
@@ -149,20 +149,20 @@ public class TableIO {
 
     private static void showExportDialog(Activity activity,ConfirmExportCallback confirmExportCallback){
         EditText editText=new EditText(activity);
-        editText.setHint("在这里输入简介");
+        editText.setHint(R.string.input_introduction_here);
 
         new AlertDialog.Builder(activity)
-                .setTitle("导出数据")
-                .setMessage("您可以自定义数据的简介，在导入数据时，这些文字将被呈现")
+                .setTitle(R.string.export_data)
+                .setMessage(R.string.export_data_msg)
                 .setView(editText)
-                .setPositiveButton("确认", (dialog, which) -> confirmExportCallback.onConfirm(editText.getText().toString()))
-                .setNegativeButton("取消",null)
+                .setPositiveButton(R.string.confirm, (dialog, which) -> confirmExportCallback.onConfirm(editText.getText().toString()))
+                .setNegativeButton(R.string.cancel,null)
                 .create().show();
     }
 
     private static void export_cpy(Activity activity,String desc){
         // TODO: clipboard
-        DialogUtil.showDetailedInfo(activity,"导出完毕","以下是导出的频率和电压内容", "konabess://"+getConfig(desc));
+        DialogUtil.showDetailedInfo(activity,R.string.export_done,R.string.export_done_msg, "konabess://"+getConfig(desc));
     }
 
     private static class exportToFile extends Thread{
@@ -185,9 +185,9 @@ public class TableIO {
             }
             activity.runOnUiThread(() -> {
                 if(!error)
-                    Toast.makeText(activity,"成功导出到"+out.getAbsolutePath(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,activity.getResources().getString(R.string.success_export_to)+" "+out.getAbsolutePath(),Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(activity,"导出失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,R.string.failed_export,Toast.LENGTH_SHORT).show();
             });
         }
     }
@@ -212,9 +212,9 @@ public class TableIO {
                         waiting_import.dismiss();
                         try {
                             new AlertDialog.Builder(activity)
-                                    .setTitle("将要导入数据")
-                                    .setMessage(jsonObject.getString(json_keys.DESCRIPTION)+"\n适用的芯片：" + ChipInfo.name2chipdesc(jsonObject.getString(json_keys.CHIP)))
-                                    .setPositiveButton("确认", (dialog, which) -> {
+                                    .setTitle(R.string.going_import)
+                                    .setMessage(jsonObject.getString(json_keys.DESCRIPTION)+"\n"+activity.getResources().getString(R.string.compatible_chip) + ChipInfo.name2chipdesc(jsonObject.getString(json_keys.CHIP),activity))
+                                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
                                         waiting_import.show();
                                         new Thread(() -> {
                                             try {
@@ -225,13 +225,13 @@ public class TableIO {
                                             activity.runOnUiThread(() -> {
                                                 waiting_import.dismiss();
                                                 if(!error)
-                                                    Toast.makeText(activity,"导入成功",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(activity,R.string.success_import,Toast.LENGTH_SHORT).show();
                                                 else
-                                                    Toast.makeText(activity,"导入失败，数据与当前设备不兼容",Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(activity,R.string.failed_incompatible,Toast.LENGTH_LONG).show();
                                             });
                                         }).start();
                                     })
-                                    .setNegativeButton("取消", null)
+                                    .setNegativeButton(R.string.cancel, null)
                                     .create().show();
                         }catch (Exception e){
                             error=true;
@@ -244,7 +244,7 @@ public class TableIO {
             if(error)
                 activity.runOnUiThread(() -> {
                     waiting_import.dismiss();
-                    Toast.makeText(activity,"导入失败，解析数据时发生了错误",Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,R.string.failed_decoding,Toast.LENGTH_LONG).show();
                 });
         }
     }
@@ -267,7 +267,7 @@ public class TableIO {
                 new showDecodeDialog(activity,bufferedReader.readLine()).start();
                 bufferedReader.close();
             } catch (Exception e) {
-                activity.runOnUiThread(() -> Toast.makeText(activity,"获取目标文件失败",Toast.LENGTH_SHORT).show());
+                activity.runOnUiThread(() -> Toast.makeText(activity,R.string.unable_get_target_file,Toast.LENGTH_SHORT).show());
             }
         }
     }
@@ -284,23 +284,23 @@ public class TableIO {
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
         items.add(new ParamAdapter.item(){{
-            title="从文件导入";
-            subtitle="从文件导入外部频率与电压参数";
+            title=activity.getResources().getString(R.string.import_from_file);
+            subtitle=activity.getResources().getString(R.string.import_from_file_msg);
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="导出到文件";
-            subtitle="导出当前频率和电压参数到文件";
+            title=activity.getResources().getString(R.string.export_to_file);
+            subtitle=activity.getResources().getString(R.string.export_to_file_msg);
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="从剪贴板导入";
-            subtitle="从剪贴板导入外部频率与电压参数";
+            title=activity.getResources().getString(R.string.import_from_clipboard);
+            subtitle=activity.getResources().getString(R.string.import_from_clipboard_msg);
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="导出到剪贴板";
-            subtitle="导出当前频率和电压参数到剪贴板";
+            title=activity.getResources().getString(R.string.export_to_clipboard);
+            subtitle=activity.getResources().getString(R.string.export_to_clipboard_msg);
         }});
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -345,8 +345,8 @@ public class TableIO {
         }
         public void run(){
             activity.runOnUiThread(() -> {
-                waiting_import=DialogUtil.getWaitDialog(activity,"正在导入数据，请稍后");
-                waiting=DialogUtil.getWaitDialog(activity,"正在准备进行备份还原");
+                waiting_import=DialogUtil.getWaitDialog(activity,R.string.wait_importing);
+                waiting=DialogUtil.getWaitDialog(activity,R.string.prepare_import_export);
                 waiting.show();
             });
 
@@ -358,7 +358,7 @@ public class TableIO {
                     GpuVoltEditor.decode();
                 }
             }catch (Exception e){
-                activity.runOnUiThread(() -> DialogUtil.showError(activity,"加载频率电压数据失败"));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,R.string.failed_getting_freq_voltage));
             }
 
             activity.runOnUiThread(() -> {
@@ -369,7 +369,7 @@ public class TableIO {
                 try {
                     generateView(activity,page);
                 } catch (Exception e){
-                    DialogUtil.showError(activity,"准备备份还原失败");
+                    DialogUtil.showError(activity,R.string.error_occur);
                 }
                 showedView.addView(page);
             });

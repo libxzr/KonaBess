@@ -234,13 +234,13 @@ public class GpuTableEditor {
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
         items.add(new ParamAdapter.item(){{
-            title="返回上一级";
+            title=activity.getResources().getString(R.string.back);
             subtitle="";
         }});
 
         for(String line:bins.get(last).levels.get(levelid).lines){
             items.add(new ParamAdapter.item(){{
-                title=KonaBessStr.convert_level_params(DtsHelper.decode_hex_line(line).name);
+                title=KonaBessStr.convert_level_params(DtsHelper.decode_hex_line(line).name,activity);
                 subtitle=generateSubtitle(line);
             }});
         }
@@ -263,26 +263,26 @@ public class GpuTableEditor {
                     spinner.setSelection(GpuVoltEditor.levelint2int(Integer.parseInt(raw_value)));
 
                     new AlertDialog.Builder(activity)
-                            .setTitle(KonaBessStr.editVolt.title)
+                            .setTitle(R.string.edit)
                             .setView(spinner)
-                            .setMessage(KonaBessStr.editVolt.msg)
-                            .setPositiveButton("保存", (dialog, which) -> {
+                            .setMessage(R.string.editvolt_msg)
+                            .setPositiveButton(R.string.save, (dialog, which) -> {
                                 try {
                                     bins.get(last).levels.get(levelid).lines.set(
                                             position - 1,
                                             DtsHelper.encodeIntOrHexLine(raw_name, ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()]+""));
                                     generateALevel(activity, last, levelid, page);
-                                    Toast.makeText(activity, "保存成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, R.string.save_success, Toast.LENGTH_SHORT).show();
                                 }catch (Exception exception){
-                                    DialogUtil.showError(activity,"保存失败");
+                                    DialogUtil.showError(activity,R.string.save_failed);
                                     exception.printStackTrace();
                                 }
                             })
-                            .setNegativeButton("取消",null)
+                            .setNegativeButton(R.string.cancel,null)
                             .create().show();
 
                 }catch (Exception e){
-                    DialogUtil.showError(activity,"获取电压失败");
+                    DialogUtil.showError(activity,R.string.error_occur);
                 }
             }
             else {
@@ -290,25 +290,25 @@ public class GpuTableEditor {
                 editText.setInputType(DtsHelper.shouldUseHex(raw_name) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER);
                 editText.setText(raw_value);
                 new AlertDialog.Builder(activity)
-                        .setTitle("编辑" + items.get(position).title + "")
+                        .setTitle(activity.getResources().getString(R.string.edit) + " \""+items.get(position).title+"\"")
                         .setView(editText)
-                        .setMessage(KonaBessStr.help(raw_name))
-                        .setPositiveButton("保存", (dialog, which) -> {
+                        .setMessage(KonaBessStr.help(raw_name,activity))
+                        .setPositiveButton(R.string.save, (dialog, which) -> {
                             try {
                                 bins.get(last).levels.get(levelid).lines.set(
                                         position - 1,
                                         DtsHelper.encodeIntOrHexLine(raw_name, editText.getText().toString()));
                                 generateALevel(activity, last, levelid, page);
-                                Toast.makeText(activity, "保存成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, R.string.save_success, Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
-                                DialogUtil.showError(activity, "保存错误");
+                                DialogUtil.showError(activity, R.string.save_failed);
                             }
                         })
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .create().show();
             }
             } catch (Exception e) {
-                DialogUtil.showError(activity,"编辑失败");
+                DialogUtil.showError(activity,R.string.error_occur);
             }
         });
 
@@ -438,7 +438,7 @@ public class GpuTableEditor {
     public static boolean canAddNewLevel(int binID, Context context){
         if(bins.get(binID).levels.size()<10)
             return true;
-        Toast.makeText(context,"不能再增加更多频率了",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,R.string.unable_add_more,Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -464,13 +464,13 @@ public class GpuTableEditor {
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
         items.add(new ParamAdapter.item(){{
-            title="上一级";
+            title=activity.getResources().getString(R.string.back);
             subtitle="";
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="新建";
-            subtitle="增加新的频率";
+            title=activity.getResources().getString(R.string.new_item);
+            subtitle=activity.getResources().getString(R.string.new_desc);
         }});
 
         for(level level:bins.get(id).levels){
@@ -484,8 +484,8 @@ public class GpuTableEditor {
         }
 
         items.add(new ParamAdapter.item(){{
-            title="新建";
-            subtitle="增加新的频率";
+            title=activity.getResources().getString(R.string.new_item);
+            subtitle=activity.getResources().getString(R.string.new_desc);
         }});
 
         listView.setOnItemClickListener((parent, view, position, id1) -> {
@@ -498,7 +498,7 @@ public class GpuTableEditor {
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
                 } catch (Exception e) {
-                    DialogUtil.showError(activity,"增加新频率失败");
+                    DialogUtil.showError(activity,R.string.error_occur);
                 }
                 return;
             }
@@ -516,7 +516,7 @@ public class GpuTableEditor {
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
                 } catch (Exception e) {
-                    DialogUtil.showError(activity,"增加新频率失败");
+                    DialogUtil.showError(activity,R.string.error_occur);
                 }
                 return;
             }
@@ -524,7 +524,7 @@ public class GpuTableEditor {
             try {
                 generateALevel(activity,id,position,page);
             } catch (Exception e) {
-                DialogUtil.showError(activity,"打开频率失败");
+                DialogUtil.showError(activity,R.string.error_occur);
             }
         });
 
@@ -533,20 +533,21 @@ public class GpuTableEditor {
                 return true;
             try {
                 new AlertDialog.Builder(activity)
-                        .setTitle("删除频率")
-                        .setMessage("你确定要删除" + getFrequencyFromLevel(bins.get(id).levels.get(position - 2)) / 1000000 + "MHz吗？")
-                        .setPositiveButton("确认删除", (dialog, which) -> {
+                        .setTitle(R.string.remove)
+                        .setMessage(String.format(activity.getResources().getString(R.string.remove_msg),
+                                getFrequencyFromLevel(bins.get(id).levels.get(position - 2)) / 1000000))
+                        .setPositiveButton(R.string.yes, (dialog, which) -> {
                             bins.get(id).levels.remove(position-2);
                             try {
                                 generateLevels(activity,id,page);
                                 offset_initial_level(id,-1);
                             } catch (Exception e) {
-                                DialogUtil.showError(activity,"删除失败");
+                                DialogUtil.showError(activity,R.string.error_occur);
                             }
                         })
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton(R.string.no, null)
                         .create().show();
-            }catch (Exception ignored){}
+            }catch (Exception ignored){ignored.printStackTrace();}
             return true;
         });
 
@@ -578,7 +579,7 @@ public class GpuTableEditor {
 
         for(int i=0;i<bins.size();i++){
             ParamAdapter.item item=new ParamAdapter.item();
-            item.title=KonaBessStr.convert_bins(i);
+            item.title=KonaBessStr.convert_bins(i,activity);
             item.subtitle="";
             items.add(item);
         }
@@ -589,7 +590,7 @@ public class GpuTableEditor {
                 generateLevels(activity, position, page);
             }
             catch (Exception e){
-                DialogUtil.showError(activity,"加载频率表失败");
+                DialogUtil.showError(activity,R.string.error_occur);
             }
         });
 
@@ -604,15 +605,15 @@ public class GpuTableEditor {
 
         {
             Button button=new Button(activity);
-            button.setText("保存GPU频率表修改");
+            button.setText(R.string.save_freq_table);
             toolbar.addView(button);
             button.setOnClickListener(v -> {
                 try {
                     writeOut(genBack(genTable()));
-                    Toast.makeText(activity,"保存成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,R.string.save_success,Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
-                    DialogUtil.showError(activity,"保存修改失败");
+                    DialogUtil.showError(activity,R.string.save_failed);
                 }
             });
         }
@@ -630,7 +631,7 @@ public class GpuTableEditor {
         }
         public void run(){
             activity.runOnUiThread(() -> {
-                waiting= DialogUtil.getWaitDialog(activity,"正在获取GPU频率表，请稍后");
+                waiting= DialogUtil.getWaitDialog(activity,R.string.getting_freq_table);
                 waiting.show();
             });
 
@@ -639,7 +640,7 @@ public class GpuTableEditor {
                 decode();
                 patch_throttle_level();
             }catch (Exception e){
-                activity.runOnUiThread(() -> DialogUtil.showError(activity,"获取GPU频率表失败"));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,R.string.getting_freq_table_failed));
             }
 
             activity.runOnUiThread(() -> {
@@ -651,7 +652,7 @@ public class GpuTableEditor {
                 try {
                     generateBins(activity, page);
                 } catch (Exception e){
-                    DialogUtil.showError(activity,"获取GPU频率表失败");
+                    DialogUtil.showError(activity,R.string.getting_freq_table_failed);
                 }
                 showedView.addView(page);
             });

@@ -155,15 +155,15 @@ public class GpuVoltEditor {
 
         {
             Button button=new Button(activity);
-            button.setText("保存GPU电压表修改");
+            button.setText(R.string.save_volt_table);
             toolbar.addView(button);
             button.setOnClickListener(v -> {
                 try {
                     writeOut(genBack(genTable()));
-                    Toast.makeText(activity,"保存成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,R.string.save_success,Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
-                    DialogUtil.showError(activity,"保存修改失败");
+                    DialogUtil.showError(activity,R.string.save_failed);
                 }
             });
         }
@@ -181,17 +181,17 @@ public class GpuVoltEditor {
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
         items.add(new ParamAdapter.item(){{
-            title="返回上一级";
+            title=activity.getResources().getString(R.string.back);
             subtitle="";
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="频率";
+            title=activity.getResources().getString(R.string.freq);
             subtitle=opps.get(voltn).frequency+"";
         }});
 
         items.add(new ParamAdapter.item(){{
-            title="电压等级";
+            title=activity.getResources().getString(R.string.volt);
             subtitle=levelint2str(opps.get(voltn).volt);
         }});
 
@@ -204,20 +204,18 @@ public class GpuVoltEditor {
                 editText.setText(opps.get(voltn).frequency+"");
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 new AlertDialog.Builder(activity)
-                        .setTitle("编辑频率")
-                        .setMessage("这是指这个电压挡位对应的频率。\n" +
-                                "此处频率的单位是Hz，也就是说在MHz频率后面加上6个零，您可以在上一级菜单中以MHz查看频率。\n" +
-                                "如果您搞不清楚要加几个零，那么建议只修改数字的前几位。")
+                        .setTitle(R.string.edit)
+                        .setMessage(R.string.volt_freq_msg)
                         .setView(editText)
-                        .setPositiveButton("保存", (dialog, which) -> {
+                        .setPositiveButton(R.string.save, (dialog, which) -> {
                             try {
                                 opps.get(voltn).frequency = Long.parseLong(editText.getText().toString());
                                 generateAVolt(activity, page, voltn);
                             }catch (Exception e){
-                                DialogUtil.showError(activity,"保存失败");
+                                DialogUtil.showError(activity,R.string.save_failed);
                             }
                         })
-                        .setNegativeButton("取消",null)
+                        .setNegativeButton(R.string.cancel,null)
                         .create().show();
             }
             if(position==2){
@@ -227,22 +225,22 @@ public class GpuVoltEditor {
                     spinner.setSelection(levelint2int(opps.get(voltn).volt));
 
                     new AlertDialog.Builder(activity)
-                            .setTitle(KonaBessStr.editVolt.title)
+                            .setTitle(R.string.edit)
                             .setView(spinner)
-                            .setMessage(KonaBessStr.editVolt.msg)
-                            .setPositiveButton("保存", (dialog, which) -> {
+                            .setMessage(R.string.editvolt_msg)
+                            .setPositiveButton(R.string.save, (dialog, which) -> {
                                 opps.get(voltn).volt= ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()];
                                 try {
                                     generateAVolt(activity,page,voltn);
                                 } catch (Exception e) {
-                                    DialogUtil.showError(activity,"修改电压失败");
+                                    DialogUtil.showError(activity,R.string.save_failed);
                                 }
                             })
-                            .setNegativeButton("取消",null)
+                            .setNegativeButton(R.string.cancel,null)
                             .create().show();
 
                 }catch (Exception e){
-                    DialogUtil.showError(activity,"获取电压失败");
+                    DialogUtil.showError(activity,R.string.error_occur);
                 }
             }
         });
@@ -262,8 +260,8 @@ public class GpuVoltEditor {
         ArrayList<ParamAdapter.item> items=new ArrayList<>();
 
         items.add(new ParamAdapter.item(){{
-            title="新建";
-            subtitle="增加新的电压等级";
+            title=activity.getResources().getString(R.string.new_item);
+            subtitle=activity.getResources().getString(R.string.new_desc_volt);
         }});
 
         for(opp opp:opps){
@@ -274,8 +272,8 @@ public class GpuVoltEditor {
         }
 
         items.add(new ParamAdapter.item(){{
-            title="新建";
-            subtitle="增加新的电压等级";
+            title=activity.getResources().getString(R.string.new_item);
+            subtitle=activity.getResources().getString(R.string.new_desc_volt);
         }});
 
         listView.setAdapter(new ParamAdapter(items,activity));
@@ -302,7 +300,7 @@ public class GpuVoltEditor {
             try {
                 generateAVolt(activity,page,position);
             } catch (Exception e) {
-                DialogUtil.showError(activity,"获取电压错误");
+                DialogUtil.showError(activity,R.string.error_occur);
             }
         });
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -313,13 +311,13 @@ public class GpuVoltEditor {
             position--;
             int finalPosition = position;
             new AlertDialog.Builder(activity)
-                    .setTitle("删除电压")
-                    .setMessage("你确定要删除" + opps.get(position).frequency / 1000000 + "MHz对应的电压吗？")
-                    .setPositiveButton("确认删除", (dialog, which) -> {
+                    .setTitle(R.string.remove)
+                    .setMessage(String.format(activity.getResources().getString(R.string.remove_msg_volt),opps.get(position).frequency / 1000000))
+                    .setPositiveButton(R.string.yes, (dialog, which) -> {
                         opps.remove(finalPosition);
                         generateVolts(activity,page);
                     })
-                    .setNegativeButton("取消", null)
+                    .setNegativeButton(R.string.no, null)
                     .create().show();
             return true;
         });
@@ -339,7 +337,7 @@ public class GpuVoltEditor {
         }
         public void run(){
             activity.runOnUiThread(() -> {
-                waiting= DialogUtil.getWaitDialog(activity,"正在获取GPU电压表，请稍后");
+                waiting= DialogUtil.getWaitDialog(activity,R.string.getting_volt);
                 waiting.show();
             });
 
@@ -347,7 +345,7 @@ public class GpuVoltEditor {
                 init();
                 decode();
             }catch (Exception e){
-                activity.runOnUiThread(() -> DialogUtil.showError(activity,"获取GPU电压表失败"));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,R.string.getting_volt_failed));
             }
 
             activity.runOnUiThread(() -> {

@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
                 KonaBessCore.cleanEnv(this);
             KonaBessCore.setupEnv(this);
         }catch (Exception e){
-            DialogUtil.showError(this,"环境初始化失败");
+            DialogUtil.showError(this,R.string.environ_setup_failed);
             return;
         }
 
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
                 permission_worker=null;
             }
         } else {
-            Toast.makeText(this, "存储权限申请未成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.storage_permission_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -126,36 +126,36 @@ public class MainActivity extends Activity {
         //ToolBar
         {
             Button button=new Button(this);
-            button.setText("打包并刷入新镜像");
+            button.setText(R.string.repack_and_flash);
             toolbar.addView(button);
             button.setOnClickListener(v -> new repackLogic().start());
         }
         {
             Button button=new Button(this);
-            button.setText("备份旧镜像");
+            button.setText(R.string.backup_old_image);
             toolbar.addView(button);
             button.setOnClickListener(v -> new AlertDialog.Builder(this)
-                    .setTitle("备份旧镜像")
-                    .setMessage("将把旧镜像备份到/sdcard/"+KonaBessCore.boot_name+".img")
-                    .setPositiveButton("确认", (dialog, which) -> {
+                    .setTitle(R.string.backup_old_image)
+                    .setMessage(getResources().getString(R.string.will_backup_to)+" /sdcard/"+KonaBessCore.boot_name+".img")
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
                         runWithStoragePermission(this, new backupBoot(this));
                     })
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create().show());
         }
         {
             Button button=new Button(this);
-            button.setText("帮助");
+            button.setText(R.string.help);
             toolbar.addView(button);
             button.setOnClickListener(v -> new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("帮助")
-                    .setMessage(KonaBessStr.generic_help())
-                    .setPositiveButton("好的",null)
-                    .setNeutralButton("关于", (dialog, which) -> new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("关于")
-                            .setMessage("作者：xzr467706992 (LibXZR)\n发布于 www.akr-developers.com\n")
-                            .setPositiveButton("好的",null)
-                            .setNeutralButton("访问AKR社区", (dialog1, which1) -> MainActivity.this.startActivity(new Intent(){{
+                    .setTitle(R.string.help)
+                    .setMessage(KonaBessStr.generic_help(this))
+                    .setPositiveButton(R.string.ok,null)
+                    .setNeutralButton(R.string.about, (dialog, which) -> new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.about)
+                            .setMessage(getResources().getString(R.string.author)+" xzr467706992 (LibXZR)\n"+getResources().getString(R.string.release_at)+" www.akr-developers.com\n")
+                            .setPositiveButton(R.string.ok,null)
+                            .setNeutralButton(R.string.visit_akr, (dialog1, which1) -> MainActivity.this.startActivity(new Intent(){{
                                 setAction(Intent.ACTION_VIEW);
                                 setData(Uri.parse("https://www.akr-developers.com/d/441"));
                             }})).create().show())
@@ -165,19 +165,19 @@ public class MainActivity extends Activity {
         //Editor
         {
             Button button=new Button(this);
-            button.setText("编辑GPU频率表");
+            button.setText(R.string.edit_gpu_freq_table);
             editor.addView(button);
             button.setOnClickListener(v -> new GpuTableEditor.gpuTableLogic(this,showdView).start());
         }
         if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
             Button button=new Button(this);
-            button.setText("编辑GPU电压表");
+            button.setText(R.string.edit_gpu_volt_table);
             editor.addView(button);
             button.setOnClickListener(v -> new GpuVoltEditor.gpuVoltLogic(this,showdView).start());
         }
         {
             Button button=new Button(this);
-            button.setText("导入导出");
+            button.setText(R.string.import_export);
             editor.addView(button);
             button.setOnClickListener(v -> new TableIO.TableIOLogic(this,showdView).start());
         }
@@ -194,7 +194,7 @@ public class MainActivity extends Activity {
         public void run(){
             is_err=false;
             runOnUiThread(() -> {
-                waiting=DialogUtil.getWaitDialog(activity,"正在备份镜像，请稍后");
+                waiting=DialogUtil.getWaitDialog(activity,R.string.backuping_img);
                 waiting.show();
             });
             try{
@@ -205,9 +205,9 @@ public class MainActivity extends Activity {
             runOnUiThread(() -> {
                 waiting.dismiss();
                 if(is_err)
-                    DialogUtil.showError(activity,"备份失败");
+                    DialogUtil.showError(activity,R.string.failed_backup);
                 else
-                    Toast.makeText(activity,"备份成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,R.string.backup_success,Toast.LENGTH_SHORT).show();
             });
 
         }
@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
             is_err=false;
             {
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,"正在打包Boot镜像，请稍后");
+                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.repacking);
                     waiting.show();
                 });
 
@@ -234,7 +234,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, "打包Boot镜像失败",error);
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.repack_failed,error);
                 });
                 if (is_err)
                     return;
@@ -242,7 +242,7 @@ public class MainActivity extends Activity {
 
             if(!cross_device_debug){
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,"正在刷入Boot镜像，请给Root权限并稍作等待");
+                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.flashing_boot);
                     waiting.show();
                 });
 
@@ -254,19 +254,19 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showError(MainActivity.this, "刷入Boot镜像失败，请检查Root权限");
+                        DialogUtil.showError(MainActivity.this, R.string.flashing_failed);
                     else{
                         new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("重启以完成更改")
-                                .setMessage("您想要现在重启设备吗？")
-                                .setPositiveButton("是", (dialog, which) -> {
+                                .setTitle(R.string.reboot_complete_title)
+                                .setMessage(R.string.reboot_complete_msg)
+                                .setPositiveButton(R.string.yes, (dialog, which) -> {
                                     try {
                                         KonaBessCore.reboot();
                                     } catch (IOException e) {
-                                        DialogUtil.showError(MainActivity.this,"重启失败，请检查Root权限");
+                                        DialogUtil.showError(MainActivity.this,R.string.failed_reboot);
                                     }
                                 })
-                                .setNegativeButton("否",null)
+                                .setNegativeButton(R.string.no,null)
                                 .create().show();
                     }
                 });
@@ -281,7 +281,7 @@ public class MainActivity extends Activity {
             is_err=false;
             {
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,"正在获取Boot镜像，请给Root权限并稍作等待");
+                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.getting_image);
                     waiting.show();
                 });
                 try {
@@ -293,7 +293,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showError(MainActivity.this, "获取Boot镜像失败，请检查Root权限");
+                        DialogUtil.showError(MainActivity.this, R.string.failed_get_boot);
                 });
                 if (is_err)
                     return;
@@ -301,7 +301,7 @@ public class MainActivity extends Activity {
 
             {
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,"正在解包Boot镜像，请稍后");
+                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.unpacking);
                     waiting.show();
                 });
                 try {
@@ -313,7 +313,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, "解包Boot镜像失败",error);
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.unpack_failed,error);
                 });
                 if (is_err)
                     return;
@@ -323,12 +323,12 @@ public class MainActivity extends Activity {
             runOnUiThread(() -> {
                 try {
                     if (!KonaBessCore.checkDevice(MainActivity.this)) {
-                        DialogUtil.showError(MainActivity.this, "不兼容的设备，爬");
+                        DialogUtil.showError(MainActivity.this, R.string.incompatible_device);
                         return;
                     }
                 }
                 catch (Exception e){
-                    DialogUtil.showError(MainActivity.this, "检查平台信息时出现了错误");
+                    DialogUtil.showError(MainActivity.this, R.string.failed_checking_platform);
                     return;
                 }
                 showMainView();
