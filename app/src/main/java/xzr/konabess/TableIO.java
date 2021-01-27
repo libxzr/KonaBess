@@ -20,13 +20,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 
 import xzr.konabess.adapters.ParamAdapter;
 import xzr.konabess.utils.DialogUtil;
-
-import static xzr.konabess.KonaBessCore.getCurrent;
+import xzr.konabess.utils.GzipUtils;
 
 public class TableIO {
     private static class json_keys{
@@ -110,7 +108,7 @@ public class TableIO {
         return data.toString();
     }
 
-    private static String getConfig(String desc) {
+    private static String getConfig(String desc) throws IOException {
         JSONObject jsonObject = new JSONObject();
         try {
             /*jsonObject.put(json_keys.MODEL, getCurrent("model"));
@@ -128,7 +126,7 @@ public class TableIO {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return Base64.getEncoder().encodeToString(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
+        return GzipUtils.compress(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static void import_edittext(Activity activity){
@@ -162,7 +160,11 @@ public class TableIO {
 
     private static void export_cpy(Activity activity,String desc){
         // TODO: clipboard
-        DialogUtil.showDetailedInfo(activity,R.string.export_done,R.string.export_done_msg, "konabess://"+getConfig(desc));
+        try {
+            DialogUtil.showDetailedInfo(activity, R.string.export_done, R.string.export_done_msg, "konabess://" + getConfig(desc));
+        }catch (Exception e){
+            DialogUtil.showError(activity,R.string.error_occur);
+        }
     }
 
     private static class exportToFile extends Thread{
@@ -206,7 +208,7 @@ public class TableIO {
             if(!error) {
                 try {
                     data = data.replace("konabess://", "");
-                    String decoded_data = new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
+                    String decoded_data = GzipUtils.uncompress(data);
                     jsonObject = new JSONObject(decoded_data);
                     activity.runOnUiThread(() -> {
                         waiting_import.dismiss();
