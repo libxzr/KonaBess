@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import xzr.konabess.adapters.ParamAdapter;
@@ -39,49 +40,19 @@ public class TableIO {
         public static final String BOARD="board";
         public static final String CHIP="chip";
         public static final String DESCRIPTION="desc";
-        public static final String DATA="data";
+        public static final String FREQ="freq";
+        public static final String VOLT="volt";
     }
 
     private static AlertDialog waiting_import;
 
     private static boolean decodeAndWriteData(JSONObject jsonObject) throws Exception{
-        String decoded_data = jsonObject.getString(json_keys.DATA);
-
-        String[] lines=decoded_data.split("\n");
         if(!ChipInfo.which.toString().equals(jsonObject.getString(json_keys.CHIP)))
             return true;
-        boolean freq_started=false;
-        boolean volt_started=false;
-        ArrayList<String> freq=new ArrayList<>();
-        ArrayList<String> volt=new ArrayList<>();
-        for(String line:lines){
-            if(line.equals("#Freq start")){
-                freq_started=true;
-                continue;
-            }
-            if(line.equals("#Freq end")){
-                freq_started=false;
-                continue;
-            }
-            if(line.equals("#Volt start")){
-                volt_started=true;
-                continue;
-            }
-            if(line.equals("#Volt end")){
-                volt_started=false;
-                continue;
-            }
-            if(freq_started) {
-                freq.add(line);
-                continue;
-            }
-            if(volt_started){
-                volt.add(line);
-            }
-        }
-
+        ArrayList<String> freq=new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.FREQ).split("\n")));
         GpuTableEditor.writeOut(GpuTableEditor.genBack(freq));
         if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
+            ArrayList<String> volt=new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.VOLT).split("\n")));
             //Init again because the dts file has been updated
             GpuVoltEditor.init();
             GpuVoltEditor.decode();
@@ -91,20 +62,17 @@ public class TableIO {
         return false;
     }
 
-    private static String getAndEncodeData(){
+    private static String getFreqData(){
         StringBuilder data= new StringBuilder();
-        data.append("#Freq start\n");
-        for(String line:GpuTableEditor.genTable()){
+        for(String line:GpuTableEditor.genTable())
             data.append(line).append("\n");
-        }
-        data.append("#Freq end\n");
-        if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
-            data.append("#Volt start\n");
-            for(String line:GpuVoltEditor.genTable()){
-                data.append(line).append("\n");
-            }
-            data.append("#Volt end\n");
-        }
+        return data.toString();
+    }
+
+    private static String getVoltData(){
+        StringBuilder data= new StringBuilder();
+        for(String line:GpuVoltEditor.genTable())
+            data.append(line).append("\n");
         return data.toString();
     }
 
@@ -122,7 +90,9 @@ public class TableIO {
             jsonObject.put(json_keys.BOARD, getCurrent("board"));*/
             jsonObject.put(json_keys.CHIP, ChipInfo.which);
             jsonObject.put(json_keys.DESCRIPTION, desc);
-            jsonObject.put(json_keys.DATA, getAndEncodeData());
+            jsonObject.put(json_keys.FREQ,getFreqData());
+            if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin)
+                jsonObject.put(json_keys.VOLT,getVoltData());
         } catch (JSONException e) {
             e.printStackTrace();
         }
