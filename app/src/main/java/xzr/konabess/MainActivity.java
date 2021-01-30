@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import xzr.konabess.adapters.ParamAdapter;
 import xzr.konabess.utils.DialogUtil;
 
 public class MainActivity extends Activity {
@@ -281,15 +284,15 @@ public class MainActivity extends Activity {
     class unpackLogic extends Thread{
         String error="";
         boolean is_err;
-        public void run(){
-            is_err=false;
+        public void run() {
+            is_err = false;
             {
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.getting_image);
+                    waiting = DialogUtil.getWaitDialog(MainActivity.this, R.string.getting_image);
                     waiting.show();
                 });
                 try {
-                    if(!cross_device_debug)
+                    if (!cross_device_debug)
                         KonaBessCore.getBootImage(MainActivity.this);
                 } catch (Exception e) {
                     is_err = true;
@@ -305,37 +308,77 @@ public class MainActivity extends Activity {
 
             {
                 runOnUiThread(() -> {
-                    waiting=DialogUtil.getWaitDialog(MainActivity.this,R.string.unpacking);
+                    waiting = DialogUtil.getWaitDialog(MainActivity.this, R.string.unpacking);
                     waiting.show();
                 });
                 try {
                     KonaBessCore.bootImage2dts(MainActivity.this);
                 } catch (Exception e) {
                     is_err = true;
-                    error=e.getMessage();
+                    error = e.getMessage();
                 }
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, R.string.unpack_failed,error);
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.unpack_failed, error);
                 });
                 if (is_err)
                     return;
             }
 
+            {
+                runOnUiThread(() -> {
+                    waiting = DialogUtil.getWaitDialog(MainActivity.this, R.string.checking_device);
+                    waiting.show();
+                });
+                try {
+                    KonaBessCore.checkDevice(MainActivity.this);
+                } catch (Exception e) {
+                    is_err = true;
+                    error = e.getMessage();
+                }
+                runOnUiThread(() -> {
+                    waiting.dismiss();
+                    if (is_err)
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.failed_checking_platform, error);
+                });
+                if (is_err)
+                    return;
+            }
 
             runOnUiThread(() -> {
-                try {
-                    if (!KonaBessCore.checkDevice(MainActivity.this)) {
-                        DialogUtil.showError(MainActivity.this, R.string.incompatible_device);
-                        return;
-                    }
-                }
-                catch (Exception e){
-                    DialogUtil.showError(MainActivity.this, R.string.failed_checking_platform);
+                if(KonaBessCore.dtbs.size()==0){
+                    DialogUtil.showError(MainActivity.this,R.string.incompatible_device);
                     return;
                 }
-                showMainView();
+                if(KonaBessCore.dtbs.size()==1){
+                    KonaBessCore.chooseTarget(KonaBessCore.dtbs.get(0),MainActivity.this);
+                    showMainView();
+                    return;
+                }
+                ListView listView=new ListView(MainActivity.this);
+                ArrayList<ParamAdapter.item> items=new ArrayList<>();
+                for(KonaBessCore.dtb dtb:KonaBessCore.dtbs){
+                    items.add(new ParamAdapter.item(){{
+                        title=dtb.id+" "+ChipInfo.name2chipdesc(dtb.type,MainActivity.this);
+                        subtitle="";
+                    }});
+                }
+                listView.setAdapter(new ParamAdapter(items,MainActivity.this));
+
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.select_dtb_title)
+                        .setMessage(R.string.select_dtb_msg)
+                        .setView(listView)
+                        .setCancelable(false)
+                        .create();
+                dialog.show();
+
+                listView.setOnItemClickListener((parent, view, position, id) -> {
+                    KonaBessCore.chooseTarget(KonaBessCore.dtbs.get(position),MainActivity.this);
+                    dialog.dismiss();
+                    showMainView();
+                });
             });
         }
     }

@@ -1,5 +1,6 @@
 package xzr.konabess;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.os.SystemProperties;
@@ -164,28 +165,41 @@ public class KonaBessCore {
         process.destroy();
     }
 
-    public static boolean checkDevice(Context context) throws IOException{
+    static class dtb{
+        int id;
+        ChipInfo.type type;
+    }
+
+    public static ArrayList<dtb> dtbs;
+
+    public static void checkDevice(Context context) throws IOException{
+        dtbs=new ArrayList<>();
         for(int i=0;i<dtb_num;i++) {
-            boolean okay=false;
             if (checkChip(context,i,"kona v2.1")) {
-                ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
+                dtbs.add(dtb);
                 boot_name="boot";
-                okay=true;
             } else if (checkChip(context,i,"SM8150 v2")) {
-                ChipInfo.which = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
+                dtbs.add(dtb);
                 boot_name="boot";
-                okay=true;
             } else if(checkChip(context,i,"Lahaina V2.1")){
-                ChipInfo.which = ChipInfo.type.lahaina_singleBin;
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = ChipInfo.type.lahaina_singleBin;
+                dtbs.add(dtb);
                 boot_name="vendor_boot";
-                okay=true;
-            }
-            if(okay) {
-                dts_path=context.getFilesDir().getAbsolutePath()+"/"+i+".dts";
-                return true;
             }
         }
-        return false;
+    }
+
+    public static void chooseTarget(dtb dtb, Activity activity){
+        dts_path=activity.getFilesDir().getAbsolutePath()+"/"+dtb.id+".dts";
+        ChipInfo.which=dtb.type;
     }
 
     private static boolean checkSingleBin(Context context,int index) throws IOException{

@@ -104,4 +104,7 @@
     <string name="wait_importing">Importing data. Please wait.</string>
     <string name="prepare_import_export">Preparing for import and export</string>
     <string name="failed_getting_freq_voltage">Failed when getting frequencies and voltages data</string>
+    <string name="checking_device">Checking device info. Please wait.</string>
+    <string name="select_dtb_title">Select the target chipset</string>
+    <string name="select_dtb_msg">There are multiple chipset data in your device. You need to select one to edit.</string>
 </resources>

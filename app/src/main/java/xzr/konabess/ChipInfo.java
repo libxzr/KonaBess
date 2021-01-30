@@ -15,6 +15,10 @@ public class ChipInfo {
 
     public static String name2chipdesc(String name, Activity activity){
         type t=type.valueOf(name);
+        return name2chipdesc(t,activity);
+    }
+
+    public static String name2chipdesc(type t, Activity activity){
         switch (t){
             case kona:
                 return activity.getResources().getString(R.string.sdm865_series);

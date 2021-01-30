@@ -104,4 +104,7 @@
     <string name="wait_importing">正在导入数据，请稍后</string>
     <string name="prepare_import_export">正在准备进行备份还原</string>
     <string name="failed_getting_freq_voltage">加载频率电压数据失败</string>
+    <string name="checking_device">正在检查设备信息，请稍后</string>
+    <string name="select_dtb_title">选择目标芯片组</string>
+    <string name="select_dtb_msg">您的设备中存在多个芯片组的数据，您需要选择一个进行编辑</string>
 </resources>
