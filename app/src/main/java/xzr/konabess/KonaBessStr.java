@@ -15,6 +15,8 @@ public class KonaBessStr {
             return convert_bins_msmnile_singleBin(which, activity);
         else if (ChipInfo.which == ChipInfo.type.lahaina_singleBin)
             return convert_bins_lahaina_singleBin(which, activity);
+        else if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
+            return convert_bins_lito(which,activity);
 
         throw new Exception();
     }
@@ -61,6 +63,17 @@ public class KonaBessStr {
         switch (which) {
             case 0:
                 return activity.getResources().getString(R.string.sdm888_singlebin);
+        }
+        return activity.getResources().getString(R.string.unknown_table) + which;
+    }
+
+    public static String convert_bins_lito(int which, Activity activity) {
+        switch (which){
+            case 1:
+                return activity.getResources().getString(R.string.sd765g);
+            case 3:
+                return activity.getResources().getString(R.string.sd765);
+
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }

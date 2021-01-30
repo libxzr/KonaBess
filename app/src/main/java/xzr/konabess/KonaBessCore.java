@@ -193,6 +193,18 @@ public class KonaBessCore {
                 dtb.type = ChipInfo.type.lahaina_singleBin;
                 dtbs.add(dtb);
                 boot_name="vendor_boot";
+            }else if(checkChip(context,i,"Lito SoC")){
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = ChipInfo.type.lito_v1;
+                dtbs.add(dtb);
+                boot_name="boot";
+            }else if(checkChip(context,i,"Lito v2")){
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = ChipInfo.type.lito_v2;
+                dtbs.add(dtb);
+                boot_name="boot";
             }
         }
     }

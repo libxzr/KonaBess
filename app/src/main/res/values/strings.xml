@@ -107,4 +107,8 @@
     <string name="checking_device">Checking device info. Please wait.</string>
     <string name="select_dtb_title">Select the target chipset</string>
     <string name="select_dtb_msg">There are multiple chipset data in your device. You need to select one to edit.</string>
+    <string name="lito_v1_series">Snapdragon 765 v1 series</string>
+    <string name="lito_v2_series">Snapdragon 765 v2 series</string>
+    <string name="sd765g">Snapdragon 765G</string>
+    <string name="sd765">Snapdragon 765</string>
 </resources>

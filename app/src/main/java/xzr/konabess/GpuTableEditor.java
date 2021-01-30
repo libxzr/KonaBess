@@ -31,6 +31,7 @@ public class GpuTableEditor {
     private static int bin_position;
     private static ArrayList<bin> bins;
     private static class bin{
+        int id;
         ArrayList<String> header;
         ArrayList<level> levels;
     }
@@ -70,7 +71,9 @@ public class GpuTableEditor {
                 bracket++;
                 continue;
             }
-            if ((ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.msmnile)
+            if ((ChipInfo.which== ChipInfo.type.kona
+                    ||ChipInfo.which== ChipInfo.type.msmnile
+                    ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
                     &&this_line.contains("qcom,gpu-pwrlevels-")) {
                 start = i;
                 if(bin_position<0)
@@ -87,7 +90,9 @@ public class GpuTableEditor {
                 bracket--;
 
             if (bracket == 0 && start>=0
-                    && (ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.msmnile)) {
+                    && (ChipInfo.which== ChipInfo.type.kona
+                    ||ChipInfo.which== ChipInfo.type.msmnile
+                    ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -111,14 +116,28 @@ public class GpuTableEditor {
         }
     }
 
+    private static int getBinID(String line, int prev_id){
+        line=line.trim();
+        line=line.replace(" {","")
+                .replace("-","");
+        try{
+            for(int i=line.length()-1;i>=0;i--){
+                prev_id=Integer.parseInt(line.substring(i));
+            }
+        }catch (Exception ignored){}
+        return prev_id;
+    }
+
     private static void decode_bin(List<String> lines) throws Exception{
         bin bin=new bin();
         bin.header=new ArrayList<>();
         bin.levels=new ArrayList<>();
+        bin.id=bins.size();
         int i=0;
         int bracket=0;
         int start=0;
         int end;
+        bin.id=getBinID(lines.get(0),bin.id);
         while(++i<lines.size()&&bracket>=0){
             String line=lines.get(i);
 
@@ -168,9 +187,11 @@ public class GpuTableEditor {
 
     public static List<String> genTable(){
         ArrayList<String> lines=new ArrayList<>();
-        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.msmnile) {
+        if(ChipInfo.which== ChipInfo.type.kona
+                ||ChipInfo.which== ChipInfo.type.msmnile
+                ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
-                lines.add("qcom,gpu-pwrlevels-" + bin_id + " {");
+                lines.add("qcom,gpu-pwrlevels-" + bins.get(bin_id).id + " {");
                 lines.addAll(bins.get(bin_id).header);
                 for (int pwr_level_id = 0; pwr_level_id < bins.get(bin_id).levels.size(); pwr_level_id++) {
                     lines.add("qcom,gpu-pwrlevel@" + pwr_level_id + " {");
@@ -379,6 +400,19 @@ public class GpuTableEditor {
         }
     }
 
+    private static void offset_ca_target_level(int bin_id,int offset) throws Exception{
+        for(int i=0;i<bins.get(bin_id).header.size();i++){
+            String line=bins.get(bin_id).header.get(i);
+            if(line.contains("qcom,ca-target-pwrlevel")){
+                bins.get(bin_id).header.set(i,
+                        DtsHelper.encodeIntOrHexLine(
+                                DtsHelper.decode_int_line(line).name,
+                                DtsHelper.decode_int_line(line).value+offset+""));
+                break;
+            }
+        }
+    }
+
     private static void patch_throttle_level_old() throws Exception{
         boolean started=false;
         int bracket=0;
@@ -445,7 +479,9 @@ public class GpuTableEditor {
     public static int min_level_chip_offset() throws Exception{
         if(ChipInfo.which== ChipInfo.type.lahaina_singleBin)
             return 1;
-        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin)
+        if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin
+                ||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin
+                ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
             return 2;
         throw new Exception();
     }
@@ -497,6 +533,8 @@ public class GpuTableEditor {
                         level_clone(bins.get(id).levels.get(bins.get(id).levels.size()-min_level_chip_offset())));
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
+                    if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
+                        offset_ca_target_level(id,1);
                 } catch (Exception e) {
                     DialogUtil.showError(activity,R.string.error_occur);
                 }
@@ -515,6 +553,8 @@ public class GpuTableEditor {
                 try {
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
+                    if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
+                        offset_ca_target_level(id,1);
                 } catch (Exception e) {
                     DialogUtil.showError(activity,R.string.error_occur);
                 }
@@ -541,6 +581,8 @@ public class GpuTableEditor {
                             try {
                                 generateLevels(activity,id,page);
                                 offset_initial_level(id,-1);
+                                if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
+                                    offset_ca_target_level(id,-1);
                             } catch (Exception e) {
                                 DialogUtil.showError(activity,R.string.error_occur);
                             }
@@ -579,7 +621,7 @@ public class GpuTableEditor {
 
         for(int i=0;i<bins.size();i++){
             ParamAdapter.item item=new ParamAdapter.item();
-            item.title=KonaBessStr.convert_bins(i,activity);
+            item.title=KonaBessStr.convert_bins(bins.get(i).id,activity);
             item.subtitle="";
             items.add(item);
         }

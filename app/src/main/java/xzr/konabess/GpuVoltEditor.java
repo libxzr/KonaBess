@@ -93,6 +93,12 @@ public class GpuVoltEditor {
                     bracket++;
                     continue;
                 }
+            }else if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2){
+                if (line.contains("gpu-opp-table {")) {
+                    isInGpuTable = true;
+                    bracket++;
+                    continue;
+                }
             }
 
             if(!isInGpuTable)

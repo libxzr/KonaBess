@@ -107,4 +107,8 @@
     <string name="checking_device">正在检查设备信息，请稍后</string>
     <string name="select_dtb_title">选择目标芯片组</string>
     <string name="select_dtb_msg">您的设备中存在多个芯片组的数据，您需要选择一个进行编辑</string>
+    <string name="lito_v1_series">骁龙765 v1系列</string>
+    <string name="lito_v2_series">骁龙765 v2系列</string>
+    <string name="sd765g">骁龙765G</string>
+    <string name="sd765">骁龙765</string>
 </resources>
