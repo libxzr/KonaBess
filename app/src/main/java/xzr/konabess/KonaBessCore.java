@@ -68,25 +68,25 @@ public class KonaBessCore {
     static String getCurrent(String name) {
         switch (name.toLowerCase()) {
             case "brand":
-                return SystemProperties.get("ro.product.brand", null);
+                return SystemProperties.get("ro.product.brand", "");
             case "name":
-                return SystemProperties.get("ro.product.name", null);
+                return SystemProperties.get("ro.product.name", "");
             case "model":
-                return SystemProperties.get("ro.product.model", null);
+                return SystemProperties.get("ro.product.model", "");
             case "board":
-                return SystemProperties.get("ro.product.board", null);
+                return SystemProperties.get("ro.product.board", "");
             case "id":
-                return SystemProperties.get("ro.product.build.id", null);
+                return SystemProperties.get("ro.product.build.id", "");
             case "version":
-                return SystemProperties.get("ro.product.build.version.release", null);
+                return SystemProperties.get("ro.product.build.version.release", "");
             case "fingerprint":
-                return SystemProperties.get("ro.product.build.fingerprint", null);
+                return SystemProperties.get("ro.product.build.fingerprint", "");
             case "manufacturer":
-                return SystemProperties.get("ro.product.manufacturer", null);
+                return SystemProperties.get("ro.product.manufacturer", "");
             case "device":
-                return SystemProperties.get("ro.product.device", null);
+                return SystemProperties.get("ro.product.device", "");
             case "slot":
-                return SystemProperties.get("ro.boot.slot_suffix", null);
+                return SystemProperties.get("ro.boot.slot_suffix", "");
             default:
                 return null;
         }
