@@ -47,7 +47,7 @@ public class TableIO {
     private static AlertDialog waiting_import;
 
     private static boolean decodeAndWriteData(JSONObject jsonObject) throws Exception{
-        if(!ChipInfo.which.toString().equals(jsonObject.getString(json_keys.CHIP)))
+        if(!ChipInfo.checkChipGeneral(ChipInfo.type.valueOf(jsonObject.getString(json_keys.CHIP))))
             return true;
         ArrayList<String> freq=new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.FREQ).split("\n")));
         GpuTableEditor.writeOut(GpuTableEditor.genBack(freq));

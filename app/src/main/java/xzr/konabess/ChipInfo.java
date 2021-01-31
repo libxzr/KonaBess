@@ -14,6 +14,15 @@ public class ChipInfo {
         unknown
     }
 
+    public static boolean checkChipGeneral(type input){
+        type now=which;
+        if(now==type.lito_v2)
+            now=type.lito_v1;
+        if(input==type.lito_v2)
+            input=type.lito_v1;
+        return input==now;
+    }
+
     public static String name2chipdesc(String name, Activity activity){
         type t=type.valueOf(name);
         return name2chipdesc(t,activity);
