@@ -177,7 +177,8 @@ public class KonaBessCore {
     public static void checkDevice(Context context) throws IOException{
         dtbs=new ArrayList<>();
         for(int i=0;i<dtb_num;i++) {
-            if (checkChip(context,i,"kona v2.1")) {
+            if (checkChip(context,i,"kona v2.1")
+                    ||KonaBessCore.getCurrent("device").equals("OP4A79")&&checkChip(context,i,"kona v2")) {
                 dtb dtb=new dtb();
                 dtb.id=i;
                 dtb.type = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
