@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import xzr.konabess.utils.AssetsUtil;
 
@@ -438,5 +440,33 @@ public class KonaBessCore {
         }
         linkDtbs(context);
         dtb2bootImage(context);
+    }
+
+    public static int getDtbIndex() throws IOException {
+        int ret=-1;
+        for(String line:getCmdline()){
+            if(line.startsWith("androidboot.dtb_idx")){
+                try{
+                    for(int i=line.length()-1;i>=0;i--){
+                        ret=Integer.parseInt(line.substring(i));
+                    }
+                }catch (Exception ignored){}
+            }
+        }
+        return ret;
+    }
+
+    private static List<String> getCmdline() throws IOException {
+        Process process=new ProcessBuilder("su").start();
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter((process.getOutputStream()));
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
+        outputStreamWriter.write("cat /proc/cmdline\n");
+        outputStreamWriter.write("exit\n");
+        outputStreamWriter.flush();
+        String s=bufferedReader.readLine();
+        outputStreamWriter.close();
+        bufferedReader.close();
+        process.destroy();
+        return s!=null?Arrays.asList(s.split(" ")):new ArrayList<>();
     }
 }

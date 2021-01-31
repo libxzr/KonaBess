@@ -284,6 +284,7 @@ public class MainActivity extends Activity {
     class unpackLogic extends Thread{
         String error="";
         boolean is_err;
+        int dtb_index;
         public void run() {
             is_err = false;
             {
@@ -333,6 +334,7 @@ public class MainActivity extends Activity {
                 });
                 try {
                     KonaBessCore.checkDevice(MainActivity.this);
+                    dtb_index=KonaBessCore.getDtbIndex();
                 } catch (Exception e) {
                     is_err = true;
                     error = e.getMessage();
@@ -361,7 +363,7 @@ public class MainActivity extends Activity {
                 for(KonaBessCore.dtb dtb:KonaBessCore.dtbs){
                     items.add(new ParamAdapter.item(){{
                         title=dtb.id+" "+ChipInfo.name2chipdesc(dtb.type,MainActivity.this);
-                        subtitle="";
+                        subtitle=dtb.id==dtb_index?MainActivity.this.getString(R.string.possible_dtb):"";
                     }});
                 }
                 listView.setAdapter(new ParamAdapter(items,MainActivity.this));
