@@ -4,7 +4,7 @@
 
 ### What is this?
 
-- A simple app that can custom GPU frequency and voltage tables without recompiling the kernel, compatible for Snapdragon 865 series, 855 series and 888.
+- A simple app that can custom GPU frequency and voltage tables without recompiling the kernel, compatible for Snapdragon 865 series, 855 series, 888 and 765 series.
 
 ### How it works?
 
