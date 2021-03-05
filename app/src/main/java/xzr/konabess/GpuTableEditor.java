@@ -571,6 +571,8 @@ public class GpuTableEditor {
         listView.setOnItemLongClickListener((parent, view, position, idd) -> {
             if(position==items.size()-1)
                 return true;
+            if(bins.get(id).levels.size()==1)
+                return true;
             try {
                 new AlertDialog.Builder(activity)
                         .setTitle(R.string.remove)
