@@ -318,6 +318,10 @@ public class KonaBessCore {
         }
     }
 
+    private static int toUnsignedByte(byte in){
+        return (int)in & 0xFF;
+    }
+
     public static int dtb_split(Context context) throws IOException{
         File dtb = null;
         if(dtb_type==dtb_types.dtb)
@@ -340,10 +344,16 @@ public class KonaBessCore {
 
         int i=0;
         ArrayList<Integer> cut=new ArrayList<>();
-        while(i+4<dtb.length()){
+        while(i+8<dtb.length()){
             if(dtb_bytes[i]==(byte)0xD0&&dtb_bytes[i+1]==(byte)0x0D
                     &&dtb_bytes[i+2]==(byte)0xFE&&dtb_bytes[i+3]==(byte)0xED){
                 cut.add(i);
+                int size= (int) (toUnsignedByte(dtb_bytes[i+4])*Math.pow(256,3)
+                        +toUnsignedByte(dtb_bytes[i+5])*Math.pow(256,2)
+                        +toUnsignedByte(dtb_bytes[i+6])*Math.pow(256,1)
+                        +toUnsignedByte(dtb_bytes[i+7]));
+                i+=size>0?size:1;
+                continue;
             }
             i++;
         }
