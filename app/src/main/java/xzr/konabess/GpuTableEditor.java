@@ -472,8 +472,9 @@ public class GpuTableEditor {
         }
     }
 
-    public static boolean canAddNewLevel(int binID, Context context){
-        if(bins.get(binID).levels.size()<10)
+    public static boolean canAddNewLevel(int binID, Context context) throws Exception{
+        int max_levels=11-min_level_chip_offset();
+        if(bins.get(binID).levels.size()<=max_levels)
             return true;
         Toast.makeText(context,R.string.unable_add_more,Toast.LENGTH_SHORT).show();
         return false;
@@ -529,15 +530,15 @@ public class GpuTableEditor {
 
         listView.setOnItemClickListener((parent, view, position, id1) -> {
             if(position==items.size()-1){
-                if(!canAddNewLevel(id,activity))
-                    return;
                 try {
-                bins.get(id).levels.add(bins.get(id).levels.size()-min_level_chip_offset(),
-                        level_clone(bins.get(id).levels.get(bins.get(id).levels.size()-min_level_chip_offset())));
-                    generateLevels(activity,id,page);
-                    offset_initial_level(id,1);
-                    if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
-                        offset_ca_target_level(id,1);
+                    if(!canAddNewLevel(id,activity))
+                        return;
+                    bins.get(id).levels.add(bins.get(id).levels.size()-min_level_chip_offset(),
+                            level_clone(bins.get(id).levels.get(bins.get(id).levels.size()-min_level_chip_offset())));
+                        generateLevels(activity,id,page);
+                        offset_initial_level(id,1);
+                        if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
+                            offset_ca_target_level(id,1);
                 } catch (Exception e) {
                     DialogUtil.showError(activity,R.string.error_occur);
                 }
@@ -550,10 +551,10 @@ public class GpuTableEditor {
                 return;
             }
             if(position==1){
-                if(!canAddNewLevel(id,activity))
-                    return;
-                bins.get(id).levels.add(0,level_clone(bins.get(id).levels.get(0)));
                 try {
+                    if(!canAddNewLevel(id,activity))
+                        return;
+                    bins.get(id).levels.add(0,level_clone(bins.get(id).levels.get(0)));
                     generateLevels(activity,id,page);
                     offset_initial_level(id,1);
                     if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
