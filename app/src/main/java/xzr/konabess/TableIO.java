@@ -51,7 +51,7 @@ public class TableIO {
             return true;
         ArrayList<String> freq=new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.FREQ).split("\n")));
         GpuTableEditor.writeOut(GpuTableEditor.genBack(freq));
-        if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
+        if(ChipInfo.which!= ChipInfo.type.lahaina && ChipInfo.which!= ChipInfo.type.lahaina_singleBin){
             ArrayList<String> volt=new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.VOLT).split("\n")));
             //Init again because the dts file has been updated
             GpuVoltEditor.init();
@@ -91,7 +91,7 @@ public class TableIO {
             jsonObject.put(json_keys.CHIP, ChipInfo.which);
             jsonObject.put(json_keys.DESCRIPTION, desc);
             jsonObject.put(json_keys.FREQ,getFreqData());
-            if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin)
+            if(ChipInfo.which!= ChipInfo.type.lahaina && ChipInfo.which!= ChipInfo.type.lahaina_singleBin)
                 jsonObject.put(json_keys.VOLT,getVoltData());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -325,7 +325,7 @@ public class TableIO {
             try{
                 GpuTableEditor.init();
                 GpuTableEditor.decode();
-                if(ChipInfo.which!= ChipInfo.type.lahaina_singleBin) {
+                if(ChipInfo.which!= ChipInfo.type.lahaina && ChipInfo.which!= ChipInfo.type.lahaina_singleBin) {
                     GpuVoltEditor.init();
                     GpuVoltEditor.decode();
                 }

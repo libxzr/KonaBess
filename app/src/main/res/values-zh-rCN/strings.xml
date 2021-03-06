@@ -112,4 +112,6 @@
     <string name="sd765g">骁龙765G</string>
     <string name="sd765">骁龙765</string>
     <string name="possible_dtb">这可能是您的设备正在使用的芯片组数据</string>
+    <string name="sdm888">骁龙888</string>
+    <string name="sdm888p">骁龙888+</string>
 </resources>

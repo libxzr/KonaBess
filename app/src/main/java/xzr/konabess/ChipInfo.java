@@ -9,6 +9,7 @@ public class ChipInfo {
         kona_singleBin,
         msmnile,
         msmnile_singleBin,
+        lahaina,
         lahaina_singleBin,
         lito_v1,lito_v2,
         unknown
@@ -38,6 +39,7 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sdm855_series);
             case msmnile_singleBin:
                 return activity.getResources().getString(R.string.sdm855_singlebin);
+            case lahaina:
             case lahaina_singleBin:
                 return activity.getResources().getString(R.string.sdm888_singlebin);
             case lito_v1:
@@ -56,8 +58,8 @@ public class ChipInfo {
                 return rpmh_levels_kona.levels;
             else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.levels;
-            else if(ChipInfo.which==type.lahaina_singleBin)
-                return rpmh_levels_lahaina_singleBin.levels;
+            else if(ChipInfo.which==type.lahaina||ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina.levels;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.levels;
 
@@ -68,8 +70,8 @@ public class ChipInfo {
                 return rpmh_levels_kona.level_str;
             else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.level_str;
-            else if(ChipInfo.which==type.lahaina_singleBin)
-                return rpmh_levels_lahaina_singleBin.level_str;
+            else if(ChipInfo.which==type.lahaina||ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina.level_str;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.level_str;
 
@@ -133,7 +135,7 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lahaina_singleBin{
+    private static class rpmh_levels_lahaina{
         public static final int[] levels={48,64,80,96,128,144,192,224,256,320,336,384,416};
         public static final String[] level_str={
                 "MIN_SVS",

@@ -13,8 +13,8 @@ public class KonaBessStr {
             return convert_bins_msmnile(which, activity);
         else if (ChipInfo.which == ChipInfo.type.msmnile_singleBin)
             return convert_bins_msmnile_singleBin(which, activity);
-        else if (ChipInfo.which == ChipInfo.type.lahaina_singleBin)
-            return convert_bins_lahaina_singleBin(which, activity);
+        else if (ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin)
+            return convert_bins_lahaina(which, activity);
         else if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
             return convert_bins_lito(which,activity);
 
@@ -59,10 +59,12 @@ public class KonaBessStr {
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
 
-    public static String convert_bins_lahaina_singleBin(int which, Activity activity) {
+    public static String convert_bins_lahaina(int which, Activity activity) {
         switch (which) {
             case 0:
-                return activity.getResources().getString(R.string.sdm888_singlebin);
+                return activity.getResources().getString(R.string.sdm888);
+            case 1:
+                return activity.getResources().getString(R.string.sdm888p);
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
@@ -90,7 +92,7 @@ public class KonaBessStr {
 
     public static String help(String what, Activity activity) {
         if (what.equals("qcom,gpu-freq"))
-            return ChipInfo.which == ChipInfo.type.lahaina_singleBin
+            return ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                     ? activity.getResources().getString(R.string.help_gpufreq_aio)
                     : activity.getResources().getString(R.string.help_gpufreq);
         if (what.contains("bus"))
@@ -101,7 +103,7 @@ public class KonaBessStr {
     }
 
     public static String generic_help(Activity activity) {
-        return ChipInfo.which == ChipInfo.type.lahaina_singleBin
+        return ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                 ? activity.getResources().getString(R.string.help_msg_aio)
                 : activity.getResources().getString(R.string.help_msg);
     }

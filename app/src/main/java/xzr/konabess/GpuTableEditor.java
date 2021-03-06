@@ -73,6 +73,7 @@ public class GpuTableEditor {
             }
             if ((ChipInfo.which== ChipInfo.type.kona
                     ||ChipInfo.which== ChipInfo.type.msmnile
+                    ||ChipInfo.which== ChipInfo.type.lahaina
                     ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
                     &&this_line.contains("qcom,gpu-pwrlevels-")) {
                 start = i;
@@ -92,6 +93,7 @@ public class GpuTableEditor {
             if (bracket == 0 && start>=0
                     && (ChipInfo.which== ChipInfo.type.kona
                     ||ChipInfo.which== ChipInfo.type.msmnile
+                    ||ChipInfo.which== ChipInfo.type.lahaina
                     ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)) {
                 end = i;
                 if (end >= start) {
@@ -189,6 +191,7 @@ public class GpuTableEditor {
         ArrayList<String> lines=new ArrayList<>();
         if(ChipInfo.which== ChipInfo.type.kona
                 ||ChipInfo.which== ChipInfo.type.msmnile
+                ||ChipInfo.which== ChipInfo.type.lahaina
                 ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
                 lines.add("qcom,gpu-pwrlevels-" + bins.get(bin_id).id + " {");
@@ -477,7 +480,7 @@ public class GpuTableEditor {
     }
 
     public static int min_level_chip_offset() throws Exception{
-        if(ChipInfo.which== ChipInfo.type.lahaina_singleBin)
+        if(ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which== ChipInfo.type.lahaina_singleBin)
             return 1;
         if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin
                 ||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin

@@ -112,4 +112,6 @@
     <string name="sd765g">Snapdragon 765G</string>
     <string name="sd765">Snapdragon 765</string>
     <string name="possible_dtb">This may be the chipset data your device are using.</string>
+    <string name="sdm888">Snapdragon 888</string>
+    <string name="sdm888p">Snapdragon 888+</string>
 </resources>
