@@ -78,7 +78,7 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_kona{
-        public static final int[] levels={48,64,80,96,128,144,192,224,256,320,336,384,416};
+        public static final int[] levels={48,64,80,96,128,144,192,224,256,320,336,352,384,416};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS",
@@ -91,6 +91,7 @@ public class ChipInfo {
                 "NOM",
                 "NOM_L1",
                 "NOM_L2",
+                "NOM_L3",
                 "TURBO",
                 "TURBO_L1"
         };
