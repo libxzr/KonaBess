@@ -95,9 +95,11 @@ public class KonaBessCore {
     public static void getBootImage(Context context) throws IOException{
         try{
             getVendorBootImage(context);
+            boot_name="vendor_boot";
         }
         catch (Exception e){
             getRealBootImage(context);
+            boot_name="boot";
         }
     }
 
@@ -183,31 +185,26 @@ public class KonaBessCore {
                 dtb.id=i;
                 dtb.type = checkSingleBin(context,i)? ChipInfo.type.kona_singleBin: ChipInfo.type.kona;
                 dtbs.add(dtb);
-                boot_name="boot";
             } else if (checkChip(context,i,"SM8150 v2")) {
                 dtb dtb=new dtb();
                 dtb.id=i;
                 dtb.type = checkSingleBin(context,i)? ChipInfo.type.msmnile_singleBin: ChipInfo.type.msmnile;
                 dtbs.add(dtb);
-                boot_name="boot";
             } else if(checkChip(context,i,"Lahaina V2.1")){
                 dtb dtb=new dtb();
                 dtb.id=i;
                 dtb.type = checkSingleBin(context,i)? ChipInfo.type.lahaina_singleBin: ChipInfo.type.lahaina;
                 dtbs.add(dtb);
-                boot_name="vendor_boot";
             }else if(checkChip(context,i,"Lito SoC")){
                 dtb dtb=new dtb();
                 dtb.id=i;
                 dtb.type = ChipInfo.type.lito_v1;
                 dtbs.add(dtb);
-                boot_name="boot";
             }else if(checkChip(context,i,"Lito v2")){
                 dtb dtb=new dtb();
                 dtb.id=i;
                 dtb.type = ChipInfo.type.lito_v2;
                 dtbs.add(dtb);
-                boot_name="boot";
             }
         }
     }
