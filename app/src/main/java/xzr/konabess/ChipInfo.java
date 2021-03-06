@@ -101,7 +101,10 @@ public class ChipInfo {
         public static final int[] levels={
                 48+RPMH_REGULATOR_LEVEL_OFFSET,
                 64+RPMH_REGULATOR_LEVEL_OFFSET,
+                80+RPMH_REGULATOR_LEVEL_OFFSET,
+                96+RPMH_REGULATOR_LEVEL_OFFSET,
                 128+RPMH_REGULATOR_LEVEL_OFFSET,
+                144+RPMH_REGULATOR_LEVEL_OFFSET,
                 192+RPMH_REGULATOR_LEVEL_OFFSET,
                 224+RPMH_REGULATOR_LEVEL_OFFSET,
                 256+RPMH_REGULATOR_LEVEL_OFFSET,
@@ -114,7 +117,10 @@ public class ChipInfo {
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
                 "SVS",
+                "SVS_L0",
                 "SVS_L1",
                 "SVS_L2",
                 "NOM",
