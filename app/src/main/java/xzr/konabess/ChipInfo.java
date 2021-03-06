@@ -136,9 +136,10 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lahaina{
-        public static final int[] levels={48,64,80,96,128,144,192,224,256,320,336,384,416};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,384,416,432,448,464};
         public static final String[] level_str={
                 "MIN_SVS",
+                "LOW_SVS_D1",
                 "LOW_SVS",
                 "LOW_SVS_L1",
                 "LOW_SVS_L2",
@@ -150,7 +151,10 @@ public class ChipInfo {
                 "NOM_L1",
                 "NOM_L2",
                 "TURBO",
-                "TURBO_L1"
+                "TURBO_L1",
+                "TURBO_L2",
+                "SUPER_TURBO",
+                "SUPER_TURBO_NO_CPR"
         };
     }
 
