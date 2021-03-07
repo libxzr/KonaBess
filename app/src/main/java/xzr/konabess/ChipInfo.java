@@ -92,7 +92,7 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_kona{
-        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -108,6 +108,7 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1"
         };
     }
@@ -129,6 +130,7 @@ public class ChipInfo {
                 336+RPMH_REGULATOR_LEVEL_OFFSET,
                 352+RPMH_REGULATOR_LEVEL_OFFSET,
                 384+RPMH_REGULATOR_LEVEL_OFFSET,
+                400+RPMH_REGULATOR_LEVEL_OFFSET,
                 416+RPMH_REGULATOR_LEVEL_OFFSET
         };
         public static final String[] level_str={
@@ -146,12 +148,13 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1"
         };
     }
 
     private static class rpmh_levels_lahaina{
-        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416,432,448,464};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416,432,448,464};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -167,6 +170,7 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1",
                 "TURBO_L2",
                 "SUPER_TURBO",
@@ -175,7 +179,7 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lahaina_singleBin{
-        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -191,12 +195,13 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1"
         };
     }
 
     private static class rpmh_levels_lito{
-        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -212,12 +217,13 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1"
         };
     }
 
     private static class rpmh_levels_lagoon{
-        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
         public static final String[] level_str={
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -233,6 +239,7 @@ public class ChipInfo {
                 "NOM_L2",
                 "NOM_L3",
                 "TURBO",
+                "TURBO_L0",
                 "TURBO_L1"
         };
     }
