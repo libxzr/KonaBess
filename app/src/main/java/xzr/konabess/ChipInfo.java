@@ -59,8 +59,10 @@ public class ChipInfo {
                 return rpmh_levels_kona.levels;
             else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.levels;
-            else if(ChipInfo.which==type.lahaina||ChipInfo.which==type.lahaina_singleBin)
+            else if(ChipInfo.which==type.lahaina)
                 return rpmh_levels_lahaina.levels;
+            else if(ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina_singleBin.levels;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.levels;
 
@@ -71,8 +73,10 @@ public class ChipInfo {
                 return rpmh_levels_kona.level_str;
             else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
                 return rpmh_levels_msmnile.level_str;
-            else if(ChipInfo.which==type.lahaina||ChipInfo.which==type.lahaina_singleBin)
+            else if(ChipInfo.which==type.lahaina)
                 return rpmh_levels_lahaina.level_str;
+            else if(ChipInfo.which==type.lahaina_singleBin)
+                return rpmh_levels_lahaina_singleBin.level_str;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.level_str;
 
@@ -160,6 +164,27 @@ public class ChipInfo {
                 "TURBO_L2",
                 "SUPER_TURBO",
                 "SUPER_TURBO_NO_CPR"
+        };
+    }
+
+    private static class rpmh_levels_lahaina_singleBin{
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final String[] level_str={
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L1"
         };
     }
 
