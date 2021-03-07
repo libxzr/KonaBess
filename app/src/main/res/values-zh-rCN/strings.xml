@@ -114,4 +114,5 @@
     <string name="possible_dtb">这可能是您的设备正在使用的芯片组数据</string>
     <string name="sdm888">骁龙888</string>
     <string name="sdm888p">骁龙888+</string>
+    <string name="lagoon_series">骁龙690 / 750系列</string>
 </resources>

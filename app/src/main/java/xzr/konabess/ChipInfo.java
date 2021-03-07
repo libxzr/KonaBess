@@ -12,6 +12,7 @@ public class ChipInfo {
         lahaina,
         lahaina_singleBin,
         lito_v1,lito_v2,
+        lagoon,
         unknown
     }
 
@@ -47,6 +48,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.lito_v1_series);
             case lito_v2:
                 return activity.getResources().getString(R.string.lito_v2_series);
+            case lagoon:
+                return activity.getResources().getString(R.string.lagoon_series);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -65,6 +68,8 @@ public class ChipInfo {
                 return rpmh_levels_lahaina_singleBin.levels;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.levels;
+            else if(ChipInfo.which==type.lagoon)
+                return rpmh_levels_lagoon.levels;
 
             return new int[]{};
         }
@@ -79,6 +84,8 @@ public class ChipInfo {
                 return rpmh_levels_lahaina_singleBin.level_str;
             else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
                 return rpmh_levels_lito.level_str;
+            else if(ChipInfo.which==type.lagoon)
+                return rpmh_levels_lagoon.level_str;
 
             return new String[]{};
         }
@@ -189,6 +196,27 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lito{
+        public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
+        public static final String[] level_str={
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L1"
+        };
+    }
+
+    private static class rpmh_levels_lagoon{
         public static final int[] levels={48,56,64,80,96,128,144,192,224,256,320,336,352,384,416};
         public static final String[] level_str={
                 "MIN_SVS",

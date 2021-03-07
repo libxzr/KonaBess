@@ -205,6 +205,11 @@ public class KonaBessCore {
                 dtb.id=i;
                 dtb.type = ChipInfo.type.lito_v2;
                 dtbs.add(dtb);
+            }else if(checkChip(context,i,"Lagoon SoC")){
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = ChipInfo.type.lagoon;
+                dtbs.add(dtb);
             }
         }
     }
