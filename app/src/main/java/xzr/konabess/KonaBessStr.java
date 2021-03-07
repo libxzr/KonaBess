@@ -93,6 +93,10 @@ public class KonaBessStr {
     }
 
     public static String convert_bins_lagoon(int which, Activity activity) {
+        switch (which){
+            case 2:
+                return activity.getResources().getString(R.string.sdm750g);
+        }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
 
