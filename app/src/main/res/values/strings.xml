@@ -66,7 +66,7 @@
     <string name="sdm855">Snapdragon 855</string>
     <string name="sdm855p">Snapdragon 855+</string>
     <string name="sdm855_singlebin">Snapdragon 855 (Android P)</string>
-    <string name="sdm888_singlebin">Snapdragon 888</string>
+    <string name="sdm888_singlebin">Snapdragon 888 (old FW)</string>
     <string name="editvolt_msg">This refers to the voltage corresponding to this frequency. You can specify the voltage level to be used for this frequency.\nThe voltage increases from top to bottom.</string>
     <string name="help_gpufreq_aio">This is the working frequency of the GPU. You can change the available frequencies in the frequency table by changing this value.\nThe unit of frequency here is Hz, that is to say, add 6 zeros after the MHz frequency. You can view the frequency in MHz in the previous page.\nIf you don\'t know how many zeros to add, it is recommended to change only the first few digits of the number.</string>
     <string name="help_gpufreq">This is the working frequency of the GPU. You can change the available frequencies in the frequency table by changing this value.\nHowever, remember to make sure that the frequency can find the corresponding voltage in the voltage table, otherwise, it is impossible to boot the phone.\nThe unit of frequency here is Hz, that is to say, add 6 zeros after the MHz frequency. You can view the frequency in MHz in the previous menu. If you don\'t know how many zeros to add, it is recommended to modify only the first few digits of the number.\n</string>

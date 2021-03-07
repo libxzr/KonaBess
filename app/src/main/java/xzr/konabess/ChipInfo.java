@@ -40,6 +40,7 @@ public class ChipInfo {
             case msmnile_singleBin:
                 return activity.getResources().getString(R.string.sdm855_singlebin);
             case lahaina:
+                return activity.getResources().getString(R.string.sdm888);
             case lahaina_singleBin:
                 return activity.getResources().getString(R.string.sdm888_singlebin);
             case lito_v1:

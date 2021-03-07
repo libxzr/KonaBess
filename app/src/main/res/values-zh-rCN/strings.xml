@@ -66,7 +66,7 @@
     <string name="sdm855">骁龙855</string>
     <string name="sdm855p">骁龙855+</string>
     <string name="sdm855_singlebin">骁龙855（安卓9）</string>
-    <string name="sdm888_singlebin">骁龙888</string>
+    <string name="sdm888_singlebin">骁龙888（旧固件）</string>
     <string name="editvolt_msg">这是指这个频率对应的电压，您可以为这个频率指定要使用的电压等级。\n电压等级从上往下，电压依次提高。</string>
     <string name="help_gpufreq_aio">这是GPU的工作频率，您可以通过改变该数值来改变频率表中的可用频率。\n此处频率的单位是Hz，也就是说在MHz频率后面加上6个零，您可以在上一级菜单中以MHz查看频率。\n如果您搞不清楚要加几个零，那么建议只修改数字的前几位。</string>
     <string name="help_gpufreq">这是GPU的工作频率，您可以通过改变该数值来改变频率表中的可用频率。\n但是，切记，请确保该频率能够在电压表中找到对应的电压，否则，开机是不可能的。\n此处频率的单位是Hz，也就是说在MHz频率后面加上6个零，您可以在上一级菜单如果您搞不清楚要加几个零，那么建议只修改数字的前几位。您可以在上一级菜单中以MHz查看频率。\n</string>
