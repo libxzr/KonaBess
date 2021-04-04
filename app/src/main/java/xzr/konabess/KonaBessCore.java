@@ -195,6 +195,11 @@ public class KonaBessCore {
                 dtb.id=i;
                 dtb.type = checkSingleBin(context,i)? ChipInfo.type.lahaina_singleBin: ChipInfo.type.lahaina;
                 dtbs.add(dtb);
+            }else if(checkChip(context,i,"Lahaina v2.1")){
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = checkSingleBin(context,i)? ChipInfo.type.lahaina_singleBin: ChipInfo.type.lahaina;
+                dtbs.add(dtb);
             }else if(checkChip(context,i,"Lito SoC")){
                 dtb dtb=new dtb();
                 dtb.id=i;
