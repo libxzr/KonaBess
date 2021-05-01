@@ -17,6 +17,10 @@ public class ChipInfo {
         unknown
     }
 
+    public static boolean shouldIgnoreVoltTable(type type){
+        return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin || type == ChipInfo.type.shima;
+    }
+
     public static boolean checkChipGeneral(type input){
         type now=which;
         if(now==type.lito_v2)

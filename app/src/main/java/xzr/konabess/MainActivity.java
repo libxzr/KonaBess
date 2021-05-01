@@ -176,8 +176,7 @@ public class MainActivity extends Activity {
             editor.addView(button);
             button.setOnClickListener(v -> new GpuTableEditor.gpuTableLogic(this,showdView).start());
         }
-        if(ChipInfo.which!= ChipInfo.type.lahaina && ChipInfo.which!= ChipInfo.type.lahaina_singleBin
-                && ChipInfo.which!= ChipInfo.type.shima){
+        if(!ChipInfo.shouldIgnoreVoltTable(ChipInfo.which)){
             Button button=new Button(this);
             button.setText(R.string.edit_gpu_volt_table);
             editor.addView(button);
