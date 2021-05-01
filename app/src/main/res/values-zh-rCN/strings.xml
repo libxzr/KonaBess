@@ -116,4 +116,5 @@
     <string name="sdm888p">骁龙888+</string>
     <string name="lagoon_series">骁龙690 / 750系列</string>
     <string name="sdm750g">骁龙750G</string>
+    <string name="sd780g">骁龙780G</string>
 </resources>

@@ -21,6 +21,8 @@ public class KonaBessStr {
             return convert_bins_lito(which,activity);
         else if(ChipInfo.which== ChipInfo.type.lagoon)
             return convert_bins_lagoon(which,activity);
+        else if(ChipInfo.which== ChipInfo.type.shima)
+            return convert_bins_shima(which,activity);
 
         throw new Exception();
     }
@@ -96,6 +98,14 @@ public class KonaBessStr {
         switch (which){
             case 2:
                 return activity.getResources().getString(R.string.sdm750g);
+        }
+        return activity.getResources().getString(R.string.unknown_table) + which;
+    }
+
+    public static String convert_bins_shima(int which, Activity activity) {
+        switch (which){
+            case 1:
+                return activity.getResources().getString(R.string.sd780g);
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }

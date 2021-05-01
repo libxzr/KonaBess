@@ -215,6 +215,11 @@ public class KonaBessCore {
                 dtb.id=i;
                 dtb.type = ChipInfo.type.lagoon;
                 dtbs.add(dtb);
+            }else if(checkChip(context,i,"Shima SoC")){
+                dtb dtb=new dtb();
+                dtb.id=i;
+                dtb.type = ChipInfo.type.shima;
+                dtbs.add(dtb);
             }
         }
     }

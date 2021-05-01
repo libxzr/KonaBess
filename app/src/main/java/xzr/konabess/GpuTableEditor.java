@@ -75,7 +75,8 @@ public class GpuTableEditor {
                     ||ChipInfo.which== ChipInfo.type.msmnile
                     ||ChipInfo.which== ChipInfo.type.lahaina
                     ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2
-                    ||ChipInfo.which== ChipInfo.type.lagoon)
+                    ||ChipInfo.which== ChipInfo.type.lagoon
+                    ||ChipInfo.which== ChipInfo.type.shima)
                     &&this_line.contains("qcom,gpu-pwrlevels-")) {
                 start = i;
                 if(bin_position<0)
@@ -96,7 +97,8 @@ public class GpuTableEditor {
                     ||ChipInfo.which== ChipInfo.type.msmnile
                     ||ChipInfo.which== ChipInfo.type.lahaina
                     ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2
-                    ||ChipInfo.which== ChipInfo.type.lagoon)) {
+                    ||ChipInfo.which== ChipInfo.type.lagoon
+                    ||ChipInfo.which== ChipInfo.type.shima)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -195,7 +197,8 @@ public class GpuTableEditor {
                 ||ChipInfo.which== ChipInfo.type.msmnile
                 ||ChipInfo.which== ChipInfo.type.lahaina
                 ||ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2
-                ||ChipInfo.which== ChipInfo.type.lagoon) {
+                ||ChipInfo.which== ChipInfo.type.lagoon
+                ||ChipInfo.which== ChipInfo.type.shima) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
                 lines.add("qcom,gpu-pwrlevels-" + bins.get(bin_id).id + " {");
                 lines.addAll(bins.get(bin_id).header);
@@ -484,7 +487,8 @@ public class GpuTableEditor {
     }
 
     public static int min_level_chip_offset() throws Exception{
-        if(ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which== ChipInfo.type.lahaina_singleBin)
+        if(ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which== ChipInfo.type.lahaina_singleBin
+                ||ChipInfo.which== ChipInfo.type.shima)
             return 1;
         if(ChipInfo.which== ChipInfo.type.kona||ChipInfo.which== ChipInfo.type.kona_singleBin
                 ||ChipInfo.which== ChipInfo.type.msmnile||ChipInfo.which== ChipInfo.type.msmnile_singleBin
