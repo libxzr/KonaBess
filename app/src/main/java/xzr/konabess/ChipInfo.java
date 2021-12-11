@@ -4,39 +4,39 @@ package xzr.konabess;
 import android.app.Activity;
 
 public class ChipInfo {
-    public enum type{
+    public enum type {
         kona,
         kona_singleBin,
         msmnile,
         msmnile_singleBin,
         lahaina,
         lahaina_singleBin,
-        lito_v1,lito_v2,
+        lito_v1, lito_v2,
         lagoon,
         shima,
         unknown
     }
 
-    public static boolean shouldIgnoreVoltTable(type type){
+    public static boolean shouldIgnoreVoltTable(type type) {
         return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin || type == ChipInfo.type.shima;
     }
 
-    public static boolean checkChipGeneral(type input){
-        type now=which;
-        if(now==type.lito_v2)
-            now=type.lito_v1;
-        if(input==type.lito_v2)
-            input=type.lito_v1;
-        return input==now;
+    public static boolean checkChipGeneral(type input) {
+        type now = which;
+        if (now == type.lito_v2)
+            now = type.lito_v1;
+        if (input == type.lito_v2)
+            input = type.lito_v1;
+        return input == now;
     }
 
-    public static String name2chipdesc(String name, Activity activity){
-        type t=type.valueOf(name);
-        return name2chipdesc(t,activity);
+    public static String name2chipdesc(String name, Activity activity) {
+        type t = type.valueOf(name);
+        return name2chipdesc(t, activity);
     }
 
-    public static String name2chipdesc(type t, Activity activity){
-        switch (t){
+    public static String name2chipdesc(type t, Activity activity) {
+        switch (t) {
             case kona:
                 return activity.getResources().getString(R.string.sdm865_series);
             case kona_singleBin:
@@ -63,48 +63,49 @@ public class ChipInfo {
 
     public static type which;
 
-    public static class rpmh_levels{
-        public static int[] levels(){
-            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_singleBin)
+    public static class rpmh_levels {
+        public static int[] levels() {
+            if (ChipInfo.which == type.kona || ChipInfo.which == type.kona_singleBin)
                 return rpmh_levels_kona.levels;
-            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
+            else if (ChipInfo.which == type.msmnile || ChipInfo.which == type.msmnile_singleBin)
                 return rpmh_levels_msmnile.levels;
-            else if(ChipInfo.which==type.lahaina)
+            else if (ChipInfo.which == type.lahaina)
                 return rpmh_levels_lahaina.levels;
-            else if(ChipInfo.which==type.lahaina_singleBin)
+            else if (ChipInfo.which == type.lahaina_singleBin)
                 return rpmh_levels_lahaina_singleBin.levels;
-            else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
+            else if (ChipInfo.which == type.lito_v1 || ChipInfo.which == type.lito_v2)
                 return rpmh_levels_lito.levels;
-            else if(ChipInfo.which==type.lagoon)
+            else if (ChipInfo.which == type.lagoon)
                 return rpmh_levels_lagoon.levels;
-            else if(ChipInfo.which==type.shima)
+            else if (ChipInfo.which == type.shima)
                 return rpmh_levels_shima.levels;
 
             return new int[]{};
         }
-        public static String[] level_str(){
-            if(ChipInfo.which==type.kona||ChipInfo.which==type.kona_singleBin)
+
+        public static String[] level_str() {
+            if (ChipInfo.which == type.kona || ChipInfo.which == type.kona_singleBin)
                 return rpmh_levels_kona.level_str;
-            else if(ChipInfo.which==type.msmnile||ChipInfo.which==type.msmnile_singleBin)
+            else if (ChipInfo.which == type.msmnile || ChipInfo.which == type.msmnile_singleBin)
                 return rpmh_levels_msmnile.level_str;
-            else if(ChipInfo.which==type.lahaina)
+            else if (ChipInfo.which == type.lahaina)
                 return rpmh_levels_lahaina.level_str;
-            else if(ChipInfo.which==type.lahaina_singleBin)
+            else if (ChipInfo.which == type.lahaina_singleBin)
                 return rpmh_levels_lahaina_singleBin.level_str;
-            else if(ChipInfo.which==type.lito_v1 || ChipInfo.which==type.lito_v2)
+            else if (ChipInfo.which == type.lito_v1 || ChipInfo.which == type.lito_v2)
                 return rpmh_levels_lito.level_str;
-            else if(ChipInfo.which==type.lagoon)
+            else if (ChipInfo.which == type.lagoon)
                 return rpmh_levels_lagoon.level_str;
-            else if(ChipInfo.which==type.shima)
+            else if (ChipInfo.which == type.shima)
                 return rpmh_levels_shima.level_str;
 
             return new String[]{};
         }
     }
 
-    private static class rpmh_levels_kona{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
-        public static final String[] level_str={
+    private static class rpmh_levels_kona {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -125,28 +126,28 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_msmnile{
-        private static final int RPMH_REGULATOR_LEVEL_OFFSET=1;
-        public static final int[] levels={
-                16+RPMH_REGULATOR_LEVEL_OFFSET,
-                48+RPMH_REGULATOR_LEVEL_OFFSET,
-                56+RPMH_REGULATOR_LEVEL_OFFSET,
-                64+RPMH_REGULATOR_LEVEL_OFFSET,
-                80+RPMH_REGULATOR_LEVEL_OFFSET,
-                96+RPMH_REGULATOR_LEVEL_OFFSET,
-                128+RPMH_REGULATOR_LEVEL_OFFSET,
-                144+RPMH_REGULATOR_LEVEL_OFFSET,
-                192+RPMH_REGULATOR_LEVEL_OFFSET,
-                224+RPMH_REGULATOR_LEVEL_OFFSET,
-                256+RPMH_REGULATOR_LEVEL_OFFSET,
-                320+RPMH_REGULATOR_LEVEL_OFFSET,
-                336+RPMH_REGULATOR_LEVEL_OFFSET,
-                352+RPMH_REGULATOR_LEVEL_OFFSET,
-                384+RPMH_REGULATOR_LEVEL_OFFSET,
-                400+RPMH_REGULATOR_LEVEL_OFFSET,
-                416+RPMH_REGULATOR_LEVEL_OFFSET
+    private static class rpmh_levels_msmnile {
+        private static final int RPMH_REGULATOR_LEVEL_OFFSET = 1;
+        public static final int[] levels = {
+                16 + RPMH_REGULATOR_LEVEL_OFFSET,
+                48 + RPMH_REGULATOR_LEVEL_OFFSET,
+                56 + RPMH_REGULATOR_LEVEL_OFFSET,
+                64 + RPMH_REGULATOR_LEVEL_OFFSET,
+                80 + RPMH_REGULATOR_LEVEL_OFFSET,
+                96 + RPMH_REGULATOR_LEVEL_OFFSET,
+                128 + RPMH_REGULATOR_LEVEL_OFFSET,
+                144 + RPMH_REGULATOR_LEVEL_OFFSET,
+                192 + RPMH_REGULATOR_LEVEL_OFFSET,
+                224 + RPMH_REGULATOR_LEVEL_OFFSET,
+                256 + RPMH_REGULATOR_LEVEL_OFFSET,
+                320 + RPMH_REGULATOR_LEVEL_OFFSET,
+                336 + RPMH_REGULATOR_LEVEL_OFFSET,
+                352 + RPMH_REGULATOR_LEVEL_OFFSET,
+                384 + RPMH_REGULATOR_LEVEL_OFFSET,
+                400 + RPMH_REGULATOR_LEVEL_OFFSET,
+                416 + RPMH_REGULATOR_LEVEL_OFFSET
         };
-        public static final String[] level_str={
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -167,9 +168,9 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lahaina{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416,432,448,464};
-        public static final String[] level_str={
+    private static class rpmh_levels_lahaina {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416, 432, 448, 464};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -193,9 +194,9 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lahaina_singleBin{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
-        public static final String[] level_str={
+    private static class rpmh_levels_lahaina_singleBin {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -216,9 +217,9 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lito{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
-        public static final String[] level_str={
+    private static class rpmh_levels_lito {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -239,9 +240,9 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_lagoon{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
-        public static final String[] level_str={
+    private static class rpmh_levels_lagoon {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",
@@ -262,9 +263,9 @@ public class ChipInfo {
         };
     }
 
-    private static class rpmh_levels_shima{
-        public static final int[] levels={16,48,56,64,80,96,128,144,192,224,256,320,336,352,384,400,416};
-        public static final String[] level_str={
+    private static class rpmh_levels_shima {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
                 "LOW_SVS_D1",

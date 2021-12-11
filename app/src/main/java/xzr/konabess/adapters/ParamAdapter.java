@@ -12,17 +12,19 @@ import java.util.List;
 import xzr.konabess.R;
 
 public class ParamAdapter extends BaseAdapter {
-    public static class item{
+    public static class item {
         public String title;
         public String subtitle;
     }
 
     List<item> items;
     Context context;
-    public ParamAdapter(List<item> items, Context context){
-        this.items=items;
-        this.context=context;
+
+    public ParamAdapter(List<item> items, Context context) {
+        this.items = items;
+        this.context = context;
     }
+
     @Override
     public int getCount() {
         return items.size();
@@ -40,9 +42,9 @@ public class ParamAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view=LayoutInflater.from(context).inflate(R.layout.param_list_item,null);
-        TextView title=view.findViewById(R.id.title);
-        TextView subtitle=view.findViewById(R.id.subtitle);
+        View view = LayoutInflater.from(context).inflate(R.layout.param_list_item, null);
+        TextView title = view.findViewById(R.id.title);
+        TextView subtitle = view.findViewById(R.id.subtitle);
 
         title.setText(items.get(position).title);
         subtitle.setText(items.get(position).subtitle);

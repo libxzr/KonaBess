@@ -11,7 +11,7 @@ import java.util.zip.GZIPOutputStream;
 public class GzipUtils {
 
     public static String compress(byte[] bytes) throws IOException {
-        if(bytes==null||bytes.length==0)
+        if (bytes == null || bytes.length == 0)
             throw new IOException();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream gzip;

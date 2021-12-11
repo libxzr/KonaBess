@@ -13,16 +13,16 @@ public class KonaBessStr {
             return convert_bins_msmnile(which, activity);
         else if (ChipInfo.which == ChipInfo.type.msmnile_singleBin)
             return convert_bins_msmnile_singleBin(which, activity);
-        else if (ChipInfo.which== ChipInfo.type.lahaina)
+        else if (ChipInfo.which == ChipInfo.type.lahaina)
             return convert_bins_lahaina(which, activity);
-        else if(ChipInfo.which== ChipInfo.type.lahaina_singleBin)
-            return convert_bins_lahaina_singleBin(which,activity);
-        else if(ChipInfo.which== ChipInfo.type.lito_v1||ChipInfo.which== ChipInfo.type.lito_v2)
-            return convert_bins_lito(which,activity);
-        else if(ChipInfo.which== ChipInfo.type.lagoon)
-            return convert_bins_lagoon(which,activity);
-        else if(ChipInfo.which== ChipInfo.type.shima)
-            return convert_bins_shima(which,activity);
+        else if (ChipInfo.which == ChipInfo.type.lahaina_singleBin)
+            return convert_bins_lahaina_singleBin(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.lito_v1 || ChipInfo.which == ChipInfo.type.lito_v2)
+            return convert_bins_lito(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.lagoon)
+            return convert_bins_lagoon(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.shima)
+            return convert_bins_shima(which, activity);
 
         throw new Exception();
     }
@@ -84,7 +84,7 @@ public class KonaBessStr {
     }
 
     public static String convert_bins_lito(int which, Activity activity) {
-        switch (which){
+        switch (which) {
             case 1:
                 return activity.getResources().getString(R.string.sd765g);
             case 3:
@@ -95,7 +95,7 @@ public class KonaBessStr {
     }
 
     public static String convert_bins_lagoon(int which, Activity activity) {
-        switch (which){
+        switch (which) {
             case 2:
                 return activity.getResources().getString(R.string.sdm750g);
         }
@@ -103,7 +103,7 @@ public class KonaBessStr {
     }
 
     public static String convert_bins_shima(int which, Activity activity) {
-        switch (which){
+        switch (which) {
             case 1:
                 return activity.getResources().getString(R.string.sd780g);
         }
@@ -122,7 +122,7 @@ public class KonaBessStr {
 
     public static String help(String what, Activity activity) {
         if (what.equals("qcom,gpu-freq"))
-            return ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
+            return ChipInfo.which == ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                     ? activity.getResources().getString(R.string.help_gpufreq_aio)
                     : activity.getResources().getString(R.string.help_gpufreq);
         if (what.contains("bus"))
@@ -133,7 +133,7 @@ public class KonaBessStr {
     }
 
     public static String generic_help(Activity activity) {
-        return ChipInfo.which== ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
+        return ChipInfo.which == ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                 ? activity.getResources().getString(R.string.help_msg_aio)
                 : activity.getResources().getString(R.string.help_msg);
     }
