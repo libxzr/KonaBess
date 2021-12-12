@@ -23,6 +23,8 @@ public class KonaBessStr {
             return convert_bins_lagoon(which, activity);
         else if (ChipInfo.which == ChipInfo.type.shima)
             return convert_bins_shima(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.yupik)
+            return convert_bins_yupik(which, activity);
 
         throw new Exception();
     }
@@ -109,6 +111,10 @@ public class KonaBessStr {
             case 1:
                 return activity.getResources().getString(R.string.sd780g);
         }
+        return activity.getResources().getString(R.string.unknown_table) + which;
+    }
+
+    public static String convert_bins_yupik(int which, Activity activity) {
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
 

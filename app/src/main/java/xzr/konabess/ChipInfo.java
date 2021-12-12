@@ -14,11 +14,13 @@ public class ChipInfo {
         lito_v1, lito_v2,
         lagoon,
         shima,
+        yupik,
         unknown
     }
 
     public static boolean shouldIgnoreVoltTable(type type) {
-        return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin || type == ChipInfo.type.shima;
+        return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin
+                || type == ChipInfo.type.shima || type == ChipInfo.type.yupik;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -57,6 +59,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.lagoon_series);
             case shima:
                 return activity.getResources().getString(R.string.sd780g);
+            case yupik:
+                return activity.getResources().getString(R.string.sd778g);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -79,6 +83,8 @@ public class ChipInfo {
                 return rpmh_levels_lagoon.levels;
             else if (ChipInfo.which == type.shima)
                 return rpmh_levels_shima.levels;
+            else if (ChipInfo.which == type.yupik)
+                return rpmh_levels_yupik.levels;
 
             return new int[]{};
         }
@@ -98,6 +104,8 @@ public class ChipInfo {
                 return rpmh_levels_lagoon.level_str;
             else if (ChipInfo.which == type.shima)
                 return rpmh_levels_shima.level_str;
+            else if (ChipInfo.which == type.yupik)
+                return rpmh_levels_yupik.level_str;
 
             return new String[]{};
         }
@@ -264,6 +272,29 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_shima {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1"
+        };
+    }
+
+    private static class rpmh_levels_yupik {
         public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",

@@ -227,6 +227,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.shima;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Yupik SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.yupik;
+                dtbs.add(dtb);
             }
         }
     }
