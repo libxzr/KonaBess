@@ -35,6 +35,8 @@ public class KonaBessStr {
                 return activity.getResources().getString(R.string.sdm865p);
             case 2:
                 return activity.getResources().getString(R.string.sdm865m);
+            case 3:
+                return activity.getResources().getString(R.string.sd870);
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
