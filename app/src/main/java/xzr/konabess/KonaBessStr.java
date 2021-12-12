@@ -141,6 +141,8 @@ public class KonaBessStr {
     public static String help(String what, Activity activity) {
         if (what.equals("qcom,gpu-freq"))
             return ChipInfo.which == ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
+                    || ChipInfo.which == ChipInfo.type.shima || ChipInfo.which == ChipInfo.type.yupik
+                    || ChipInfo.which == ChipInfo.type.waipio_singleBin
                     ? activity.getResources().getString(R.string.help_gpufreq_aio)
                     : activity.getResources().getString(R.string.help_gpufreq);
         if (what.contains("bus"))
@@ -152,6 +154,8 @@ public class KonaBessStr {
 
     public static String generic_help(Activity activity) {
         return ChipInfo.which == ChipInfo.type.lahaina || ChipInfo.which == ChipInfo.type.lahaina_singleBin
+                || ChipInfo.which == ChipInfo.type.shima || ChipInfo.which == ChipInfo.type.yupik
+                || ChipInfo.which == ChipInfo.type.waipio_singleBin
                 ? activity.getResources().getString(R.string.help_msg_aio)
                 : activity.getResources().getString(R.string.help_msg);
     }
