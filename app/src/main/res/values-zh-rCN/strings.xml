@@ -119,4 +119,5 @@
     <string name="sd780g">骁龙780G</string>
     <string name="sd870">骁龙870</string>
     <string name="sd778g">骁龙778G</string>
+    <string name="sd8g1_singlebin">骁龙8Gen1</string>
 </resources>

@@ -25,6 +25,8 @@ public class KonaBessStr {
             return convert_bins_shima(which, activity);
         else if (ChipInfo.which == ChipInfo.type.yupik)
             return convert_bins_yupik(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.waipio_singleBin)
+            return convert_bins_waipio_singleBin(which, activity);
 
         throw new Exception();
     }
@@ -115,6 +117,14 @@ public class KonaBessStr {
     }
 
     public static String convert_bins_yupik(int which, Activity activity) {
+        return activity.getResources().getString(R.string.unknown_table) + which;
+    }
+
+    public static String convert_bins_waipio_singleBin(int which, Activity activity) {
+        switch (which) {
+            case 0:
+                return activity.getResources().getString(R.string.sd8g1_singlebin);
+        }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }
 
