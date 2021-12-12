@@ -69,7 +69,7 @@ public class KonaBessStr {
         switch (which) {
             case 0:
                 return activity.getResources().getString(R.string.sdm888);
-            case 1:
+            case 3:
                 return activity.getResources().getString(R.string.sdm888p);
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
