@@ -1,6 +1,16 @@
 # KonaBess
 
 [中文版](https://github.com/xzr467706992/KonaBess/blob/master/README_zh-CN.md)
+### Support list
+* Snapdragon 8Gen1 (possible)
+* Snapdragon 888
+* Snapdragon 865
+* Snapdragon 855
+* Snapdragon 780G
+* Snapdragon 778G
+* Snapdragon 765
+* Snapdragon 750
+* Snapdragon 690
 
 ### What is this?
 
