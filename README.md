@@ -1,10 +1,20 @@
 # KonaBess
 
 [中文版](https://github.com/xzr467706992/KonaBess/blob/master/README_zh-CN.md)
+### Support list
+* Snapdragon 8Gen1 (possible)
+* Snapdragon 888
+* Snapdragon 865
+* Snapdragon 855
+* Snapdragon 780G
+* Snapdragon 778G
+* Snapdragon 765
+* Snapdragon 750
+* Snapdragon 690
 
 ### What is this?
 
-- A simple app that can custom GPU frequency and voltage tables without recompiling the kernel, compatible for Snapdragon 865 series, 855 series, 888, 765 series, 750 / 690 series and 780G.
+- A simple app that can custom GPU frequency and voltage tables without recompiling the kernel
 
 ### How it works?
 
