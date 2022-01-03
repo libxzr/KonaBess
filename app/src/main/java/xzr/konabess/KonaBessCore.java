@@ -232,7 +232,8 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.yupik;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Waipio SoC")) {
+            } else if (checkChip(context, i, "Waipio SoC")
+                    || checkChip(context, i, "Waipio v2 SoC")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.waipio_singleBin;
