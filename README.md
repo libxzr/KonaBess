@@ -4,6 +4,7 @@
 ### Support list
 * Snapdragon 8Gen1 (possible)
 * Snapdragon 888
+* Snapdragon 870
 * Snapdragon 865
 * Snapdragon 855
 * Snapdragon 780G
