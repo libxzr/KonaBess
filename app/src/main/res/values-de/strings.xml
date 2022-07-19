@@ -121,4 +121,5 @@
     <string name="wait_importing">Daten importieren. Bitte warten…</string>
     <string name="will_backup_to">Altes Image extrahieren nach</string>
     <string name="yes">Ja</string>
+    <string name="sd8g1p_singlebin">Snapdragon 8+Gen1</string>
 </resources>

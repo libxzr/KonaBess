@@ -238,6 +238,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.waipio_singleBin;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Cape SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.cape_singleBin;
+                dtbs.add(dtb);
             }
         }
     }
