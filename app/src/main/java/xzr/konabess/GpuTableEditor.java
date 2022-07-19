@@ -499,7 +499,7 @@ public class GpuTableEditor {
     }
 
     public static boolean canAddNewLevel(int binID, Context context) throws Exception {
-        int max_levels = 11 - min_level_chip_offset();
+        int max_levels = ChipInfo.getMaxTableLevels(ChipInfo.which) - min_level_chip_offset();
         if (bins.get(binID).levels.size() <= max_levels)
             return true;
         Toast.makeText(context, R.string.unable_add_more, Toast.LENGTH_SHORT).show();

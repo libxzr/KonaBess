@@ -20,6 +20,12 @@ public class ChipInfo {
         unknown
     }
 
+    public static int getMaxTableLevels(type type) {
+        if (type == ChipInfo.type.cape_singleBin || type == ChipInfo.type.waipio_singleBin)
+            return 16;
+        return 11;
+    }
+
     public static boolean shouldIgnoreVoltTable(type type) {
         return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin
                 || type == ChipInfo.type.shima || type == ChipInfo.type.yupik
