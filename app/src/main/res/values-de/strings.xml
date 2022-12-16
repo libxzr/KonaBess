@@ -122,4 +122,5 @@
     <string name="will_backup_to">Altes Image extrahieren nach</string>
     <string name="yes">Ja</string>
     <string name="sd8g1p_singlebin">Snapdragon 8+Gen1</string>
+    <string name="sd8g2">Snapdragon 8Gen2</string>
 </resources>

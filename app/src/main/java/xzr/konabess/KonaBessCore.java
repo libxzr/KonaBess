@@ -243,6 +243,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.cape_singleBin;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Kalama v2 SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.kalama;
+                dtbs.add(dtb);
             }
         }
     }

@@ -17,6 +17,7 @@ public class ChipInfo {
         yupik,
         waipio_singleBin,
         cape_singleBin,
+        kalama,
         unknown
     }
 
@@ -29,7 +30,8 @@ public class ChipInfo {
     public static boolean shouldIgnoreVoltTable(type type) {
         return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin
                 || type == ChipInfo.type.shima || type == ChipInfo.type.yupik
-                || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin;
+                || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin
+                || type == ChipInfo.type.kalama;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -74,6 +76,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd8g1_singlebin);
             case cape_singleBin:
                 return activity.getResources().getString(R.string.sd8g1p_singlebin);
+            case kalama:
+                return activity.getResources().getString(R.string.sd8g2);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -102,6 +106,8 @@ public class ChipInfo {
                 return rpmh_levels_waipio.levels;
             else if (ChipInfo.which == type.cape_singleBin)
                 return rpmh_levels_cape.levels;
+            else if (ChipInfo.which == type.kalama)
+                return rpmh_levels_kalama.levels;
 
             return new int[]{};
         }
@@ -127,6 +133,8 @@ public class ChipInfo {
                 return rpmh_levels_waipio.level_str;
             else if (ChipInfo.which == type.cape_singleBin)
                 return rpmh_levels_cape.level_str;
+            else if (ChipInfo.which == type.kalama)
+                return rpmh_levels_kalama.level_str;
 
             return new String[]{};
         }
@@ -362,6 +370,29 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_cape {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1"
+        };
+    }
+
+    private static class rpmh_levels_kalama {
         public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
