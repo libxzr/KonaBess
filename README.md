@@ -2,7 +2,8 @@
 
 [中文版](https://github.com/xzr467706992/KonaBess/blob/master/README_zh-CN.md)
 ### Support list
-* Snapdragon 8Gen1 (possible)
+* Snapdragon 8Gen2
+* Snapdragon 8Gen1
 * Snapdragon 888
 * Snapdragon 865
 * Snapdragon 855
