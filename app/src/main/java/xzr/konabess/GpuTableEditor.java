@@ -263,7 +263,8 @@ public class GpuTableEditor {
     }
 
     private static String generateSubtitle(String line) throws Exception {
-        if (DtsHelper.decode_hex_line(line).name.equals("qcom,level")) {
+        String raw_name = DtsHelper.decode_hex_line(line).name;
+        if ("qcom,level".equals(raw_name) || "qcom,cx-level".equals(raw_name)) {
             return GpuVoltEditor.levelint2str(DtsHelper.decode_int_line(line).value);
         }
         return DtsHelper.shouldUseHex(line) ? DtsHelper.decode_hex_line(line).value : DtsHelper.decode_int_line(line).value + "";
@@ -306,7 +307,7 @@ public class GpuTableEditor {
                         ? DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value
                         : DtsHelper.decode_int_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value + "";
 
-                if (raw_name.equals("qcom,level")) {
+                if (raw_name.equals("qcom,level") || raw_name.equals("qcom,cx-level")) {
                     try {
                         Spinner spinner = new Spinner(activity);
                         spinner.setAdapter(new ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, ChipInfo.rpmh_levels.level_str()));
