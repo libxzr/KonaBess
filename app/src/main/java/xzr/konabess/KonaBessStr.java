@@ -143,6 +143,7 @@ public class KonaBessStr {
     public static String convert_bins_kalama(int which, Activity activity) {
         switch (which) {
             case 0:
+                return activity.getResources().getString(R.string.sd8g2_for_galaxy);
             case 1:
                 return activity.getResources().getString(R.string.sd8g2);
         }

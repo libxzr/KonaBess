@@ -122,4 +122,5 @@
     <string name="sd8g1_singlebin">Snapdragon 8Gen1</string>
     <string name="sd8g1p_singlebin">Snapdragon 8+Gen1</string>
     <string name="sd8g2">Snapdragon 8Gen2</string>
+    <string name="sd8g2_for_galaxy">Snapdragon 8Gen2 for Galaxy</string>
 </resources>

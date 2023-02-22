@@ -122,4 +122,5 @@
     <string name="sd8g1_singlebin">骁龙8Gen1</string>
     <string name="sd8g1p_singlebin">骁龙8+Gen1</string>
     <string name="sd8g2">骁龙8Gen2</string>
+    <string name="sd8g2_for_galaxy">骁龙8Gen2 for Galaxy</string>
 </resources>
