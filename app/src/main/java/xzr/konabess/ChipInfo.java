@@ -393,12 +393,15 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_kalama {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192, 224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 464, 480};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
+                "LOW_SVS_D2",
                 "LOW_SVS_D1",
+                "LOW_SVS_D0",
                 "LOW_SVS",
+                "LOW_SVS_P1",
                 "LOW_SVS_L1",
                 "LOW_SVS_L2",
                 "SVS",
@@ -406,12 +409,16 @@ public class ChipInfo {
                 "SVS_L1",
                 "SVS_L2",
                 "NOM",
+                "NOM_L0",
                 "NOM_L1",
                 "NOM_L2",
-                "NOM_L3",
                 "TURBO",
                 "TURBO_L0",
-                "TURBO_L1"
+                "TURBO_L1",
+                "TURBO_L2",
+                "TURBO_L3",
+                "SUPER_TURBO",
+                "SUPER_TURBO_NO_CPR"
         };
     }
 
