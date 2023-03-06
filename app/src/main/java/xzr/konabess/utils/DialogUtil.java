@@ -43,7 +43,8 @@ public class DialogUtil {
         showDetailedError(activity, activity.getResources().getString(err), detail);
     }
 
-    public static void showDetailedInfo(Activity activity, String title, String what, String detail) {
+    public static void showDetailedInfo(Activity activity, String title, String what,
+                                        String detail) {
         what += "\n" + activity.getResources().getString(R.string.long_press_to_copy);
         ScrollView scrollView = new ScrollView(activity);
         TextView textView = new TextView(activity);
@@ -58,7 +59,8 @@ public class DialogUtil {
     }
 
     public static void showDetailedInfo(Activity activity, int title, int what, String detail) {
-        showDetailedInfo(activity, activity.getResources().getString(title), activity.getResources().getString(what), detail);
+        showDetailedInfo(activity, activity.getResources().getString(title),
+                activity.getResources().getString(what), detail);
     }
 
     public static AlertDialog getWaitDialog(Context context, int id) {

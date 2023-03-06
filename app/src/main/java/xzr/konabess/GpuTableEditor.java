@@ -47,7 +47,8 @@ public class GpuTableEditor {
         lines_in_dts = new ArrayList<>();
         bins = new ArrayList<>();
         bin_position = -1;
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(KonaBessCore.dts_path)));
+        BufferedReader bufferedReader =
+                new BufferedReader(new FileReader(new File(KonaBessCore.dts_path)));
         String s;
         while ((s = bufferedReader.readLine()) != null) {
             lines_in_dts.add(s);
@@ -82,7 +83,8 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.lagoon
                     || ChipInfo.which == ChipInfo.type.shima
                     || ChipInfo.which == ChipInfo.type.yupik
-                    || ChipInfo.which == ChipInfo.type.kalama)
+                    || ChipInfo.which == ChipInfo.type.kalama
+                    || ChipInfo.which == ChipInfo.type.diwali)
                     && this_line.contains("qcom,gpu-pwrlevels-")) {
                 start = i;
                 if (bin_position < 0)
@@ -106,7 +108,8 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.lagoon
                     || ChipInfo.which == ChipInfo.type.shima
                     || ChipInfo.which == ChipInfo.type.yupik
-                    || ChipInfo.which == ChipInfo.type.kalama)) {
+                    || ChipInfo.which == ChipInfo.type.kalama
+                    || ChipInfo.which == ChipInfo.type.diwali)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -215,7 +218,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.lagoon
                 || ChipInfo.which == ChipInfo.type.shima
                 || ChipInfo.which == ChipInfo.type.yupik
-                || ChipInfo.which == ChipInfo.type.kalama) {
+                || ChipInfo.which == ChipInfo.type.kalama
+                || ChipInfo.which == ChipInfo.type.diwali) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
                 lines.add("qcom,gpu-pwrlevels-" + bins.get(bin_id).id + " {");
                 lines.addAll(bins.get(bin_id).header);
@@ -267,10 +271,12 @@ public class GpuTableEditor {
         if ("qcom,level".equals(raw_name) || "qcom,cx-level".equals(raw_name)) {
             return GpuVoltEditor.levelint2str(DtsHelper.decode_int_line(line).value);
         }
-        return DtsHelper.shouldUseHex(line) ? DtsHelper.decode_hex_line(line).value : DtsHelper.decode_int_line(line).value + "";
+        return DtsHelper.shouldUseHex(line) ? DtsHelper.decode_hex_line(line).value :
+                DtsHelper.decode_int_line(line).value + "";
     }
 
-    private static void generateALevel(Activity activity, int last, int levelid, LinearLayout page) throws Exception {
+    private static void generateALevel(Activity activity, int last, int levelid,
+                                       LinearLayout page) throws Exception {
         ((MainActivity) activity).onBackPressedListener = new MainActivity.onBackPressedListener() {
             @Override
             public void onBackPressed() {
@@ -291,7 +297,8 @@ public class GpuTableEditor {
 
         for (String line : bins.get(last).levels.get(levelid).lines) {
             items.add(new ParamAdapter.item() {{
-                title = KonaBessStr.convert_level_params(DtsHelper.decode_hex_line(line).name, activity);
+                title = KonaBessStr.convert_level_params(DtsHelper.decode_hex_line(line).name,
+                        activity);
                 subtitle = generateSubtitle(line);
             }});
         }
@@ -302,15 +309,21 @@ public class GpuTableEditor {
                     generateLevels(activity, last, page);
                     return;
                 }
-                String raw_name = DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).name;
-                String raw_value = DtsHelper.shouldUseHex(bins.get(last).levels.get(levelid).lines.get(position - 1))
-                        ? DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value
-                        : DtsHelper.decode_int_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value + "";
+                String raw_name =
+                        DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).name;
+                String raw_value =
+                        DtsHelper.shouldUseHex(bins.get(last).levels.get(levelid).lines.get(position - 1))
+                                ?
+                                DtsHelper.decode_hex_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value
+                                :
+                                DtsHelper.decode_int_line(bins.get(last).levels.get(levelid).lines.get(position - 1)).value + "";
 
                 if (raw_name.equals("qcom,level") || raw_name.equals("qcom,cx-level")) {
                     try {
                         Spinner spinner = new Spinner(activity);
-                        spinner.setAdapter(new ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, ChipInfo.rpmh_levels.level_str()));
+                        spinner.setAdapter(new ArrayAdapter(activity,
+                                android.R.layout.simple_dropdown_item_1line,
+                                ChipInfo.rpmh_levels.level_str()));
                         spinner.setSelection(GpuVoltEditor.levelint2int(Integer.parseInt(raw_value)));
 
                         new AlertDialog.Builder(activity)
@@ -321,9 +334,11 @@ public class GpuTableEditor {
                                     try {
                                         bins.get(last).levels.get(levelid).lines.set(
                                                 position - 1,
-                                                DtsHelper.encodeIntOrHexLine(raw_name, ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()] + ""));
+                                                DtsHelper.encodeIntOrHexLine(raw_name,
+                                                        ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()] + ""));
                                         generateALevel(activity, last, levelid, page);
-                                        Toast.makeText(activity, R.string.save_success, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(activity, R.string.save_success,
+                                                Toast.LENGTH_SHORT).show();
                                     } catch (Exception exception) {
                                         DialogUtil.showError(activity, R.string.save_failed);
                                         exception.printStackTrace();
@@ -337,7 +352,8 @@ public class GpuTableEditor {
                     }
                 } else {
                     EditText editText = new EditText(activity);
-                    editText.setInputType(DtsHelper.shouldUseHex(raw_name) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER);
+                    editText.setInputType(DtsHelper.shouldUseHex(raw_name) ?
+                            InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER);
                     editText.setText(raw_value);
                     new AlertDialog.Builder(activity)
                             .setTitle(activity.getResources().getString(R.string.edit) + " \"" + items.get(position).title + "\"")
@@ -347,9 +363,11 @@ public class GpuTableEditor {
                                 try {
                                     bins.get(last).levels.get(levelid).lines.set(
                                             position - 1,
-                                            DtsHelper.encodeIntOrHexLine(raw_name, editText.getText().toString()));
+                                            DtsHelper.encodeIntOrHexLine(raw_name,
+                                                    editText.getText().toString()));
                                     generateALevel(activity, last, levelid, page);
-                                    Toast.makeText(activity, R.string.save_success, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, R.string.save_success,
+                                            Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     DialogUtil.showError(activity, R.string.save_failed);
                                 }
@@ -515,7 +533,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.shima || ChipInfo.which == ChipInfo.type.yupik
                 || ChipInfo.which == ChipInfo.type.waipio_singleBin
                 || ChipInfo.which == ChipInfo.type.cape_singleBin
-                || ChipInfo.which == ChipInfo.type.kalama)
+                || ChipInfo.which == ChipInfo.type.kalama
+                || ChipInfo.which == ChipInfo.type.diwali)
             return 1;
         if (ChipInfo.which == ChipInfo.type.kona || ChipInfo.which == ChipInfo.type.kona_singleBin
                 || ChipInfo.which == ChipInfo.type.msmnile || ChipInfo.which == ChipInfo.type.msmnile_singleBin
@@ -728,7 +747,8 @@ public class GpuTableEditor {
                 decode();
                 patch_throttle_level();
             } catch (Exception e) {
-                activity.runOnUiThread(() -> DialogUtil.showError(activity, R.string.getting_freq_table_failed));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,
+                        R.string.getting_freq_table_failed));
             }
 
             activity.runOnUiThread(() -> {

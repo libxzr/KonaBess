@@ -49,10 +49,12 @@ public class TableIO {
     private static boolean decodeAndWriteData(JSONObject jsonObject) throws Exception {
         if (!ChipInfo.checkChipGeneral(ChipInfo.type.valueOf(jsonObject.getString(json_keys.CHIP))))
             return true;
-        ArrayList<String> freq = new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.FREQ).split("\n")));
+        ArrayList<String> freq =
+                new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.FREQ).split("\n")));
         GpuTableEditor.writeOut(GpuTableEditor.genBack(freq));
         if (!ChipInfo.shouldIgnoreVoltTable(ChipInfo.which)) {
-            ArrayList<String> volt = new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.VOLT).split("\n")));
+            ArrayList<String> volt =
+                    new ArrayList<>(Arrays.asList(jsonObject.getString(json_keys.VOLT).split("\n")));
             //Init again because the dts file has been updated
             GpuVoltEditor.init();
             GpuVoltEditor.decode();
@@ -106,7 +108,9 @@ public class TableIO {
         new AlertDialog.Builder(activity)
                 .setTitle(R.string.import_data)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, (dialog, which) -> new showDecodeDialog(activity, editText.getText().toString()).start())
+                .setPositiveButton(R.string.confirm,
+                        (dialog, which) -> new showDecodeDialog(activity,
+                                editText.getText().toString()).start())
                 .setNegativeButton(R.string.cancel, null)
                 .create().show();
     }
@@ -115,7 +119,8 @@ public class TableIO {
         public abstract void onConfirm(String desc);
     }
 
-    private static void showExportDialog(Activity activity, ConfirmExportCallback confirmExportCallback) {
+    private static void showExportDialog(Activity activity,
+                                         ConfirmExportCallback confirmExportCallback) {
         EditText editText = new EditText(activity);
         editText.setHint(R.string.input_introduction_here);
 
@@ -123,7 +128,8 @@ public class TableIO {
                 .setTitle(R.string.export_data)
                 .setMessage(R.string.export_data_msg)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, (dialog, which) -> confirmExportCallback.onConfirm(editText.getText().toString()))
+                .setPositiveButton(R.string.confirm,
+                        (dialog, which) -> confirmExportCallback.onConfirm(editText.getText().toString()))
                 .setNegativeButton(R.string.cancel, null)
                 .create().show();
     }
@@ -131,7 +137,8 @@ public class TableIO {
     private static void export_cpy(Activity activity, String desc) {
         // TODO: clipboard
         try {
-            DialogUtil.showDetailedInfo(activity, R.string.export_done, R.string.export_done_msg, "konabess://" + getConfig(desc));
+            DialogUtil.showDetailedInfo(activity, R.string.export_done, R.string.export_done_msg,
+                    "konabess://" + getConfig(desc));
         } catch (Exception e) {
             DialogUtil.showError(activity, R.string.error_occur);
         }
@@ -149,7 +156,8 @@ public class TableIO {
 
         public void run() {
             error = false;
-            File out = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/konabess-" + new SimpleDateFormat("MMddHHmmss").format(new Date()) + ".txt");
+            File out = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    "/konabess-" + new SimpleDateFormat("MMddHHmmss").format(new Date()) + ".txt");
             try {
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(out));
                 bufferedWriter.write("konabess://" + getConfig(desc));
@@ -159,7 +167,8 @@ public class TableIO {
             }
             activity.runOnUiThread(() -> {
                 if (!error)
-                    Toast.makeText(activity, activity.getResources().getString(R.string.success_export_to) + " " + out.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,
+                            activity.getResources().getString(R.string.success_export_to) + " " + out.getAbsolutePath(), Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(activity, R.string.failed_export, Toast.LENGTH_SHORT).show();
             });
@@ -189,7 +198,8 @@ public class TableIO {
                         try {
                             new AlertDialog.Builder(activity)
                                     .setTitle(R.string.going_import)
-                                    .setMessage(jsonObject.getString(json_keys.DESCRIPTION) + "\n" + activity.getResources().getString(R.string.compatible_chip) + ChipInfo.name2chipdesc(jsonObject.getString(json_keys.CHIP), activity))
+                                    .setMessage(jsonObject.getString(json_keys.DESCRIPTION) + "\n"
+                                            + activity.getResources().getString(R.string.compatible_chip) + ChipInfo.name2chipdesc(jsonObject.getString(json_keys.CHIP), activity))
                                     .setPositiveButton(R.string.confirm, (dialog, which) -> {
                                         waiting_import.show();
                                         new Thread(() -> {
@@ -201,9 +211,13 @@ public class TableIO {
                                             activity.runOnUiThread(() -> {
                                                 waiting_import.dismiss();
                                                 if (!error)
-                                                    Toast.makeText(activity, R.string.success_import, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(activity,
+                                                            R.string.success_import,
+                                                            Toast.LENGTH_SHORT).show();
                                                 else
-                                                    Toast.makeText(activity, R.string.failed_incompatible, Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(activity,
+                                                            R.string.failed_incompatible,
+                                                            Toast.LENGTH_LONG).show();
                                             });
                                         }).start();
                                     })
@@ -241,11 +255,13 @@ public class TableIO {
                 waiting_import.show();
             });
             try {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(activity.getContentResolver().openInputStream(uri)));
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(activity.getContentResolver().openInputStream(uri)));
                 new showDecodeDialog(activity, bufferedReader.readLine()).start();
                 bufferedReader.close();
             } catch (Exception e) {
-                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.unable_get_target_file, Toast.LENGTH_SHORT).show());
+                activity.runOnUiThread(() -> Toast.makeText(activity,
+                        R.string.unable_get_target_file, Toast.LENGTH_SHORT).show());
             }
         }
     }
@@ -289,7 +305,8 @@ public class TableIO {
                 showExportDialog(activity, new ConfirmExportCallback() {
                     @Override
                     public void onConfirm(String desc) {
-                        MainActivity.runWithStoragePermission(activity, new exportToFile(activity, desc));
+                        MainActivity.runWithStoragePermission(activity, new exportToFile(activity
+                                , desc));
                     }
                 });
             } else if (position == 2) {
@@ -336,7 +353,8 @@ public class TableIO {
                     GpuVoltEditor.decode();
                 }
             } catch (Exception e) {
-                activity.runOnUiThread(() -> DialogUtil.showError(activity, R.string.failed_getting_freq_voltage));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,
+                        R.string.failed_getting_freq_voltage));
             }
 
             activity.runOnUiThread(() -> {

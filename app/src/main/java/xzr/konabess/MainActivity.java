@@ -60,7 +60,8 @@ public class MainActivity extends Activity {
     public static void runWithStoragePermission(Activity activity, Thread what) {
         MainActivity.permission_worker = what;
         if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    0);
         } else {
             what.start();
             permission_worker = null;
@@ -94,7 +95,8 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (permission_worker != null) {
@@ -157,18 +159,24 @@ public class MainActivity extends Activity {
                     .setTitle(R.string.help)
                     .setMessage(KonaBessStr.generic_help(this))
                     .setPositiveButton(R.string.ok, null)
-                    .setNeutralButton(R.string.about, (dialog, which) -> new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.about)
-                            .setMessage(getResources().getString(R.string.author) + " xzr467706992 (LibXZR)\n" + getResources().getString(R.string.release_at) + " www.akr-developers.com\n")
-                            .setPositiveButton(R.string.ok, null)
-                            .setNegativeButton("Github", (dialog1, which1) -> MainActivity.this.startActivity(new Intent() {{
-                                setAction(Intent.ACTION_VIEW);
-                                setData(Uri.parse("https://github.com/xzr467706992/KonaBess"));
-                            }}))
-                            .setNeutralButton(R.string.visit_akr, (dialog1, which1) -> MainActivity.this.startActivity(new Intent() {{
-                                setAction(Intent.ACTION_VIEW);
-                                setData(Uri.parse("https://www.akr-developers.com/d/441"));
-                            }})).create().show())
+                    .setNeutralButton(R.string.about,
+                            (dialog, which) -> new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle(R.string.about)
+                                    .setMessage(getResources().getString(R.string.author) + " " +
+                                            "xzr467706992 (LibXZR)\n" + getResources().getString(R.string.release_at) + " www.akr-developers.com\n")
+                                    .setPositiveButton(R.string.ok, null)
+                                    .setNegativeButton("Github",
+                                            (dialog1, which1) -> MainActivity.this.startActivity(new Intent() {{
+                                                setAction(Intent.ACTION_VIEW);
+                                                setData(Uri.parse("https://github" +
+                                                        ".com/xzr467706992/KonaBess"));
+                                            }}))
+                                    .setNeutralButton(R.string.visit_akr,
+                                            (dialog1, which1) -> MainActivity.this.startActivity(new Intent() {{
+                                                setAction(Intent.ACTION_VIEW);
+                                                setData(Uri.parse("https://www.akr-developers" +
+                                                        ".com/d/441"));
+                                            }})).create().show())
                     .create().show());
         }
 
@@ -246,7 +254,8 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, R.string.repack_failed, error);
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.repack_failed,
+                                error);
                 });
                 if (is_err)
                     return;
@@ -275,7 +284,8 @@ public class MainActivity extends Activity {
                                     try {
                                         KonaBessCore.reboot();
                                     } catch (IOException e) {
-                                        DialogUtil.showError(MainActivity.this, R.string.failed_reboot);
+                                        DialogUtil.showError(MainActivity.this,
+                                                R.string.failed_reboot);
                                     }
                                 })
                                 .setNegativeButton(R.string.no, null)
@@ -327,7 +337,8 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, R.string.unpack_failed, error);
+                        DialogUtil.showDetailedError(MainActivity.this, R.string.unpack_failed,
+                                error);
                 });
                 if (is_err)
                     return;
@@ -348,7 +359,8 @@ public class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     waiting.dismiss();
                     if (is_err)
-                        DialogUtil.showDetailedError(MainActivity.this, R.string.failed_checking_platform, error);
+                        DialogUtil.showDetailedError(MainActivity.this,
+                                R.string.failed_checking_platform, error);
                 });
                 if (is_err)
                     return;
@@ -369,7 +381,8 @@ public class MainActivity extends Activity {
                 for (KonaBessCore.dtb dtb : KonaBessCore.dtbs) {
                     items.add(new ParamAdapter.item() {{
                         title = dtb.id + " " + ChipInfo.name2chipdesc(dtb.type, MainActivity.this);
-                        subtitle = dtb.id == dtb_index ? MainActivity.this.getString(R.string.possible_dtb) : "";
+                        subtitle = dtb.id == dtb_index ?
+                                MainActivity.this.getString(R.string.possible_dtb) : "";
                     }});
                 }
                 listView.setAdapter(new ParamAdapter(items, MainActivity.this));

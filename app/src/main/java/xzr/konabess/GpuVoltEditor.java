@@ -52,7 +52,8 @@ public class GpuVoltEditor {
         lines_in_dts = new ArrayList<>();
         opps = new ArrayList<>();
         opp_position = -1;
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(KonaBessCore.dts_path)));
+        BufferedReader bufferedReader =
+                new BufferedReader(new FileReader(new File(KonaBessCore.dts_path)));
         String s;
         while ((s = bufferedReader.readLine()) != null) {
             lines_in_dts.add(s);
@@ -215,7 +216,8 @@ public class GpuVoltEditor {
                         .setView(editText)
                         .setPositiveButton(R.string.save, (dialog, which) -> {
                             try {
-                                opps.get(voltn).frequency = Long.parseLong(editText.getText().toString());
+                                opps.get(voltn).frequency =
+                                        Long.parseLong(editText.getText().toString());
                                 generateAVolt(activity, page, voltn);
                             } catch (Exception e) {
                                 DialogUtil.showError(activity, R.string.save_failed);
@@ -227,7 +229,9 @@ public class GpuVoltEditor {
             if (position == 2) {
                 try {
                     Spinner spinner = new Spinner(activity);
-                    spinner.setAdapter(new ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, ChipInfo.rpmh_levels.level_str()));
+                    spinner.setAdapter(new ArrayAdapter(activity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            ChipInfo.rpmh_levels.level_str()));
                     spinner.setSelection(levelint2int(opps.get(voltn).volt));
 
                     new AlertDialog.Builder(activity)
@@ -235,7 +239,8 @@ public class GpuVoltEditor {
                             .setView(spinner)
                             .setMessage(R.string.editvolt_msg)
                             .setPositiveButton(R.string.save, (dialog, which) -> {
-                                opps.get(voltn).volt = ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()];
+                                opps.get(voltn).volt =
+                                        ChipInfo.rpmh_levels.levels()[spinner.getSelectedItemPosition()];
                                 try {
                                     generateAVolt(activity, page, voltn);
                                 } catch (Exception e) {
@@ -354,7 +359,8 @@ public class GpuVoltEditor {
                 init();
                 decode();
             } catch (Exception e) {
-                activity.runOnUiThread(() -> DialogUtil.showError(activity, R.string.getting_volt_failed));
+                activity.runOnUiThread(() -> DialogUtil.showError(activity,
+                        R.string.getting_volt_failed));
             }
 
             activity.runOnUiThread(() -> {

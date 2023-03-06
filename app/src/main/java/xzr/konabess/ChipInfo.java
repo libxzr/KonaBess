@@ -18,6 +18,7 @@ public class ChipInfo {
         waipio_singleBin,
         cape_singleBin,
         kalama,
+        diwali,
         unknown
     }
 
@@ -31,7 +32,7 @@ public class ChipInfo {
         return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin
                 || type == ChipInfo.type.shima || type == ChipInfo.type.yupik
                 || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin
-                || type == ChipInfo.type.kalama;
+                || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -78,6 +79,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd8g1p_singlebin);
             case kalama:
                 return activity.getResources().getString(R.string.sd8g2);
+            case diwali:
+                return activity.getResources().getString(R.string.sd7g1);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -108,6 +111,8 @@ public class ChipInfo {
                 return rpmh_levels_cape.levels;
             else if (ChipInfo.which == type.kalama)
                 return rpmh_levels_kalama.levels;
+            else if (ChipInfo.which == type.diwali)
+                return rpmh_levels_diwali.levels;
 
             return new int[]{};
         }
@@ -135,13 +140,16 @@ public class ChipInfo {
                 return rpmh_levels_cape.level_str;
             else if (ChipInfo.which == type.kalama)
                 return rpmh_levels_kalama.level_str;
+            else if (ChipInfo.which == type.diwali)
+                return rpmh_levels_diwali.level_str;
 
             return new String[]{};
         }
     }
 
     private static class rpmh_levels_kona {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -206,7 +214,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lahaina {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416, 432, 448, 464};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416, 432, 448, 464};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -232,7 +241,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lahaina_singleBin {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -255,7 +265,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lito {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -278,7 +289,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_lagoon {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -301,7 +313,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_shima {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -324,7 +337,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_yupik {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -347,7 +361,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_waipio {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -370,7 +385,32 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_cape {
-        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320, 336, 352, 384, 400, 416};
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1"
+        };
+    }
+
+    private static class rpmh_levels_diwali {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
@@ -393,7 +433,8 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_kalama {
-        public static final int[] levels = {16, 48, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192, 224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 464, 480};
+        public static final int[] levels = {16, 48, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192,
+                224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 464, 480};
         public static final String[] level_str = {
                 "RETENTION",
                 "MIN_SVS",
