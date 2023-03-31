@@ -224,7 +224,7 @@ public class KonaBessCore {
                 dtb.type = checkSingleBin(context, i) ? ChipInfo.type.lahaina_singleBin :
                         ChipInfo.type.lahaina;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Lito SoC")) {
+            } else if (checkChip(context, i, "Lito")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.lito_v1;
@@ -234,38 +234,38 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.lito_v2;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Lagoon SoC")) {
+            } else if (checkChip(context, i, "Lagoon")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.lagoon;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Shima SoC")) {
+            } else if (checkChip(context, i, "Shima")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.shima;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Yupik SoC")) {
+            } else if (checkChip(context, i, "Yupik")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.yupik;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Waipio SoC")
-                    || checkChip(context, i, "Waipio v2 SoC")) {
+            } else if (checkChip(context, i, "Waipio")
+                    || checkChip(context, i, "Waipio v2")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.waipio_singleBin;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Cape SoC")) {
+            } else if (checkChip(context, i, "Cape")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.cape_singleBin;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Kalama v2 SoC")) {
+            } else if (checkChip(context, i, "Kalama v2")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.kalama;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Diwali SoC")) {
+            } else if (checkChip(context, i, "Diwali")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.diwali;
