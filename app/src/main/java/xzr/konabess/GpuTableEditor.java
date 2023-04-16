@@ -68,7 +68,8 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.msmnile_singleBin
                     || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                     || ChipInfo.which == ChipInfo.type.waipio_singleBin
-                    || ChipInfo.which == ChipInfo.type.cape_singleBin)
+                    || ChipInfo.which == ChipInfo.type.cape_singleBin
+                    || ChipInfo.which == ChipInfo.type.ukee_singleBin)
                     && this_line.equals("qcom,gpu-pwrlevels {")) {
                 start = i;
                 if (bin_position < 0)
@@ -126,7 +127,8 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.msmnile_singleBin
                     || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                     || ChipInfo.which == ChipInfo.type.waipio_singleBin
-                    || ChipInfo.which == ChipInfo.type.cape_singleBin)) {
+                    || ChipInfo.which == ChipInfo.type.cape_singleBin
+                    || ChipInfo.which == ChipInfo.type.ukee_singleBin)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -235,7 +237,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.msmnile_singleBin
                 || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                 || ChipInfo.which == ChipInfo.type.waipio_singleBin
-                || ChipInfo.which == ChipInfo.type.cape_singleBin) {
+                || ChipInfo.which == ChipInfo.type.cape_singleBin
+                || ChipInfo.which == ChipInfo.type.ukee_singleBin) {
             lines.add("qcom,gpu-pwrlevels {");
             lines.addAll(bins.get(0).header);
             for (int pwr_level_id = 0; pwr_level_id < bins.get(0).levels.size(); pwr_level_id++) {
@@ -433,7 +436,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.msmnile_singleBin
                 || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                 || ChipInfo.which == ChipInfo.type.waipio_singleBin
-                || ChipInfo.which == ChipInfo.type.cape_singleBin) {
+                || ChipInfo.which == ChipInfo.type.cape_singleBin
+                || ChipInfo.which == ChipInfo.type.ukee_singleBin) {
             offset_initial_level_old(offset);
             return;
         }
@@ -503,7 +507,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.msmnile_singleBin
                 || ChipInfo.which == ChipInfo.type.lahaina_singleBin
                 || ChipInfo.which == ChipInfo.type.waipio_singleBin
-                || ChipInfo.which == ChipInfo.type.cape_singleBin) {
+                || ChipInfo.which == ChipInfo.type.cape_singleBin
+                || ChipInfo.which == ChipInfo.type.ukee_singleBin) {
             patch_throttle_level_old();
             return;
         }
@@ -534,7 +539,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.waipio_singleBin
                 || ChipInfo.which == ChipInfo.type.cape_singleBin
                 || ChipInfo.which == ChipInfo.type.kalama
-                || ChipInfo.which == ChipInfo.type.diwali)
+                || ChipInfo.which == ChipInfo.type.diwali
+                || ChipInfo.which == ChipInfo.type.ukee_singleBin)
             return 1;
         if (ChipInfo.which == ChipInfo.type.kona || ChipInfo.which == ChipInfo.type.kona_singleBin
                 || ChipInfo.which == ChipInfo.type.msmnile || ChipInfo.which == ChipInfo.type.msmnile_singleBin

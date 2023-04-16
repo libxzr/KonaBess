@@ -270,6 +270,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.diwali;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Ukee")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.ukee_singleBin;
+                dtbs.add(dtb);
             }
         }
     }

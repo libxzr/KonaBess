@@ -19,6 +19,7 @@ public class ChipInfo {
         cape_singleBin,
         kalama,
         diwali,
+        ukee_singleBin,
         unknown
     }
 
@@ -32,7 +33,8 @@ public class ChipInfo {
         return type == ChipInfo.type.lahaina || type == ChipInfo.type.lahaina_singleBin
                 || type == ChipInfo.type.shima || type == ChipInfo.type.yupik
                 || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin
-                || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali;
+                || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
+                || type == ChipInfo.type.ukee_singleBin;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -81,6 +83,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd8g2);
             case diwali:
                 return activity.getResources().getString(R.string.sd7g1);
+            case ukee_singleBin:
+                return activity.getResources().getString(R.string.sd7g2);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -113,6 +117,8 @@ public class ChipInfo {
                 return rpmh_levels_kalama.levels;
             else if (ChipInfo.which == type.diwali)
                 return rpmh_levels_diwali.levels;
+            else if (ChipInfo.which == type.ukee_singleBin)
+                return rpmh_levels_ukee.levels;
 
             return new int[]{};
         }
@@ -142,6 +148,8 @@ public class ChipInfo {
                 return rpmh_levels_kalama.level_str;
             else if (ChipInfo.which == type.diwali)
                 return rpmh_levels_diwali.level_str;
+            else if (ChipInfo.which == type.ukee_singleBin)
+                return rpmh_levels_ukee.level_str;
 
             return new String[]{};
         }
@@ -409,6 +417,30 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_diwali {
+        public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
+                336, 352, 384, 400, 416};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D1",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1"
+        };
+    }
+
+    private static class rpmh_levels_ukee {
         public static final int[] levels = {16, 48, 56, 64, 80, 96, 128, 144, 192, 224, 256, 320,
                 336, 352, 384, 400, 416};
         public static final String[] level_str = {
