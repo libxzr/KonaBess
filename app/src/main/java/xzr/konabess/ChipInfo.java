@@ -25,7 +25,9 @@ public class ChipInfo {
     }
 
     public static int getMaxTableLevels(type type) {
-        if (type == ChipInfo.type.cape_singleBin || type == ChipInfo.type.waipio_singleBin)
+        if (type == ChipInfo.type.cape_singleBin || type == ChipInfo.type.waipio_singleBin
+                || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
+                || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple)
             return 16;
         return 11;
     }
