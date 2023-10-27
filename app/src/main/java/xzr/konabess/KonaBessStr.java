@@ -35,6 +35,8 @@ public class KonaBessStr {
             return convert_bins_diwali(which, activity);
         else if (ChipInfo.which == ChipInfo.type.ukee_singleBin)
             return convert_bins_ukee(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.pineapple)
+            return convert_bins_pineapple(which, activity);
 
         throw new Exception();
     }
@@ -166,6 +168,14 @@ public class KonaBessStr {
         switch (which) {
             case 0:
                 return activity.getResources().getString(R.string.sd7g2);
+        }
+        return activity.getResources().getString(R.string.unknown_table) + which;
+    }
+
+    public static String convert_bins_pineapple(int which, Activity activity) {
+        switch (which) {
+            case 1:
+                return activity.getResources().getString(R.string.sd8g3);
         }
         return activity.getResources().getString(R.string.unknown_table) + which;
     }

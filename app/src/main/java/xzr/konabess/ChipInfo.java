@@ -20,6 +20,7 @@ public class ChipInfo {
         kalama,
         diwali,
         ukee_singleBin,
+        pineapple,
         unknown
     }
 
@@ -34,7 +35,7 @@ public class ChipInfo {
                 || type == ChipInfo.type.shima || type == ChipInfo.type.yupik
                 || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
-                || type == ChipInfo.type.ukee_singleBin;
+                || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -85,6 +86,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd7g1);
             case ukee_singleBin:
                 return activity.getResources().getString(R.string.sd7g2);
+            case pineapple:
+                return activity.getResources().getString(R.string.sd8g3);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -119,6 +122,8 @@ public class ChipInfo {
                 return rpmh_levels_diwali.levels;
             else if (ChipInfo.which == type.ukee_singleBin)
                 return rpmh_levels_ukee.levels;
+            else if (ChipInfo.which == type.pineapple)
+                return rpmh_levels_pineapple.levels;
 
             return new int[]{};
         }
@@ -150,6 +155,8 @@ public class ChipInfo {
                 return rpmh_levels_diwali.level_str;
             else if (ChipInfo.which == type.ukee_singleBin)
                 return rpmh_levels_ukee.level_str;
+            else if (ChipInfo.which == type.pineapple)
+                return rpmh_levels_pineapple.level_str;
 
             return new String[]{};
         }
@@ -465,6 +472,37 @@ public class ChipInfo {
     }
 
     private static class rpmh_levels_kalama {
+        public static final int[] levels = {16, 48, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192,
+                224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 464, 480};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D2",
+                "LOW_SVS_D1",
+                "LOW_SVS_D0",
+                "LOW_SVS",
+                "LOW_SVS_P1",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L0",
+                "NOM_L1",
+                "NOM_L2",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1",
+                "TURBO_L2",
+                "TURBO_L3",
+                "SUPER_TURBO",
+                "SUPER_TURBO_NO_CPR"
+        };
+    }
+
+    private static class rpmh_levels_pineapple {
         public static final int[] levels = {16, 48, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192,
                 224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 464, 480};
         public static final String[] level_str = {

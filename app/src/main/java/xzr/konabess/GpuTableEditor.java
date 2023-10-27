@@ -85,8 +85,10 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.shima
                     || ChipInfo.which == ChipInfo.type.yupik
                     || ChipInfo.which == ChipInfo.type.kalama
-                    || ChipInfo.which == ChipInfo.type.diwali)
-                    && this_line.contains("qcom,gpu-pwrlevels-")) {
+                    || ChipInfo.which == ChipInfo.type.diwali
+                    || ChipInfo.which == ChipInfo.type.pineapple)
+                    && this_line.contains("qcom,gpu-pwrlevels-")
+                    && !this_line.contains("compatible = ")) {
                 start = i;
                 if (bin_position < 0)
                     bin_position = i;
@@ -110,7 +112,8 @@ public class GpuTableEditor {
                     || ChipInfo.which == ChipInfo.type.shima
                     || ChipInfo.which == ChipInfo.type.yupik
                     || ChipInfo.which == ChipInfo.type.kalama
-                    || ChipInfo.which == ChipInfo.type.diwali)) {
+                    || ChipInfo.which == ChipInfo.type.diwali
+                    || ChipInfo.which == ChipInfo.type.pineapple)) {
                 end = i;
                 if (end >= start) {
                     decode_bin(lines_in_dts.subList(start, end + 1));
@@ -221,7 +224,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.shima
                 || ChipInfo.which == ChipInfo.type.yupik
                 || ChipInfo.which == ChipInfo.type.kalama
-                || ChipInfo.which == ChipInfo.type.diwali) {
+                || ChipInfo.which == ChipInfo.type.diwali
+                || ChipInfo.which == ChipInfo.type.pineapple) {
             for (int bin_id = 0; bin_id < bins.size(); bin_id++) {
                 lines.add("qcom,gpu-pwrlevels-" + bins.get(bin_id).id + " {");
                 lines.addAll(bins.get(bin_id).header);
@@ -540,7 +544,8 @@ public class GpuTableEditor {
                 || ChipInfo.which == ChipInfo.type.cape_singleBin
                 || ChipInfo.which == ChipInfo.type.kalama
                 || ChipInfo.which == ChipInfo.type.diwali
-                || ChipInfo.which == ChipInfo.type.ukee_singleBin)
+                || ChipInfo.which == ChipInfo.type.ukee_singleBin
+                || ChipInfo.which == ChipInfo.type.pineapple)
             return 1;
         if (ChipInfo.which == ChipInfo.type.kona || ChipInfo.which == ChipInfo.type.kona_singleBin
                 || ChipInfo.which == ChipInfo.type.msmnile || ChipInfo.which == ChipInfo.type.msmnile_singleBin

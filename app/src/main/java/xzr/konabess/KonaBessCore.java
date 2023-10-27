@@ -275,6 +275,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.ukee_singleBin;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Pineapple v2")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.pineapple;
+                dtbs.add(dtb);
             }
         }
     }
