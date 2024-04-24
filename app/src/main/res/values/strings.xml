@@ -126,4 +126,5 @@
     <string name="sd7g1">Snapdragon 7Gen1</string>
     <string name="sd7g2">Snapdragon 7Gen2</string>
     <string name="sd8g3">Snapdragon 8Gen3</string>
+    <string name="sd8g3_for_galaxy">Snapdragon 8Gen3 for Galaxy</string>
 </resources>

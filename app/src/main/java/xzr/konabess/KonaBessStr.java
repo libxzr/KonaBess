@@ -174,6 +174,8 @@ public class KonaBessStr {
 
     public static String convert_bins_pineapple(int which, Activity activity) {
         switch (which) {
+            case 0:
+                return activity.getResources().getString(R.string.sd8g3_for_galaxy);
             case 1:
                 return activity.getResources().getString(R.string.sd8g3);
         }
