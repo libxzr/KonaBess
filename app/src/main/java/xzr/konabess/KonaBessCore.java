@@ -281,6 +281,16 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.pineapple;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Cliffs SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.cliffs_singleBin;
+                dtbs.add(dtb);
+            } else if (checkChip(context, i, "Cliffs 7 SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.cliffs_7_singleBin;
+                dtbs.add(dtb);
             }
         }
     }

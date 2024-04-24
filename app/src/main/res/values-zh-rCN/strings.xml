@@ -127,4 +127,6 @@
     <string name="sd7g2">骁龙7Gen2</string>
     <string name="sd8g3">骁龙8Gen3</string>
     <string name="sd8g3_for_galaxy">骁龙8Gen3 for Galaxy</string>
+    <string name="sd8sg3">骁龙8sGen3</string>
+    <string name="sd7pg3">骁龙7+Gen3</string>
 </resources>
