@@ -260,7 +260,8 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.cape_singleBin;
                 dtbs.add(dtb);
-            } else if (checkChip(context, i, "Kalama v2")) {
+            } else if (checkChip(context, i, "Kalama v2")
+                    || checkChip(context, i, "KalamaP v2")) {
                 dtb dtb = new dtb();
                 dtb.id = i;
                 dtb.type = ChipInfo.type.kalama;
