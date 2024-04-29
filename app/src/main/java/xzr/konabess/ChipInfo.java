@@ -23,6 +23,7 @@ public class ChipInfo {
         pineapple,
         cliffs_singleBin,
         cliffs_7_singleBin,
+        kalama_sg_singleBin,
         unknown
     }
 
@@ -30,7 +31,8 @@ public class ChipInfo {
         if (type == ChipInfo.type.cape_singleBin || type == ChipInfo.type.waipio_singleBin
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
-                || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin)
+                || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
+                || type == ChipInfo.type.kalama_sg_singleBin)
             return 16;
         return 11;
     }
@@ -41,7 +43,8 @@ public class ChipInfo {
                 || type == ChipInfo.type.waipio_singleBin || type == ChipInfo.type.cape_singleBin
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
-                || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin;
+                || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
+                || type == ChipInfo.type.kalama_sg_singleBin;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -98,6 +101,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd8sg3);
             case cliffs_7_singleBin:
                 return activity.getResources().getString(R.string.sd7pg3);
+            case kalama_sg_singleBin:
+                return activity.getResources().getString(R.string.sdg3xg2);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -137,6 +142,8 @@ public class ChipInfo {
             else if (ChipInfo.which == type.cliffs_singleBin
                     || ChipInfo.which == type.cliffs_7_singleBin)
                 return rpmh_levels_cliffs.levels;
+            else if (ChipInfo.which == type.kalama_sg_singleBin)
+                return rpmh_levels_kalama.levels;
 
             return new int[]{};
         }
@@ -173,6 +180,8 @@ public class ChipInfo {
             else if (ChipInfo.which == type.cliffs_singleBin
                     || ChipInfo.which == type.cliffs_7_singleBin)
                 return rpmh_levels_cliffs.level_str;
+            else if (ChipInfo.which == type.kalama_sg_singleBin)
+                return rpmh_levels_kalama.level_str;
 
             return new String[]{};
         }

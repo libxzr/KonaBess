@@ -289,6 +289,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.cliffs_7_singleBin;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "KalamaP SG SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.kalama_sg_singleBin;
+                dtbs.add(dtb);
             }
         }
     }
