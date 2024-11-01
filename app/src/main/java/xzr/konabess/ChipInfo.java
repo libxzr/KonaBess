@@ -24,6 +24,7 @@ public class ChipInfo {
         cliffs_singleBin,
         cliffs_7_singleBin,
         kalama_sg_singleBin,
+        sun,
         unknown
     }
 
@@ -32,7 +33,7 @@ public class ChipInfo {
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
                 || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
-                || type == ChipInfo.type.kalama_sg_singleBin)
+                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun)
             return 16;
         return 11;
     }
@@ -44,7 +45,7 @@ public class ChipInfo {
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
                 || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
-                || type == ChipInfo.type.kalama_sg_singleBin;
+                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -103,6 +104,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd7pg3);
             case kalama_sg_singleBin:
                 return activity.getResources().getString(R.string.sdg3xg2);
+            case sun:
+                return activity.getResources().getString(R.string.sd8e);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -144,6 +147,8 @@ public class ChipInfo {
                 return rpmh_levels_cliffs.levels;
             else if (ChipInfo.which == type.kalama_sg_singleBin)
                 return rpmh_levels_kalama.levels;
+            else if (ChipInfo.which == type.sun)
+                return rpmh_levels_sun.levels;
 
             return new int[]{};
         }
@@ -182,6 +187,8 @@ public class ChipInfo {
                 return rpmh_levels_cliffs.level_str;
             else if (ChipInfo.which == type.kalama_sg_singleBin)
                 return rpmh_levels_kalama.level_str;
+            else if (ChipInfo.which == type.sun)
+                return rpmh_levels_sun.level_str;
 
             return new String[]{};
         }
@@ -584,6 +591,39 @@ public class ChipInfo {
                 "TURBO_L1",
                 "TURBO_L2",
                 "TURBO_L3",
+                "SUPER_TURBO",
+                "SUPER_TURBO_NO_CPR"
+        };
+    }
+
+    private static class rpmh_levels_sun {
+        public static final int[] levels = {16, 48, 50, 52, 56, 60, 64, 72, 80, 96, 128, 144, 192,
+                224, 256, 288, 320, 336, 384, 400, 416, 432, 448, 452, 464, 480};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D3", // todo: Synchronize the actual name from regulator headers
+                "LOW_SVS_D2",
+                "LOW_SVS_D1",
+                "LOW_SVS_D0",
+                "LOW_SVS",
+                "LOW_SVS_P1",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L0",
+                "NOM_L1",
+                "NOM_L2",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1",
+                "TURBO_L2",
+                "TURBO_L3",
+                "TURBO_L4", // todo: Synchronize the actual name from regulator headers
                 "SUPER_TURBO",
                 "SUPER_TURBO_NO_CPR"
         };

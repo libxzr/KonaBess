@@ -295,6 +295,14 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.kalama_sg_singleBin;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Sun v2 SoC")
+                    || checkChip(context, i, "Sun Alt. Thermal Profile v2 SoC")
+                    || checkChip(context, i, "SunP v2 SoC")
+                    || checkChip(context, i, "SunP v2 Alt. Thermal Profile SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.sun;
+                dtbs.add(dtb);
             }
         }
     }
