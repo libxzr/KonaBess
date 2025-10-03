@@ -10,8 +10,8 @@ android {
         applicationId "xzr.konabess"
         minSdkVersion 28
         targetSdkVersion 28
-        versionCode 27
-        versionName "0.25 beta"
+        versionCode 28
+        versionName "0.26 beta"
     }
 
     buildTypes {
