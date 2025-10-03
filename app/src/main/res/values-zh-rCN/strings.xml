@@ -129,6 +129,7 @@
     <string name="sd8g3_for_galaxy">骁龙8Gen3 for Galaxy</string>
     <string name="sd8sg3">骁龙8sGen3</string>
     <string name="sd7pg3">骁龙7+Gen3</string>
-    <string name="sdg3xg2">骁龙 G3x Gen2</string>
-    <string name="sd8e">骁龙 8 Elite</string>
-</resources>
+     <string name="sdg3xg2">骁龙 G3x Gen2</string>
+     <string name="sd8e">骁龙 8 Elite</string>
+     <string name="sd8e_gen5">骁龙 8 Elite Gen5</string>
+ </resources>

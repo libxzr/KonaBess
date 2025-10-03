@@ -303,6 +303,12 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.sun;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Canoe v2 SoC")
+                    || checkChip(context, i, "CanoeP v2 SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.canoe;
+                dtbs.add(dtb);
             }
         }
     }
