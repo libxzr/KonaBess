@@ -47,6 +47,8 @@ public class KonaBessStr {
             return convert_bins_sun(which, activity);
         else if (ChipInfo.which == ChipInfo.type.canoe)
             return convert_bins_canoe(which, activity);
+        else if (ChipInfo.which == ChipInfo.type.tuna)
+            return convert_bins_tuna(which, activity);
 
         throw new Exception();
     }
@@ -254,5 +256,17 @@ public class KonaBessStr {
         return ChipInfo.shouldIgnoreVoltTable(ChipInfo.which)
                 ? activity.getResources().getString(R.string.help_msg_aio)
                 : activity.getResources().getString(R.string.help_msg);
+    }
+
+    public static String convert_bins_tuna(int which, Activity activity) {
+        switch (which) {
+            case 0:
+                return "Speed Bin 0 (0x0)";
+            case 1:
+                return "Speed Bin 1 (0xd8)";
+            case 2:
+                return "Speed Bin 2 (0xf2)";
+        }
+        return activity.getResources().getString(R.string.unknown_table) + which;
     }
 }
