@@ -26,6 +26,7 @@ public class ChipInfo {
         kalama_sg_singleBin,
         sun,
         canoe,
+        tuna,
         unknown
     }
 
@@ -34,7 +35,8 @@ public class ChipInfo {
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
                 || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
-                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun || type == ChipInfo.type.canoe)
+                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun 
+                || type == ChipInfo.type.canoe || type == ChipInfo.type.tuna)
             return 16;
         return 11;
     }
@@ -46,7 +48,8 @@ public class ChipInfo {
                 || type == ChipInfo.type.kalama || type == ChipInfo.type.diwali
                 || type == ChipInfo.type.ukee_singleBin || type == ChipInfo.type.pineapple
                 || type == ChipInfo.type.cliffs_singleBin || type == ChipInfo.type.cliffs_7_singleBin
-                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun || type == ChipInfo.type.canoe;
+                || type == ChipInfo.type.kalama_sg_singleBin || type == ChipInfo.type.sun 
+                || type == ChipInfo.type.canoe || type == ChipInfo.type.tuna;
     }
 
     public static boolean checkChipGeneral(type input) {
@@ -109,6 +112,8 @@ public class ChipInfo {
                 return activity.getResources().getString(R.string.sd8e);
             case canoe:
                 return activity.getResources().getString(R.string.sd8e_gen5);
+            case tuna:
+                return activity.getResources().getString(R.string.sd8sg4);
         }
         return activity.getResources().getString(R.string.unknown);
     }
@@ -154,6 +159,8 @@ public class ChipInfo {
                 return rpmh_levels_sun.levels;
             else if (ChipInfo.which == type.canoe)
                 return rpmh_levels_canoe.levels;
+            else if (ChipInfo.which == type.tuna)
+                return rpmh_levels_tuna.levels;
 
             return new int[]{};
         }
@@ -196,6 +203,8 @@ public class ChipInfo {
                 return rpmh_levels_sun.level_str;
             else if (ChipInfo.which == type.canoe)
                 return rpmh_levels_canoe.level_str;
+            else if (ChipInfo.which == type.tuna)
+                return rpmh_levels_tuna.level_str;
 
             return new String[]{};
         }
@@ -668,6 +677,34 @@ public class ChipInfo {
                 "TURBO_L4",
                 "SUPER_TURBO",
                 "SUPER_TURBO_NO_CPR"
+        };
+    }
+
+    private static class rpmh_levels_tuna {
+        public static final int[] levels = {16, 48, 52, 56, 60, 64, 80, 96, 128, 144, 192,
+                224, 256, 320, 336, 352, 384, 400, 416, 432, 448};
+        public static final String[] level_str = {
+                "RETENTION",
+                "MIN_SVS",
+                "LOW_SVS_D2",
+                "LOW_SVS_D1",
+                "LOW_SVS_D0",
+                "LOW_SVS",
+                "LOW_SVS_L1",
+                "LOW_SVS_L2",
+                "SVS",
+                "SVS_L0",
+                "SVS_L1",
+                "SVS_L2",
+                "NOM",
+                "NOM_L1",
+                "NOM_L2",
+                "NOM_L3",
+                "TURBO",
+                "TURBO_L0",
+                "TURBO_L1",
+                "TURBO_L2",
+                "TURBO_L3"
         };
     }
 }

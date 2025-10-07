@@ -24,7 +24,8 @@
   * Snapdragon 8+ Gen 1
   * Snapdragon 8 Gen 2
   * Snapdragon 8 Gen 3
-  * Snapdragon 8s Gen 3
+  * Snapdragon 8s Gen 3 
+  * Snapdragon 8s Gen 4
 
 
 ### Overview

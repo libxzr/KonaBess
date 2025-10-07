@@ -309,6 +309,11 @@ public class KonaBessCore {
                 dtb.id = i;
                 dtb.type = ChipInfo.type.canoe;
                 dtbs.add(dtb);
+            } else if (checkChip(context, i, "Tuna 7 SoC") || checkChip(context, i, "Tuna SoC")) {
+                dtb dtb = new dtb();
+                dtb.id = i;
+                dtb.type = ChipInfo.type.tuna;
+                dtbs.add(dtb);
             }
         }
     }
